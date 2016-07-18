@@ -1,0 +1,45 @@
+{% extends parent_template|default:"support_services/base_support_services.html" %}
+{% block title %}
+  {{ block.super }} - Services
+{% endblock %}
+
+{% block page_heading %}
+  Support Services
+{% endblock %}
+
+{% block page_subheading %}
+  List
+{% endblock %}
+
+{% block page_breadcrumb %}
+  {{ block.super }}
+  <li class="active">
+    <i class="fa fa-table"></i> Services
+  </li>
+{% endblock %}
+
+{% block page_content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <h2>Existing Services</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for service in service_list %}
+              <tr>
+                <td>{{ service.name }}</td>
+                <td>{{ service.description }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

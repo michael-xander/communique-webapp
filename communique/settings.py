@@ -1,3 +1,4 @@
+# This file contains settings for the production environment
 from .base_settings import *
 
 import dj_database_url

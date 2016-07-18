@@ -1,3 +1,4 @@
+# This file contains settings for the development environment
 from .base_settings import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
