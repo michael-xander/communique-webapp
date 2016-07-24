@@ -20,6 +20,37 @@
 
 {% block page_content %}
   <div class="row">
+    <!-- search bar -->
+    <div class="col-lg-6">
+      <form role="form">
+        <div class="form-group input-group">
+          <input type="text" class="form-control" placeholder="Search for...">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Go!</button>
+          </span>
+        </div>
+      </form>
+    </div>
+    <!-- create new service button -->
+    <div class="col-lg-6">
+      <a href="{% url 'support_services_service_create' %}" class="btn btn-primary" style="float:right">Start New Service</a>
+    </div>
+  </div>
+
+  <!-- information alerts -->
+  {% if not service_list %}
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="alert alert-info alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <i class="fa fa-info-circle"></i>  <strong>Currently, there isn't an active service.</strong>
+          Click the <a href="{% url 'support_services_service_create' %}" class="alert-link">create service</a> button to create one.
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="row">
     <div class="col-lg-12">
       <h2>Existing Services</h2>
       <div class="table-responsive">
@@ -33,7 +64,7 @@
           <tbody>
             {% for service in service_list %}
               <tr>
-                <td>{{ service.name }}</td>
+                <td><a href="{{ service.get_absolute_url }}">{{ service.name|title }}</a></td>
                 <td>{{ service.description }}</td>
               </tr>
             {% endfor %}

@@ -1,0 +1,32 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+  {{ block.super }} - Logout
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-4 col-md-offset-4">
+      <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info-circle"></i> <strong>You have successfully logged out!</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 col-md-offset-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title"> Do you want to log back in?</h3>
+        </div>
+        <div class="panel-body">
+          <a href="{% url 'login' %}" class="btn btn-lg btn-success btn-block">
+            Log Back In
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

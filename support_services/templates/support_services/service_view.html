@@ -1,11 +1,11 @@
 {% extends parent_template|default:"support_services/base_support_services.html" %}
 
 {% block title %}
-  Service - {{ service.name }}
+  Service - {{ service.name|title }}
 {% endblock %}
 
 {% block page_heading %}
- {{ service.name }}
+ {{ service.name|title }}
 {% endblock %}
 
 {% block page_subheading %}
@@ -18,15 +18,26 @@
     <i class="fa fa-table"></i> <a href="{% url 'support_services_service_list' %}">Services</a>
   </li>
   <li class="active">
-    {{ service.name }}
+    {{ service.name|title }}
   </li>
 {% endblock %}
 
 {% block page_content %}
-  <div class="page-header">
-    <h1>Description</h1>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-header">
+        <h1>Description</h1>
+      </div>
+      <div class="well">
+        <p>{{ service.description }}</p>
+      </div>
+    </div>
   </div>
-  <div class="well">
-    <p>{{ service.description }}</p>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <a href="{{ service.get_update_url }}" class="btn btn-warning">Edit Service</a>
+      <a href="{{ service.get_delete_url }}" class="btn btn-danger">Delete Service</a>
+    </div>
   </div>
 {% endblock %}

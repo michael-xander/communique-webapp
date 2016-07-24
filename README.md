@@ -49,7 +49,7 @@ Given that attributes of models are yet to confirmed, `easy_db_settings.py` will
     - ```pip install -r requirements.txt```
   - check that django is installed in the virtual environment as well as the other modules:
     - ```python manage.py check```
-  - run the project (after making the necessary migrations of course) and find the active URLs in `communique/urls.py`
+  - run the project (after making the necessary migrations of course) and find the active URLs in `communique/urls.py`. You will need to create a superuser using `manage.py`.
   - quit the virtual environment when done utilising it by running the following command:
     - `deactivate`
   - to permanently remove a virtual environment, simply delete the folder created to house it. In this case that would be `test_env`
