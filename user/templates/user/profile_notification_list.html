@@ -37,6 +37,16 @@
                             {% with entity_name=notification.data.entity_name %}
                                 {% if entity_name == 'program' %}
                                     <i class="fa fa-tag bg-yellow"></i>
+                                {% elif entity_name == 'admission' %}
+                                    <i class="fa fa-ambulance bg-yellow"></i>
+                                {% elif entity_name == 'appointment' %}
+                                    <i class="fa fa-calendar-plus-o bg-yellow"></i>
+                                {% elif entity_name == 'event' %}
+                                    <i class="fa fa-calendar-o bg-yellow"></i>
+                                {% elif entity_name == 'enrollment' %}
+                                    <i class="fa fa-support bg-yellow"></i>
+                                {% elif entity_name == 'patient' %}
+                                    <i class="fa fa-heartbeat bg-yellow"></i>
                                 {% else %}
                                     <i class="fa fa-bell-o bg-yellow"></i>
                                 {% endif %}

@@ -1,6 +1,8 @@
 from django.conf.urls import url, include
 from django.views.generic import RedirectView
 
+import notifications.urls
+
 from user import urls as user_urls
 from api import urls as api_urls
 from programs import urls as programs_urls
@@ -26,5 +28,6 @@ urlpatterns = [
     url(r'^events/', include(occasion_urls)),
     url(r'^medical/', include(medical_urls)),
     url(r'^admissions/', include(admission_urls)),
+    url(r'^app/notifications/', include(notifications.urls, namespace='notifications')),
     url(r'^api/', include(api_urls)),
 ]
