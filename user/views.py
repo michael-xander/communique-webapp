@@ -148,13 +148,6 @@ class CalendarView(CommuniqueTemplateView):
         # add the events and the appointments of the user
         context = super(CalendarView, self).get_context_data(**kwargs)
         context['event_list'] = Event.objects.all()
-        user = User.objects.get(pk=int(self.kwargs['pk']))
+        user = User.objects.get(pk=int(self.request.user.pk))
         context['appointment_list'] = user.owned_appointments.all()
         return context
-
-    def test_func(self):
-        """
-        Checks whether the user making the request is the owner of the appointments/events
-        :return: True if user is owner, false otherwise.
-        """
-        return (str(self.request.user.pk) == str(self.kwargs['pk'])) and self.request.user.is_active
