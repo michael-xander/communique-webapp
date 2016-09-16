@@ -73,6 +73,7 @@
                                     {% live_notify_badge classes='label label-danger' %}
                                 </a>
                                 <ul class="dropdown-menu">
+                                    <li id="notification-counter" class="header">You have 10 notifications</li>
                                     <li>
                                         <!-- inner menu -->
                                         <ul id="notification-list" class="menu">
@@ -105,8 +106,8 @@
                                         </ul>
                                     </li>
                                     <li class="footer">
-                                        <a href="{% url 'user_profile_notification_list' pk=user.pk %}">
-                                            View all unread
+                                        <a href="{% url 'user_profile_notification_list' %}">
+                                            <b>View all notifications</b>
                                         </a>
                                     </li>
                                 </ul>
@@ -141,7 +142,7 @@
                             </li>
                             <li>
                                 <a href="#" data-toggle="control-sidebar">
-                                    <i class="fa fa-gears"></i> <span class="hidden-xs">Settings</span>
+                                    <i class="fa fa-gears"></i> <span class="hidden-xs">Shortcuts</span>
                                 </a>
                             </li>
                         </ul>
@@ -525,6 +526,16 @@
                                 </div>
                             </a>
                         </li>
+                        <li>
+                            <a href="{% url 'user_profile_notification_list' %}">
+                                <i class="menu-icon fa fa-bell-o bg-red"></i>
+
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Notifications</h4>
+                                    <p>View all your notifications</p>
+                                </div>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -547,6 +558,13 @@
     <!-- Django notifications -->
     <script>
         function notification_callback(data) {
+            if (data.unread_list.length == 1){
+                $("#notification-counter").text("You have 1 notification");
+            }
+            else {
+                $("#notification-counter").text("You have " + data.unread_list.length + " notifications");
+            }
+            
             $("#notification-list").empty();
             for (var i=0; i < data.unread_list.length; i++) {
                 var unread_ntf = data.unread_list[i];
