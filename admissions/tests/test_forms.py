@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from admissions.forms import AdmissionCreateForm, AdmissionUpdateForm
+from admissions.forms import AdmissionCreateForm
 from patients.models import Patient
 
 import datetime
@@ -11,7 +11,7 @@ class AdmissionCreateFormTestCase(TestCase):
     Test cases for the admission create form.
     """
     def setUp(self):
-        Patient.objects.create(first_name='Jon', last_name='Snow')
+        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
 
     def test_date_validation(self):
         """

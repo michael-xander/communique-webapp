@@ -100,8 +100,8 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Patient</th>
-                                <th>Patient Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Enrollment Date</th>
                                 <th>Enrollment Status</th>
                             </tr>
@@ -110,15 +110,11 @@
                             {% for enrollment in program.enrollments.all %}
                                 <tr>
                                     <td>
-                                        <a href="{{ enrollment.patient.get_absolute_url }}">{{ enrollment.patient }}</a>
+                                        <a href="{{ enrollment.patient.get_absolute_url }}">{{ enrollment.patient.identifier }}</a>
                                     </td>
                                     <td>
                                         <a href="{{ enrollment.patient.get_absolute_url }}">
-                                            {% if enrollment.patient.identifier %}
-                                                {{ enrollment.patient.identifier }}
-                                            {% else %}
-                                                Unavailable
-                                            {% endif %}
+                                            {{ enrollment.patient.get_full_name }}
                                         </a>
                                     </td>
                                     <td>
@@ -140,8 +136,8 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Patient</th>
-                                <th>Patient Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Enrollment</th>
                                 <th>Enrollment Status</th>
                             </tr>

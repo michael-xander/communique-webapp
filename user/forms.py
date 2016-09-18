@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
 from django.forms import ModelForm
 
 from .models import CommuniqueUser, Profile
@@ -11,6 +12,24 @@ class CommuniqueUserCreationForm(UserCreationForm):
     class Meta (UserCreationForm.Meta):
         model = CommuniqueUser
         fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'is_superuser', 'email',)
+
+    def clean_first_name(self):
+        # check that a first name has been given to the user
+        first_name = self.cleaned_data.get('first_name')
+
+        if not first_name:
+            raise forms.ValidationError('The user must have a first name', code='invalid')
+
+        return first_name
+
+    def clean_last_name(self):
+        # check that a last name has been given to the user
+        last_name = self.cleaned_data.get('last_name')
+
+        if not last_name:
+            raise forms.ValidationError('The user must have a last name', code='invalid')
+
+        return last_name
 
 
 class CommuniqueUserUpdateForm(ModelForm):

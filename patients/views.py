@@ -25,8 +25,8 @@ class PatientCreateView(CommuniqueCreateView):
     A view to handle creation of patients.
     """
     model = Patient
-    fields = ['first_name', 'last_name', 'middle_name', 'birth_date', 'identifier', 'location', 'contact_number',
-              'reference_health_centre']
+    fields = ['last_name', 'other_names', 'identifier', 'reference_health_centre', 'birth_date', 'sex', 'location',
+              'treatment_start_date', 'interim_outcome', 'contact_number']
     template_name = 'patients/patient_form.html'
 
     def form_valid(self, form):
@@ -52,8 +52,8 @@ class PatientUpdateView(CommuniqueUpdateView):
     A view to handle updating patient information.
     """
     model = Patient
-    fields = ['first_name', 'last_name', 'middle_name', 'birth_date', 'identifier', 'location', 'contact_number',
-              'reference_health_centre']
+    fields = ['last_name', 'other_names', 'identifier', 'reference_health_centre', 'birth_date', 'sex', 'location',
+              'treatment_start_date', 'interim_outcome', 'contact_number']
     template_name = 'patients/patient_update_form.html'
     context_object_name = 'patient'
 

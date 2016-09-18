@@ -90,8 +90,8 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Patient</th>
-                                <th>Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Created By</th>
                                 <th>Date Created</th>
                             </tr>
@@ -106,16 +106,12 @@
                                     </td>
                                     <td>
                                         <a href="{{ medical_report.get_absolute_url }}">
-                                            {{ medical_report.patient }}
+                                            {{ medical_report.patient.identifier }}
                                         </a>
                                     </td>
                                     <td>
                                         <a href="{{ medical_report.get_absolute_url }}">
-                                            {% if medical_report.patient.identifier %}
-                                                {{ medical_report.patient.identifier }}
-                                            {% else %}
-                                                Unavailable
-                                            {% endif %}
+                                            {{ medical_report.patient.get_full_name }}
                                         </a>
                                     </td>
                                     <td>
@@ -138,8 +134,8 @@
                         <tfoot>
                             <tr>
                                 <th>Title</th>
-                                <th>Patient</th>
-                                <th>Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Created By</th>
                                 <th>Date Created</th>
                             </tr>

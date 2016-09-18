@@ -44,8 +44,8 @@
                             <tr>
                                 <th>Title</th>
                                 <th>Report Type</th>
-                                <th>Patient</th>
-                                <th>Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Date Created</th>
                                 <th>Created By</th>
                             </tr>
@@ -60,16 +60,10 @@
                                         <a href="{{ report.get_absolute_url }}">{{ report.report_type }}</a>
                                     </td>
                                     <td>
-                                        <a href="{{ report.get_absolute_url }}">{{ report.patient }}</a>
+                                        <a href="{{ report.get_absolute_url }}">{{ report.patient.identifier }}</a>
                                     </td>
                                     <td>
-                                        <a href="{{ report.get_absolute_url }}">
-                                            {% if report.patient.identifier %}
-                                                {{ report.patient.identifier }}
-                                            {% else %}
-                                                Unavailable
-                                            {% endif %}
-                                        </a>
+                                        <a href="{{ report.get_absolute_url }}">{{ report.patient.get_full_name }}</a>
                                     </td>
                                     <td>
                                         <a href="{{ report.get_absolute_url }}">{{ report.date_created }}</a>
@@ -90,8 +84,8 @@
                             <tr>
                                 <th>Title</th>
                                 <th>Report Type</th>
-                                <th>Patient</th>
-                                <th>Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Date Created</th>
                                 <th>Created By</th>
                             </tr>

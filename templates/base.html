@@ -603,7 +603,7 @@
         }
     </script>
     <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
-    {% register_notify_callbacks callbacks='fill_notification_badge,notification_callback' %}
+    {% register_notify_callbacks callbacks='fill_notification_badge,notification_callback' refresh_period=45 %}
 
     {% block scripts %}
     {% endblock %}

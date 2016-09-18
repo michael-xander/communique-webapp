@@ -1,8 +1,15 @@
 {% extends parent_template|default:"patients/base_patients.html" %}
-{% load widget_tweaks %}
+{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Update Patient
+{% endblock %}
+
+{% block head %}
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
+    <!-- bootstrap datepicker css -->
+    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
 {% endblock %}
 
 {% block page_heading %}
@@ -29,31 +36,7 @@
                 </div>
                 <form role="form" action="{{ patient.get_update_url }}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-
-                                {% if field.label == "Birth Date" %}
-                                    {{ field|attr:"placeholder:DD/MM/YYYY"|add_class:"form-control" }}
-                                {% else %}
-                                    {{ field|add_class:"form-control" }}
-                                {% endif %}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'patients/patient_body_form.html' %}
                     <div class="box-footer">
                         <a href="{{ patient.get_absolute_url }}" class="btn btn-warning">Cancel</a>
                         <button type="submit" class="btn btn-success">Submit</button>
@@ -62,4 +45,20 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- select2 js -->
+    <script src="{% static "plugins/select2/select2.full.min.js" %}"></script>
+    <!-- datepicker js -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
+    <script>
+        $(function () {
+            $(".select2").select2();
+            $('.date-picker').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy'
+            });
+        });
+    </script>
 {% endblock %}

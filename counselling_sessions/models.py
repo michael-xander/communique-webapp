@@ -66,7 +66,7 @@ class CounsellingSession(models.Model):
                                           help_text='The date on which the counselling session was last modified')
 
     def __str__(self):
-        return "A {0} session for {1}".format(self.counselling_session_type, self.patient)
+        return "A {0} session for {1}".format(self.counselling_session_type, self.patient.get_full_name())
 
     def get_absolute_url(self):
         return reverse('counselling_sessions_session_detail', kwargs={'pk':self.pk})

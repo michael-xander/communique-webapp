@@ -36,7 +36,7 @@ class ExistingPatientViewsTestCase(ViewsTestCase):
     """
     def setUp(self):
         super(ExistingPatientViewsTestCase, self).setUp()
-        Patient.objects.create(first_name='Jon', last_name='Snow')
+        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
 
 
 class PatientDetailViewTestCase(ExistingPatientViewsTestCase):
@@ -102,7 +102,7 @@ class ExistingEnrollmentViewsTestCase(ViewsTestCase):
     """
     def setUp(self):
         super(ExistingEnrollmentViewsTestCase, self).setUp()
-        patient = Patient.objects.create(first_name='Jon', last_name='Snow')
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
         program = Program.objects.create(name='Sample', description='sample text')
         Enrollment.objects.create(patient=patient, program=program, comment='No comment')
 
