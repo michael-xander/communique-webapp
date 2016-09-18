@@ -29,18 +29,16 @@
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-body">
-                    <h3 class="text-center">{{ patient }}</h3>
+                    <h3 class="text-center">Patient Details</h3>
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <b>First name</b> <a class="pull-right">{{ patient.first_name }}</a>
+                            <b>Patient ID</b> <a class="pull-right">{{ patient.identifier }}</a>
                         </li>
-                        {% if patient.middle_name %}
-                            <li class="list-group-item">
-                                <b>Middle name</b> <a class="pull-right">{{ patient.middle_name }}</a>
-                            </li>
-                        {% endif %}
                         <li class="list-group-item">
                             <b>Last name</b> <a class="pull-right">{{ patient.last_name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Names</b> <a class="pull-right">{{ patient.other_names }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Birth Date</b>
@@ -53,10 +51,24 @@
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <b>Identifier</b>
+                            <b>Sex</b> <a class="pull-right">{{ patient.get_sex_display }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Treatment start date</b>
                             <a class="pull-right">
-                                {% if patient.identifier %}
-                                    {{ patient.identifier }}
+                                {% if patient.treatment_start_date %}
+                                    {{ patient.treatment_start_date }}
+                                {% else %}
+                                    Unavailable
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Interim outcome</b>
+                            <a class="pull-right">
+                                {{ patient.interim_outcome }}
+                                {% if patient.interim_outcome %}
+                                    {{ patient.interim_outcome }}
                                 {% else %}
                                     Unavailable
                                 {% endif %}
@@ -73,7 +85,7 @@
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <b>Added</b> <a class="pull-right">{{ patient.date_created }}</a>
+                            <b>Added On</b> <a class="pull-right">{{ patient.date_created }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Added By</b> <a class="pull-right">{{ patient.created_by.get_full_name }}</a>

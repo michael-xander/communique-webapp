@@ -1,0 +1,28 @@
+{% load widget_tweaks %}
+<div class="box-body">
+    {% for field in form %}
+        <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+            {{ field.label_tag }}
+
+            {% if field.label == 'Birth Date' or field.label == 'Treatment start date' %}
+                {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker' }}
+            {% elif field.label == "Patient's sex" %}
+                {{ field|add_class:'form-control select2'|append_attr:'style:width: 100%;' }}
+            {% else %}
+                {{ field|add_class:'form-control' }}
+            {% endif %}
+
+            {% if field.help_text %}
+                <p class="help-block">{{ field.help_text }}</p>
+            {% endif %}
+
+            {% if field.errors %}
+                <ul>
+                    {% for error in field.errors %}
+                        <li><p class="help-block">{{ error|escape }}</p></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
