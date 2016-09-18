@@ -15,6 +15,13 @@ class AdmissionTestCase(TestCase):
         patient = Patient.objects.create(first_name='Jon', last_name='Snow')
         Admission.objects.create(patient=patient, admission_date=datetime.date.today(), health_centre="St.Michael's")
 
+    def test_str(self):
+        """
+        A test case for the string method of the model
+        """
+        admission = Admission.objects.get(id=1)
+        self.assertEqual(admission.__str__(), "Jon Snow to St.Michael's")
+        
     def test_get_absolute_url(self):
         """
         A test case for the get_absolute_url method of the model.

@@ -1,0 +1,104 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} | Notifications
+{% endblock %}
+
+{% block page_heading %}
+    Notifications
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active"><i class="fa fa-bell-o"></i> Notifications</li>
+{% endblock %}
+
+{% block page_content %}
+    {% if not notification_list %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-info"></i> Alert! </h4>
+                    You currently don't have any notifications.
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <!-- the timeline -->
+                <ul class="timeline">
+                    {% for notification in notification_list %}
+                        <li>
+                            {% with entity_name=notification.data.entity_name %}
+                                {% if entity_name == 'program' %}
+                                    <i class="fa fa-tag bg-yellow"></i>
+                                {% elif entity_name == 'admission' %}
+                                    <i class="fa fa-ambulance bg-yellow"></i>
+                                {% elif entity_name == 'appointment' %}
+                                    <i class="fa fa-calendar-plus-o bg-yellow"></i>
+                                {% elif entity_name == 'event' %}
+                                    <i class="fa fa-calendar-o bg-yellow"></i>
+                                {% elif entity_name == 'enrollment' %}
+                                    <i class="fa fa-support bg-yellow"></i>
+                                {% elif entity_name == 'patient' %}
+                                    <i class="fa fa-heartbeat bg-yellow"></i>
+                                {% else %}
+                                    <i class="fa fa-bell-o bg-yellow"></i>
+                                {% endif %}
+
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i> {{ notification.timesince }}</span>
+
+                                    {% if notification.description %}
+                                        <h3 class="timeline-header">
+                                            {{ notification.actor.get_full_name }} {{ notification.verb }}
+                                            <a href="{{ notification.action_object.get_absolute_url }}">
+                                                {{ notification.action_object }}
+                                            </a>
+                                        </h3>
+                                        <div class="timeline-body">
+                                            {{ notification.description }}
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a class="btn btn-success btn-xs" href="{{ notification.action_object.get_absolute_url }}">
+                                                View {{ entity_name }}
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <h3 class="timeline-header no-border">
+                                            {{ notification.actor.get_full_name }} {{ notification.verb }}
+                                            <a href="{{ notification.action_object.get_absolute_url }}">
+                                                {{ notification.action_object }}
+                                            </a>
+                                        </h3>
+                                    {% endif %}
+                                </div>
+                            {% endwith %}
+                        </li>
+                    {% endfor %}
+                    <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                <ul class="pagination center-block">
+                    {% if notification_list.has_previous %}
+                        <li><a href="?page={{ notification_list.previous_page_number }}">&laquo; Prev</a></li>
+                    {% endif %}
+                    <li><a>{{ notification_list.number }} of {{ notification_list.paginator.num_pages }}</a></li>
+                    {% if notification_list.has_next %}
+                        <li><a href="?page={{ notification_list.next_page_number }}">Next &raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

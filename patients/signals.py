@@ -1,46 +1,41 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from communique.utils import send_notification
 from .models import Patient, Enrollment
-
-from user.models import UserActivity
 
 
 @receiver(post_save, sender=Patient)
 def post_patient_save_callback(sender, **kwargs):
     """
-    Makes a record of the creation and updating of a patient by a user.
+    Creates a notification for all users on the creation and updating of a patient
     """
     patient = kwargs['instance']
-    if kwargs['created']:
-        # new patient added
-        if patient.created_by:
-            description_str = "{0} registered a new patient named '{1}'.".format(patient.created_by.get_full_name(),
-                                                                                 patient.__str__())
-            UserActivity.objects.create(action=UserActivity.CREATE, actor=patient.created_by, object_name="Patient",
-                                        object_url=patient.get_absolute_url(),
-                                        object_identifier=patient.__str__(), description=description_str)
-    else:
-        # patient has been updated
-        if patient.last_modified_by:
-            description_str = "{0} updated a patient named '{1}'.".format(patient.last_modified_by.get_full_name(),
-                                                                          patient.__str__())
-            UserActivity.objects.create(action=UserActivity.UPDATE, actor=patient.last_modified_by,
-                                        object_name="Patient", object_url=patient.get_absolute_url(),
-                                        object_identifier=patient.__str__(), description=description_str)
+
+    # check whether the user responsible for saving the object is available
+    if patient.last_modified_by:
+        # check whether the object was created or updated
+
+        if kwargs['created']:
+            temp_str = 'added'
+        else:
+            temp_str = 'updated'
+
+        verb = "{0} the patient:".format(temp_str)
+
+        send_notification(actor=patient.last_modified_by, action_object=patient, verb=verb, entity_name='patient')
 
 
 @receiver(post_save, sender=Enrollment)
 def post_enrollment_save_callback(sender, **kwargs):
     """
-    Makes a record of the creation and modification of an enrollment
+    Creates a notification for all users on creation of an enrollment
     """
     enrollment = kwargs['instance']
-    if kwargs['created']:
-        # enrollment created
-        if enrollment.enrolled_by:
-            description_str = "{0} enrolled patient '{1} in the program '{2}'.".format(
-                enrollment.enrolled_by.get_full_name(), enrollment.patient.__str__(), enrollment.program.name)
-            UserActivity.objects.create(action=UserActivity.CREATE, actor=enrollment.enrolled_by,
-                                        object_name='Enrollment', object_url=enrollment.get_absolute_url(),
-                                        description=description_str)
+
+    # check whether the user responsible for saving the object is available the object is being created
+    if enrollment.enrolled_by and kwargs['created']:
+        verb = "added the enrollment:"
+
+        send_notification(actor=enrollment.enrolled_by, action_object=enrollment, verb=verb, entity_name='enrollment',
+                          description=enrollment.comment)

@@ -1,4 +1,7 @@
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from notifications.models import Notification
 
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
                               CommuniqueTemplateView)
@@ -102,6 +105,39 @@ class ProfileUpdateView(CommuniqueUpdateView):
         return (str(self.request.user.pk) == str(self.kwargs['pk'])) and self.request.user.is_active
 
 
+class ProfileNotificationListView(CommuniqueListView):
+    """
+    A view that lists a user's notifications
+    """
+    model = Notification
+    template_name = 'user/profile_notification_list.html'
+    context_object_name = 'notification_list'
+
+    def get_queryset(self):
+        # get all the unread notifications of the user making the request
+        user = User.objects.get(pk=int(self.request.user.pk))
+        user.notifications.mark_all_as_read()
+        notification_list = user.notifications.all()
+
+        paginator = Paginator(notification_list, 50) # show 100 notifications per page
+        page = self.request.GET.get('page')
+
+        try:
+            notifications = paginator.page(page)
+        except PageNotAnInteger:
+            # if page is not an integer, deliver first page
+            notifications = paginator.page(1)
+        except EmptyPage:
+            # if page is out of range (e.g 9999), deliver last page of results
+            notifications = paginator.page(paginator.num_pages)
+
+        # mark the notifications on this page as read
+        for notification in notifications:
+            notification.mark_as_read()
+
+        return notifications
+
+
 class CalendarView(CommuniqueTemplateView):
     """
     A view that displays a user's calendar.
@@ -112,13 +148,6 @@ class CalendarView(CommuniqueTemplateView):
         # add the events and the appointments of the user
         context = super(CalendarView, self).get_context_data(**kwargs)
         context['event_list'] = Event.objects.all()
-        user = User.objects.get(pk=int(self.kwargs['pk']))
+        user = User.objects.get(pk=int(self.request.user.pk))
         context['appointment_list'] = user.owned_appointments.all()
         return context
-
-    def test_func(self):
-        """
-        Checks whether the user making the request is the owner of the appointments/events
-        :return: True is user is owner, false otherwise.
-        """
-        return (str(self.request.user.pk) == str(self.kwargs['pk'])) and self.request.user.is_active

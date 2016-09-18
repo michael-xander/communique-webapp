@@ -54,6 +54,13 @@ class EnrollmentTestCase(TestCase):
         program = Program.objects.create(name='Sample', description='Sample description')
         Enrollment.objects.create(patient=patient, program=program, comment='No comment')
 
+    def test_str(self):
+        """
+        Test for the __str__  method of the model
+        """
+        enrollment = Enrollment.objects.get(id=1)
+        self.assertEqual(enrollment.__str__(), 'Jon Snow into Sample')
+
     def test_get_absolute_url(self):
         """
         Tests the get_absolute_url method of the model

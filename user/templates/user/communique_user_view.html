@@ -90,50 +90,6 @@
                 </div>
 
                 <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                            <th>Action</th>
-                            <th>Item</th>
-                            <th>Item Identifier</th>
-                            <th>Date/Time</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for user_activity in communique_user.user_activities.all %}
-                            <tr>
-                                <td>
-                                    {% if user_activity.action == 'CR' %}
-                                        <span class="label label-success">{{ user_activity.get_action_display }}</span>
-                                    {% elif user_activity.action == 'OP' %}
-                                        <span class="label label-success">{{ user_activity.get_action_display }}</span>
-                                    {% elif user_activity.action == 'AC' %}
-                                        <span class="label label-success">{{ user_activity.get_action_display }}</span>
-                                    {% elif user_activity.action == 'UP' %}
-                                        <span class="label label-warning">{{ user_activity.get_action_display }}</span>
-                                    {% elif user_activity.action == 'DL' %}
-                                        <span class="label label-danger">{{ user_activity.get_action_display }}</span>
-                                    {% elif user_activity.action == 'CL' %}
-                                        <span class="label label-danger">{{ user_activity.get_action_display }}</span>
-                                    {% elif user_activity.action == 'DE' %}
-                                        <span class="label label-danger">{{ user_activity.get_action_display }}</span>
-                                    {% endif %}
-                                </td>
-                                <td>{{ user_activity.object_name }}</td>
-                                <td>{{ user_activity.object_identifier }}</td>
-                                <td>{{ user_activity.date_time }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Action</th>
-                            <th>Item</th>
-                            <th>Item Identifier</th>
-                            <th>Date/Item</th>
-                        </tr>
-                        </tfoot>
-                    </table>
                 </div>
             </div>
         </div>

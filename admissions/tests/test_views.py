@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 
 import datetime
 
-from communique.tests import ViewsTestCase
+from communique.utils import ViewsTestCase
 from admissions.models import Admission
 from patients.models import Patient
 

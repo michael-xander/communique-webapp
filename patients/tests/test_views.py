@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 
-from communique.tests import ViewsTestCase
+from communique.utils import ViewsTestCase
 
 from patients.models import Patient, Enrollment
 from programs.models import Program

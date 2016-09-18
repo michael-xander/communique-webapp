@@ -14,7 +14,8 @@ from django.core.urlresolvers import reverse_lazy
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Application definition
-
+# the notifications app should appear after any app that will make use of it
+# https://github.com/django-notifications/django-notifications
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,6 +33,7 @@ INSTALLED_APPS = [
     'occasions',
     'medical',
     'admissions',
+    'notifications',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -106,6 +108,10 @@ REST_FRAMEWORK = {
     'DATE_FORMAT':"%d-%m-%Y",
     'DATE_INPUT_FORMATS':["%d/%m/%Y","%d-%m-%Y"]
 }
+
+# Notification settings
+# https://github.com/django-notifications/django-notifications
+NOTIFICATIONS_USE_JSONFIELD=True
 
 # set time input formats
 # https://docs.djangoproject.com/en/1.9/ref/settings/#std:setting-TIME_INPUT_FORMATS

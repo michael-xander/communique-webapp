@@ -77,6 +77,10 @@ class Enrollment(models.Model):
     is_active = models.BooleanField(verbose_name='is open', default=True,
                                     help_text='Whether this enrollment is still active.')
 
+    def __str__(self):
+        temp_str = "{0} into {1}".format(self.patient, self.program)
+        return temp_str
+
     def get_absolute_url(self):
         return reverse('patients_enrollment_detail', kwargs={'pk':self.pk})
 
