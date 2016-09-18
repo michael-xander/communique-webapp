@@ -46,8 +46,8 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Patient</th>
-                                <th>Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Name</th>
                                 <th>Owner</th>
                                 <th>Date</th>
                                 <th>Starts</th>
@@ -61,7 +61,7 @@
                                 <td>
                                     <a href="{{ appointment.get_absolute_url }}">
                                         {% if appointment.patient %}
-                                            {{ appointment.patient }}
+                                            {{ appointment.patient.identifier }}
                                         {% else %}
                                             Unavailable
                                         {% endif %}
@@ -69,11 +69,13 @@
                                 </td>
                                 <td>
                                     <a href="{{ appointment.get_absolute_url }}">
-                                        {% if appointment.patient.identifier %}
-                                            {{ appointment.patient.identifier }}
-                                        {% else %}
-                                            Unavailable
-                                        {% endif %}
+                                        <a href="{{ appointment.get_absolute_url }}">
+                                            {% if appointment.patient %}
+                                                {{ appointment.patient.get_full_name }}
+                                            {% else %}
+                                                Unavailable
+                                            {% endif %}
+                                        </a>
                                     </a>
                                 </td>
                                 <td>
@@ -96,8 +98,8 @@
                         <tfoot>
                             <tr>
                                 <th>Title</th>
-                                <th>Patient</th>
-                                <th>Identifier</th>
+                                <th>Patient ID</th>
+                                <th>Patient Name</th>
                                 <th>Owner</th>
                                 <th>Date</th>
                                 <th>Starts</th>

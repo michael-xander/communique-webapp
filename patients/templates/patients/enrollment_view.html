@@ -69,10 +69,10 @@
                     <h3 class="text-center">Enrolled Patient Details</h3>
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <b>Name</b> <a class="pull-right">{{ enrollment.patient }}</a>
+                            <b>Name</b> <a class="pull-right">{{ enrollment.patient.get_full_name }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Identifier</b>
+                            <b>Patient ID</b>
                             <a class="pull-right">
                                 {% if enrollment.patient.identifier %}
                                     {{ enrollment.patient.identifier }}
