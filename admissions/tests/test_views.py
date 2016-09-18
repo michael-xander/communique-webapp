@@ -41,7 +41,7 @@ class ExistingAdmissionViewTestCase(ViewsTestCase):
         """
         super(ExistingAdmissionViewTestCase, self).setUp()
 
-        patient = Patient.objects.create(first_name='Jon', last_name='Snow')
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
         Admission.objects.create(patient=patient, admission_date=datetime.date.today(), health_centre="St.Michael's")
 
 

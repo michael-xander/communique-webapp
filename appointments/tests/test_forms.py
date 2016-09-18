@@ -15,7 +15,7 @@ class AppointmentFormTestCase(TestCase):
 
     def setUp(self):
         User.objects.create_superuser('jon_snow', 'jonsnow@gmail.com', 'p@55words')
-        Patient.objects.create(first_name='Jon', last_name='Snow')
+        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
 
     def test_time_validation(self):
         """
