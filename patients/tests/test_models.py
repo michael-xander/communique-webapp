@@ -12,6 +12,13 @@ class PatientTestCase(TestCase):
     def setUp(self):
         Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
 
+    def test_get_full_name(self):
+        """
+        A test case for the get_full_name method for the Patient model
+        """
+        patient = Patient.objects.get(id=1)
+        self.assertEqual(patient.get_full_name(), 'Jon Snow')
+
     def test_str(self):
         """
         A test case for the __str__ method for the Patient model.

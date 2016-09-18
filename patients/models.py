@@ -51,13 +51,17 @@ class Patient(models.Model):
     enrolled_programs = models.ManyToManyField(Program, through='Enrollment', related_name='enrolled_patients',
                                                related_query_name='enrolled_patient')
 
-    def __str__(self):
-        if self.identifier:
-            temp_str = self.identifier + " - " + self.other_names + " " + self.last_name
-        else:
-            temp_str = self.other_names + " " + self.last_name
-
+    def get_full_name(self):
+        temp_str = self.other_names + ' ' + self.last_name
         return temp_str.title()
+
+    def __str__(self):
+        temp_str = self.get_full_name()
+
+        if self.identifier:
+            temp_str = self.identifier + ' - ' + temp_str
+
+        return temp_str
 
     def get_absolute_url(self):
         return reverse('patients_patient_detail', kwargs={'pk':self.pk})
