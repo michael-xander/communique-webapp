@@ -7,6 +7,7 @@ from appointments.models import Appointment
 from appointments.forms import AppointmentForm
 
 from patients.models import Patient
+from patients.utils.utils_forms import (ORDERED_UPLOAD_COLUMNS)
 
 
 class PatientAppointmentForm(AppointmentForm):
@@ -37,18 +38,14 @@ class PatientUploadFileForm(forms.Form):
             for row in reader:
                 # the first row that contains the column names
                 if row_count == 0:
-                    if len(row) != 8:
+                    if len(row) != len(ORDERED_UPLOAD_COLUMNS):
                         raise forms.ValidationError('The right number of columns has not been provided', code='invalid')
-                    # check that the columns are in their expected orders i.e
-                    # patient_id, last_name, names, health_centre, dob, address, treatment_start_date, interim_outcome
-                    if (row[0] != 'patient_id' or row[1] != 'last_name' or row[2] != 'names' or row[3] != 'health_centre'
-                        or row[4] != 'dob' or row[5] != 'address' or row[6] != 'treatment_start_date' or
-                                row[7] != 'interim_outcome'):
-                        raise forms.ValidationError('The csv columns are in the wrong order. The order should be: patient_id, '
-                                              'last_name, names, health_centre, dob, address, treatment_start_date and '
-                                              'interim_outcome')
+                    # check that the columns are in their expected orders
+                    for i in list(range(len(ORDERED_UPLOAD_COLUMNS))):
+                        if row[i] != ORDERED_UPLOAD_COLUMNS[i]:
+                            raise forms.ValidationError('The csv columns are in the wrong order.', code='invalid')
                 else:
-                    if len(row) != 8:
+                    if len(row) != len(ORDERED_UPLOAD_COLUMNS):
                         raise forms.ValidationError("Row {0} does not have the expected number of columns".format(row_count+1)
                                               , code='invalid')
                     # check that the required fields (patient_id, last_name, names) are filled
