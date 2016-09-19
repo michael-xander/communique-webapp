@@ -7,7 +7,8 @@ from appointments.models import Appointment
 from appointments.forms import AppointmentForm
 
 from patients.models import Patient
-from patients.utils.utils_forms import (ORDERED_UPLOAD_COLUMNS)
+from patients.utils.utils_forms import (ORDERED_UPLOAD_COLUMNS, PATIENT_ID_UPLOAD_COLUMN, OTHER_NAMES_UPLOAD_COLUMN,
+                                        LAST_NAME_UPLOAD_COLUMN, SEX_UPLOAD_COLUMN)
 
 
 class PatientAppointmentForm(AppointmentForm):
@@ -49,11 +50,15 @@ class PatientUploadFileForm(forms.Form):
                         raise forms.ValidationError("Row {0} does not have the expected number of columns".format(row_count+1)
                                               , code='invalid')
                     # check that the required fields (patient_id, last_name, names) are filled
-                    if not row[0].strip() or not row[1].strip() or not row[2].strip():
+                    if not row[ORDERED_UPLOAD_COLUMNS.index(PATIENT_ID_UPLOAD_COLUMN)].strip() \
+                            or not row[ORDERED_UPLOAD_COLUMNS.index(OTHER_NAMES_UPLOAD_COLUMN)].strip() \
+                            or not row[ORDERED_UPLOAD_COLUMNS.index(LAST_NAME_UPLOAD_COLUMN)].strip() \
+                            or not row[ORDERED_UPLOAD_COLUMNS.index(SEX_UPLOAD_COLUMN)]:
                         raise forms.ValidationError("Row {0} lacks one or more of the required fields".format(row_count+1)
                                                     , code='invalid')
                     # check that there isn't an existing patient with the provided patient_id
-                    patient = Patient.objects.filter(identifier=row[0]).first()
+                    patient = Patient.objects.filter(
+                        identifier=row[ORDERED_UPLOAD_COLUMNS.index(PATIENT_ID_UPLOAD_COLUMN)]).first()
                     if patient:
                         raise forms.ValidationError("There is already a patient with the patient_id provide in row {0}".format(row_count+1),
                                                     code='invalid')
