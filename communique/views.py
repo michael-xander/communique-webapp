@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
@@ -22,6 +22,20 @@ class CommuniqueTemplateView(LoginRequiredMixin, UserPassesTestMixin, TemplateVi
 class CommuniqueCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     """
     A view that handles creation of a model.
+
+    This view is only available to users that are logged in and are marked as active in the system.
+    """
+    def test_func(self):
+        """
+        Checks whether the user is marked active.
+        :return: True if user is active, false otherwise
+        """
+        return self.request.user.is_active
+
+
+class CommuniqueFormView(LoginRequiredMixin, UserPassesTestMixin, FormView):
+    """
+    A view that displays a form.
 
     This view is only available to users that are logged in and are marked as active in the system.
     """
