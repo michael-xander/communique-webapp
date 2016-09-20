@@ -30,6 +30,18 @@ class PatientCreateViewTestCase(ViewsTestCase):
         self.only_active_user_access_test(self.view_url, self.view_template_name)
 
 
+class PatientImportViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view that handles importation of patients.
+    """
+    view_name = 'patients_patient_import'
+    view_template_name = 'patients/patient_import_form.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
 class ExistingPatientViewsTestCase(ViewsTestCase):
     """
     Test case for views that require an existing patient

@@ -1,12 +1,12 @@
 from django.core.urlresolvers import reverse_lazy
 
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
-                              CommuniqueCreateView)
+                              CommuniqueCreateView, CommuniqueFormView)
 from .models import Patient, Enrollment
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
 from medical.models import MedicalReport
-from .forms import PatientAppointmentForm
+from .forms import PatientAppointmentForm, PatientUploadFileForm
 from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
 
@@ -73,6 +73,19 @@ class PatientDeleteView(CommuniqueDeleteView):
     success_url = reverse_lazy('patients_patient_list')
     context_object_name = 'patient'
     template_name = 'patients/patient_confirm_delete.html'
+
+
+class PatientImportView(CommuniqueFormView):
+    """
+    A view to handle the importation of patients through an uploaded file.
+    """
+    template_name = 'patients/patient_import_form.html'
+    form_class = PatientUploadFileForm
+    success_url = reverse_lazy('patients_patient_list')
+
+    def form_valid(self, form):
+        # create the patients in the provided file
+        return super(PatientImportView, self).form_valid(form)
 
 
 class EnrollmentListView(CommuniqueListView):
