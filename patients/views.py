@@ -86,7 +86,8 @@ class PatientImportView(CommuniqueFormView):
 
     def form_valid(self, form):
         # import the patients in the uploaded file
-        import_patients_from_file(self.request.FILES['uploaded_file'], self.request.user)
+        uploaded_file = self.get_form_kwargs().get('files')['uploaded_file']
+        import_patients_from_file(uploaded_file, self.request.user)
         return super(PatientImportView, self).form_valid(form)
 
 

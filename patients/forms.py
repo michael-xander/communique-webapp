@@ -1,6 +1,6 @@
 from django import forms
 
-import csv
+import csv, copy
 from io import StringIO
 
 from appointments.models import Appointment
@@ -31,7 +31,8 @@ class PatientUploadFileForm(forms.Form):
         uploaded_file = self.cleaned_data.get('uploaded_file')
 
         if uploaded_file:
-            csvf = StringIO(uploaded_file.read().decode())
+            temp_file = copy.deepcopy(uploaded_file)
+            csvf = StringIO(temp_file.read().decode())
             reader = csv.reader(csvf, delimiter=';')
             row_count = 0
             # iterate through the rows making sure that the required fields are available and the columns in the
