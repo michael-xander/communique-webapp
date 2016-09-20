@@ -9,6 +9,7 @@ from medical.models import MedicalReport
 from .forms import PatientAppointmentForm, PatientUploadFileForm
 from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
+from patients.utils.utils_views import import_patients_from_file
 
 
 class PatientListView(CommuniqueListView):
@@ -84,7 +85,8 @@ class PatientImportView(CommuniqueFormView):
     success_url = reverse_lazy('patients_patient_list')
 
     def form_valid(self, form):
-        # create the patients in the provided file
+        # import the patients in the uploaded file
+        import_patients_from_file(self.request.FILES['uploaded_file'], self.request.user)
         return super(PatientImportView, self).form_valid(form)
 
 
