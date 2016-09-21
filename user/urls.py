@@ -39,8 +39,7 @@ urlpatterns = [
     url(r'^profile/password-change-done/$', auth_views.password_change_done,
         {'template_name':'user/password_change_done.html'}, name='password_change_done'),
     # urls to handle a profile's calendar
-    url(r'^profile/(?P<pk>[0-9]+)/calendar/$', CalendarView.as_view(), name='user_profile_calendar_view'),
+    url(r'^profile/calendar/$', CalendarView.as_view(), name='user_profile_calendar_view'),
     # urls for a profile's notifications
-    url(r'^profile/(?P<pk>[0-9]+)/notifications/$', ProfileNotificationListView.as_view(),
-        name='user_profile_notification_list'),
+    url(r'^profile/notifications/$', ProfileNotificationListView.as_view(), name='user_profile_notification_list'),
 ]

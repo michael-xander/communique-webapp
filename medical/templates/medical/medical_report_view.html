@@ -68,10 +68,10 @@
                     <h3 class="text-center">Patient Details</h3>
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
-                            <b>Name</b> <a class="pull-right">{{ medical_report.patient }}</a>
+                            <b>Name</b> <a class="pull-right">{{ medical_report.patient.get_full_name }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Identifier</b>
+                            <b>Patient ID</b>
                             <a class="pull-right">
                                 {% if medical_report.patient.identifier %}
                                     {{ medical_report.patient.identifier }}

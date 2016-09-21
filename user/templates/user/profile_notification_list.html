@@ -37,6 +37,16 @@
                             {% with entity_name=notification.data.entity_name %}
                                 {% if entity_name == 'program' %}
                                     <i class="fa fa-tag bg-yellow"></i>
+                                {% elif entity_name == 'admission' %}
+                                    <i class="fa fa-ambulance bg-yellow"></i>
+                                {% elif entity_name == 'appointment' %}
+                                    <i class="fa fa-calendar-plus-o bg-yellow"></i>
+                                {% elif entity_name == 'event' %}
+                                    <i class="fa fa-calendar-o bg-yellow"></i>
+                                {% elif entity_name == 'enrollment' %}
+                                    <i class="fa fa-support bg-yellow"></i>
+                                {% elif entity_name == 'patient' %}
+                                    <i class="fa fa-heartbeat bg-yellow"></i>
                                 {% else %}
                                     <i class="fa fa-bell-o bg-yellow"></i>
                                 {% endif %}
@@ -74,6 +84,19 @@
                     <li>
                         <i class="fa fa-clock-o bg-gray"></i>
                     </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                <ul class="pagination center-block">
+                    {% if notification_list.has_previous %}
+                        <li><a href="?page={{ notification_list.previous_page_number }}">&laquo; Prev</a></li>
+                    {% endif %}
+                    <li><a>{{ notification_list.number }} of {{ notification_list.paginator.num_pages }}</a></li>
+                    {% if notification_list.has_next %}
+                        <li><a href="?page={{ notification_list.next_page_number }}">Next &raquo;</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

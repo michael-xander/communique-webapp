@@ -52,7 +52,7 @@ class CounsellingSessionTestCase(TestCase):
     """
     def setUp(self):
         session_type = CounsellingSessionType.objects.create(name='dummy type')
-        patient = Patient.objects.create(first_name='Jon', last_name='Snow')
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
         CounsellingSession.objects.create(patient=patient, counselling_session_type=session_type)
 
     def test_counselling_session_str(self):
