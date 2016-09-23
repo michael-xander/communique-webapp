@@ -1,0 +1,56 @@
+{% extends parent_template|default:'base.html' %}
+
+{% block medication_menu %}
+    <li class="treeview active">
+        <a href="#">
+            <i class="fa fa-stethoscope"></i> <span>Medication</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="#"><i class="fa fa-circle-o"></i> Drugs
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    {% block drugs_list_menu %}
+                        <li>
+                            <a href="">
+                                <i class="fa fa-circle-o text-aqua"></i> Drugs List
+                            </a>
+                        </li>
+                    {% endblock %}
+                    {% block add_drug_menu %}
+                        <li>
+                            <a href="{% url 'regimens_drug_create' %}">
+                                <i class="fa fa-circle-o text-aqua"></i> Add Drug
+                            </a>
+                        </li>
+                    {% endblock %}
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-circle-o"></i> Regimens
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="">
+                            <i class="fa fa-circle-o text-aqua"></i> Regimens List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="fa fa-circle-o text-aqua"></i> Add Regimen
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
