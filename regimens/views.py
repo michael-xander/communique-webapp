@@ -1,7 +1,16 @@
 from django.core.urlresolvers import reverse_lazy
 
 from .models import Drug
-from communique.views import (CommuniqueCreateView, CommuniqueDetailView)
+from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView)
+
+
+class DrugListView(CommuniqueListView):
+    """
+    A view to list all the drugs in the system
+    """
+    model = Drug
+    template_name = 'regimens/drug_list.html'
+    context_object_name = 'drug_list'
 
 
 class DrugCreateView(CommuniqueCreateView):

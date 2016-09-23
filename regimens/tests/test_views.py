@@ -17,6 +17,18 @@ class DrugCreateViewTestCase(ViewsTestCase):
         self.only_active_user_access_test(self.view_url, self.view_template_name)
 
 
+class DrugListViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view to list drugs
+    """
+    view_name = 'regimens_drug_list'
+    view_template_name = 'regimens/drug_list.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+        
+
 class ExistingDrugViewsTestCase(ViewsTestCase):
     """
     Test cases for views that require an existing drug
