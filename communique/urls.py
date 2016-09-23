@@ -11,6 +11,7 @@ from appointments import urls as appointment_urls
 from occasions import urls as occasion_urls
 from medical import urls as medical_urls
 from admissions import urls as admission_urls
+from regimens import urls as regimen_urls
 from patients.urls import patient_urls as patients_urls
 from patients.urls import enrollment_urls as enrollment_urls
 
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'^events/', include(occasion_urls)),
     url(r'^medical/', include(medical_urls)),
     url(r'^admissions/', include(admission_urls)),
+    url(r'^regimens/', include(regimen_urls)),
     url(r'^app/notifications/', include(notifications.urls, namespace='notifications')),
     url(r'^api/', include(api_urls)),
 ]
