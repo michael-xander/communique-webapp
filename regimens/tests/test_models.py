@@ -31,3 +31,10 @@ class DrugTestCase(TestCase):
         """
         drug = Drug.objects.get(id=1)
         self.assertEqual(drug.get_update_url(), reverse('regimens_drug_update', kwargs={'pk':drug.pk}))
+
+    def test_get_delete_url(self):
+        """
+        A method that tests the get_delete_url method of a model
+        """
+        drug = Drug.objects.get(id=1)
+        self.assertEqual(drug.get_delete_url(), reverse('regimens_drug_delete', kwargs={'pk':drug.pk}))

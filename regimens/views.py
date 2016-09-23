@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse_lazy
 
 from .models import Drug
-from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView)
+from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
+                              CommuniqueDeleteView)
 
 
 class DrugListView(CommuniqueListView):
@@ -52,3 +53,13 @@ class DrugUpdateView(CommuniqueUpdateView):
         form.instance.last_modified_by = self.request.user
 
         return super(DrugUpdateView, self).form_valid(form)
+
+
+class DrugDeleteView(CommuniqueDeleteView):
+    """
+    A view to handle the deletion of a drug
+    """
+    model = Drug
+    success_url = reverse_lazy('regimens_drug_list')
+    context_object_name = 'drug'
+    template_name = 'regimens/drug_confirm_delete.html'

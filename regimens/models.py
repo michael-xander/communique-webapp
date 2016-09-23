@@ -38,4 +38,4 @@ class Drug(models.Model):
         return reverse('regimens_drug_update', kwargs={'pk':self.pk})
 
     def get_delete_url(self):
-        pass
+        return reverse('regimens_drug_delete', kwargs={'pk':self.pk})
