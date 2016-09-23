@@ -22,7 +22,7 @@
 
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="#"><i class="fa fa-stethoscope"></i> Drugs</a></li>
+    <li><a href="{% url 'regimens_drug_list' %}"><i class="fa fa-stethoscope"></i> Drugs</a></li>
     <li class="active"><i class="fa fa-edit"></i> Add Drug</li>
 {% endblock %}
 

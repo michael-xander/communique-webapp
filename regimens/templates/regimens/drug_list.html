@@ -1,0 +1,99 @@
+{% extends parent_template|default:'regimens/base_regimens.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Drugs
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+{% endblock %}
+
+{% block drugs_list_menu %}
+    <li class="active">
+        <a href="{% url 'regimens_drug_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Drugs List
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Drugs
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'regimens_drug_list' %}"><i class="fa fa-stethoscope"></i> Drugs</a></li>
+    <li class="active"><i class="fa fa-table"></i> List</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Existing Drugs</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date Added</th>
+                                <th>Added By</th>
+                                <th>Date Last Modified</th>
+                                <th>Last Modified By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for drug in drug_list %}
+                                <tr>
+                                    <td><a href="{{ drug.get_absolute_url }}">{{ drug }}</a></td>
+                                    <td><a href="{{ drug.get_absolute_url }}">{{ drug.date_created }}</a></td>
+                                    <td>
+                                        <a href="{{ drug.get_absolute_url }}">{{ drug.created_by.get_full_name }}</a>
+                                    </td>
+                                    <td><a href="{{ drug.get_absolute_url }}">{{ drug.date_last_modified }}</a></td>
+                                    <td>
+                                        <a href="{{ drug.get_absolute_url }}">
+                                            {{ drug.last_modified_by.get_full_name }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date Added</th>
+                                <th>Added By</th>
+                                <th>Date Last Modified</th>
+                                <th>Last Modified By</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <a class="btn btn-primary" href="{% url 'regimens_drug_create' %}">Add Drug</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+    </script>
+{% endblock %}
