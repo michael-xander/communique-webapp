@@ -32,7 +32,7 @@ class Drug(models.Model):
         return self.name.title()
 
     def get_absolute_url(self):
-        pass
+        return reverse('regimens_drug_detail', kwargs={'pk':self.pk})
 
     def get_update_url(self):
         pass

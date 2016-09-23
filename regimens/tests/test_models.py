@@ -17,3 +17,10 @@ class DrugTestCase(TestCase):
         """
         drug = Drug.objects.get(id=1)
         self.assertEqual(drug.__str__(), 'A Drug')
+
+    def test_get_absolute_url(self):
+        """
+        A method that tests the get_absolute_url method of a model
+        """
+        drug = Drug.objects.get(id=1)
+        self.assertEqual(drug.get_absolute_url(), reverse('regimens_drug_detail', kwargs={'pk':drug.pk}))
