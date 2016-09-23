@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'occasions',
     'medical',
     'admissions',
+    'regimens',
     'notifications',
 ]
 
