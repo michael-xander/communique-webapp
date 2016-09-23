@@ -58,3 +58,14 @@ class DrugUpdateViewTestCase(ExistingDrugViewsTestCase):
     def test_active_user_access(self):
         drug = Drug.objects.get(id=1)
         self.only_active_user_access_test(drug.get_update_url(), self.view_template_name)
+
+
+class DrugDeleteViewTestCase(ExistingDrugViewsTestCase):
+    """
+    Test cases for view to delete the details of a drug
+    """
+    view_template_name = 'regimens/drug_confirm_delete.html'
+
+    def test_active_user_access(self):
+        drug = Drug.objects.get(id=1)
+        self.only_active_user_access_test(drug.get_delete_url(), self.view_template_name)
