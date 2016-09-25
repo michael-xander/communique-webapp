@@ -44,11 +44,13 @@
                             <i class="fa fa-circle-o text-aqua"></i> Regimens List
                         </a>
                     </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o text-aqua"></i> Add Regimen
-                        </a>
-                    </li>
+                    {% block add_regimen_menu %}
+                        <li>
+                            <a href="{% url 'regimens_regimen_create' %}">
+                                <i class="fa fa-circle-o text-aqua"></i> Add Regimen
+                            </a>
+                        </li>
+                    {% endblock %}
                 </ul>
             </li>
         </ul>
