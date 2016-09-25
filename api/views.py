@@ -163,3 +163,54 @@ class AdmissionsViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         # save the user that has made the modification
         serializer.save(last_modified_by=self.request.user)
+
+
+class MedicalReportTypeViewSet(viewsets.ModelViewSet):
+    """
+    This endpoint provides calls to CRUD MedicalReportType models.
+    """
+    queryset = MedicalReportType.objects.all()
+    serializer_class = MedicalReportTypeSerializer
+    permission_classes = (permissions.IsAuthenticated, IsActiveUser,)
+
+    def perform_create(self, serializer):
+        # save the user that is enrolling the patient
+        serializer.save(created_by=self.request.user, last_modified_by=self.request.user)
+
+    def perform_update(self, serializer):
+        # save the user that has made the modification
+        serializer.save(last_modified_by=self.request.user)
+
+
+class MedicalReportViewSet(viewsets.ModelViewSet):
+    """
+    This endpoint provides calls to CRUD MedicalReport models.
+    """
+    queryset = MedicalReport.objects.all()
+    serializer_class = MedicalReportSerializer
+    permission_classes = (permissions.IsAuthenticated, IsActiveUser,)
+
+    def perform_create(self, serializer):
+        # save the user that is enrolling the patient
+        serializer.save(created_by=self.request.user, last_modified_by=self.request.user)
+
+    def perform_update(self, serializer):
+        # save the user that has made the modification
+        serializer.save(last_modified_by=self.request.user)
+
+
+class EventViewSet(viewsets.ModelViewSet):
+    """
+    This endpoint provides calls to CRUD Event models.
+    """
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = (permissions.IsAuthenticated, IsActiveUser,)
+
+    def perform_create(self, serializer):
+        # save the user that is enrolling the patient
+        serializer.save(created_by=self.request.user, last_modified_by=self.request.user)
+
+    def perform_update(self, serializer):
+        # save the user that has made the modification
+        serializer.save(last_modified_by=self.request.user)
