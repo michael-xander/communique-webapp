@@ -117,3 +117,14 @@ class RegimenDetailViewTestCase(ExistingRegimenViewsTestCase):
     def test_active_user_access(self):
         regimen = Regimen.objects.get(id=1)
         self.only_active_user_access_test(regimen.get_absolute_url(), self.view_template_name)
+
+
+class RegimenDeleteViewTestCase(ExistingRegimenViewsTestCase):
+    """
+    Test cases for view to handle deletion of a regimen
+    """
+    view_template_name = 'regimens/regimen_confirm_delete.html'
+
+    def test_active_user_access(self):
+        regimen = Regimen.objects.get(id=1)
+        self.only_active_user_access_test(regimen.get_delete_url(), self.view_template_name)
