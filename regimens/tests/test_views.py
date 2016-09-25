@@ -85,7 +85,7 @@ class RegimenListViewTestCase(ViewsTestCase):
     def test_active_user_access(self):
         self.only_active_user_access_test(self.view_url, self.view_template_name)
 
-        
+
 class RegimenCreateViewTestCase(ViewsTestCase):
     """
     Test cases for the view to create a regimen
