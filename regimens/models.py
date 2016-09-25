@@ -80,7 +80,7 @@ class Regimen(models.Model):
             temp_str = "{0}'s regimen that started on {1} and ended on {2}".format(self.patient.get_full_name(),
                                                                                    self.date_started, self.date_ended)
         else:
-            temp_str = "{0}'s regiment that started on {1}".format(self.patient.get_full_name(), self.date_started)
+            temp_str = "{0}'s regimen that started on {1}".format(self.patient.get_full_name(), self.date_started)
 
         return temp_str
 

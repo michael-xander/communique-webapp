@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from regimens.models import Drug
+import datetime
+
+from regimens.models import Drug, Regimen
+from patients.models import Patient
 
 
 class DrugTestCase(TestCase):
@@ -38,3 +41,25 @@ class DrugTestCase(TestCase):
         """
         drug = Drug.objects.get(id=1)
         self.assertEqual(drug.get_delete_url(), reverse('regimens_drug_delete', kwargs={'pk':drug.pk}))
+
+
+class RegimenTestCase(TestCase):
+    """
+    Test cases for the Regimen model
+    """
+    def setUp(self):
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        Regimen.objects.create(patient=patient, notes='Sample notes', date_started=datetime.date.today())
+
+    def test_str(self):
+        """
+        A test case for the __str__ method of the model
+        """
+        regimen = Regimen.objects.get(id=1)
+        today = datetime.date.today()
+        patient = regimen.patient
+        self.assertEqual(regimen.__str__(), "{0}'s regimen that started on {1}".format(patient.get_full_name(), today))
+
+        regimen.date_ended = today
+        self.assertEqual(regimen.__str__(), "{0}'s regimen that started on {1} and ended on {2}".format(
+            patient.get_full_name(), today, today))
