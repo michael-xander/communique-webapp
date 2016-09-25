@@ -89,3 +89,12 @@ class RegimenDetailView(CommuniqueDetailView):
     model = Regimen
     template_name = 'regimens/regimen_view.html'
     context_object_name = 'regimen'
+
+
+class RegimenListView(CommuniqueListView):
+    """
+    A view to list all the regimens in the system
+    """
+    model = Regimen
+    template_name = 'regimens/regimen_list.html'
+    context_object_name = 'regimen_list'
