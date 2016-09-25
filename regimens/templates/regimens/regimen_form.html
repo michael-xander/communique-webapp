@@ -16,7 +16,7 @@
 {% block add_regimen_menu %}
     <li class="active">
         <a href="{% url 'regimens_regimen_create' %}">
-            <i class="fa fa-circle-o text-aqua"></i> Add Regimen
+            <i class="fa fa-circle-o text-red"></i> Add Regimen
         </a>
     </li>
 {% endblock %}
@@ -30,7 +30,7 @@
 
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href=""><i class="fa fa-stethoscope"></i> Regimens</a></li>
+    <li><a href="{% url 'regimens_regimen_list' %}"><i class="fa fa-stethoscope"></i> Regimens</a></li>
     <li class="active"><i class="fa fa-edit"></i> Add Regimen</li>
 {% endblock %}
 
