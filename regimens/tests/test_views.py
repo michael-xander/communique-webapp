@@ -69,3 +69,15 @@ class DrugDeleteViewTestCase(ExistingDrugViewsTestCase):
     def test_active_user_access(self):
         drug = Drug.objects.get(id=1)
         self.only_active_user_access_test(drug.get_delete_url(), self.view_template_name)
+
+
+class RegimenCreateViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view to create a regimen
+    """
+    view_name = 'regimens_regimen_create'
+    view_template_name = 'regimens/regimen_form.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)

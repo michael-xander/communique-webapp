@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse_lazy
 
-from .models import Drug
+from .models import Drug, Regimen
+from .forms import RegimenForm
 from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
                               CommuniqueDeleteView)
 
@@ -16,7 +17,7 @@ class DrugListView(CommuniqueListView):
 
 class DrugCreateView(CommuniqueCreateView):
     """
-    A view to handles the form for creation of a drug
+    A view to handle the form for creation of a drug
     """
     model = Drug
     fields = ['name', 'description']
@@ -63,3 +64,19 @@ class DrugDeleteView(CommuniqueDeleteView):
     success_url = reverse_lazy('regimens_drug_list')
     context_object_name = 'drug'
     template_name = 'regimens/drug_confirm_delete.html'
+
+
+class RegimenCreateView(CommuniqueCreateView):
+    """
+    A view to handle the form for creation of a regimen
+    """
+    model = Regimen
+    form_class = RegimenForm
+    template_name = 'regimens/regimen_form.html'
+
+    def form_valid(self, form):
+        # fill in the creator fields for the regimen model
+        form.instance.created_by = self.request.user
+        form.instance.last_modified_by = self.request.user
+
+        return super(RegimenCreateView, self).form_valid(form)
