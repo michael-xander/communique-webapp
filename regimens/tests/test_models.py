@@ -70,3 +70,10 @@ class RegimenTestCase(TestCase):
         """
         regimen = Regimen.objects.get(id=1)
         self.assertEqual(regimen.get_absolute_url(), reverse('regimens_regimen_detail', kwargs={'pk':regimen.pk}))
+
+    def test_get_delete_url(self):
+        """
+        A test case for the get_delete_url method of the model
+        """
+        regimen = Regimen.objects.get(id=1)
+        self.assertEqual(regimen.get_delete_url(), reverse('regimens_regimen_delete', kwargs={'pk':regimen.pk}))

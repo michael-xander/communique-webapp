@@ -98,3 +98,13 @@ class RegimenListView(CommuniqueListView):
     model = Regimen
     template_name = 'regimens/regimen_list.html'
     context_object_name = 'regimen_list'
+
+
+class RegimenDeleteView(CommuniqueDeleteView):
+    """
+    A view to handle the deletion of a regimen
+    """
+    model = Regimen
+    success_url = reverse_lazy('regimens_regimen_list')
+    context_object_name = 'regimen'
+    template_name = 'regimens/regimen_confirm_delete.html'

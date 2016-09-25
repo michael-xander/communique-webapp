@@ -91,4 +91,4 @@ class Regimen(models.Model):
         pass
 
     def get_delete_url(self):
-        pass
+        return reverse('regimens_regimen_delete', kwargs={'pk':self.pk})
