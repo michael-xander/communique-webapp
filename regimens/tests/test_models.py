@@ -63,3 +63,10 @@ class RegimenTestCase(TestCase):
         regimen.date_ended = today
         self.assertEqual(regimen.__str__(), "{0}'s regimen that started on {1} and ended on {2}".format(
             patient.get_full_name(), today, today))
+
+    def test_get_absolute_url(self):
+        """
+        A test case for the get_absolute_url method of the model
+        """
+        regimen = Regimen.objects.get(id=1)
+        self.assertEqual(regimen.get_absolute_url(), reverse('regimens_regimen_detail', kwargs={'pk':regimen.pk}))

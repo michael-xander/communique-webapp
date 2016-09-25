@@ -85,7 +85,7 @@ class Regimen(models.Model):
         return temp_str
 
     def get_absolute_url(self):
-        pass
+        return reverse('regimens_regimen_detail', kwargs={'pk':self.pk})
 
     def get_update_url(self):
         pass

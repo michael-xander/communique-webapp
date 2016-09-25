@@ -80,3 +80,12 @@ class RegimenCreateView(CommuniqueCreateView):
         form.instance.last_modified_by = self.request.user
 
         return super(RegimenCreateView, self).form_valid(form)
+
+
+class RegimenDetailView(CommuniqueDetailView):
+    """
+    A view to display the details of a regimen
+    """
+    model = Regimen
+    template_name = 'regimens/regimen_view.html'
+    context_object_name = 'regimen'

@@ -1,8 +1,11 @@
 from django.core.urlresolvers import reverse
 
+import datetime
+
 from communique.utils import ViewsTestCase
 
-from regimens.models import Drug
+from regimens.models import Drug, Regimen
+from patients.models import Patient
 
 
 class DrugCreateViewTestCase(ViewsTestCase):
@@ -81,3 +84,24 @@ class RegimenCreateViewTestCase(ViewsTestCase):
 
     def test_active_user_access(self):
         self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class ExistingRegimenViewsTestCase(ViewsTestCase):
+    """
+    Test cases for views that require an existing regimen
+    """
+    def setUp(self):
+        super(ExistingRegimenViewsTestCase, self).setUp()
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        Regimen.objects.create(patient=patient, notes='Sample notes', date_started=datetime.date.today())
+
+
+class RegimenDetailViewTestCase(ExistingRegimenViewsTestCase):
+    """
+    Test cases for view to show the details of a regimen
+    """
+    view_template_name = 'regimens/regimen_view.html'
+
+    def test_active_user_access(self):
+        regimen = Regimen.objects.get(id=1)
+        self.only_active_user_access_test(regimen.get_absolute_url(), self.view_template_name)
