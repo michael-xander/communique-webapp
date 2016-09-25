@@ -2,6 +2,8 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
+from patients.models import Patient
+
 
 class Drug(models.Model):
     """
@@ -39,3 +41,54 @@ class Drug(models.Model):
 
     def get_delete_url(self):
         return reverse('regimens_drug_delete', kwargs={'pk':self.pk})
+
+
+class Regimen(models.Model):
+    """
+    A class representing a regimen for a patient
+    """
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='regimens', related_query_name='regimen'
+                                , help_text='The patient undertaking this regimen')
+    notes = models.TextField(verbose_name='Notes', help_text='Any notes to be made on this regimen')
+    drugs = models.ManyToManyField(Drug, related_name='regimens', related_query_name='regimen')
+    date_started = models.DateField(verbose_name='Regimen start date', help_text='The date the patient started this '
+                                                                                 'regimen')
+    date_ended = models.DateField(verbose_name='Regimen end date', blank=True, null=True, help_text='The date the '
+                                                                                                    'patient stopped '
+                                                                                                    'this regimen. This '
+                                                                                                    'field is optional')
+    current_regimen = models.BooleanField(verbose_name='Current regimen', default=True, help_text='Mark this regimen as '
+                                                                                                  'the current patient '
+                                                                                                  'regimen or not. By '
+                                                                                                  'default, it will be '
+                                                                                                  'marked as the current'
+                                                                                                  ' regimen')
+
+    date_created = models.DateField(auto_now_add=True, help_text='The date the regimen was added to the system')
+    date_last_modified = models.DateField(auto_now=True, help_text='The date details of this regimen were most recently '
+                                                                   'updated')
+
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   related_name='created_regimens', related_query_name='created_regimen',
+                                   help_text='The user that added this regimen to the system')
+    last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                         related_name='modified_regimens', related_query_name='modified_regimen',
+                                         help_text='The user that last modified details of this regimen')
+
+    def __str__(self):
+        if self.date_ended:
+            temp_str = "{0}'s regimen that started on {1} and ended on {2}".format(self.patient.get_full_name(),
+                                                                                   self.date_started, self.date_ended)
+        else:
+            temp_str = "{0}'s regiment that started on {1}".format(self.patient.get_full_name(), self.date_started)
+
+        return temp_str
+
+    def get_absolute_url(self):
+        pass
+
+    def get_update_url(self):
+        pass
+
+    def get_delete_url(self):
+        pass
