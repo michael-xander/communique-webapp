@@ -128,3 +128,14 @@ class RegimenDeleteViewTestCase(ExistingRegimenViewsTestCase):
     def test_active_user_access(self):
         regimen = Regimen.objects.get(id=1)
         self.only_active_user_access_test(regimen.get_delete_url(), self.view_template_name)
+
+
+class RegimenUpdateViewTestCase(ExistingRegimenViewsTestCase):
+    """
+    Test cases for view to handle updating a regimen
+    """
+    view_template_name = 'regimens/regimen_update_form.html'
+
+    def test_active_user_access(self):
+        regimen = Regimen.objects.get(id=1)
+        self.only_active_user_access_test(regimen.get_update_url(), self.view_template_name)
