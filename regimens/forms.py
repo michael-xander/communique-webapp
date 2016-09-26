@@ -9,7 +9,7 @@ class RegimenForm(forms.ModelForm):
     """
     class Meta:
         model = Regimen
-        fields = ['patient', 'date_started', 'date_ended', 'current_regimen', 'drugs', 'notes']
+        fields = ['patient', 'date_started', 'date_ended', 'drugs', 'notes']
 
     def clean(self):
         # check that the start date is not greater than the end date
@@ -29,4 +29,4 @@ class RegimenUpdateForm(RegimenForm):
     """
     class Meta(RegimenForm.Meta):
         model = Regimen
-        fields = ['date_started', 'date_ended', 'current_regimen', 'notes']
+        fields = ['date_started', 'date_ended', 'notes']
