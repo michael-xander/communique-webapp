@@ -424,6 +424,56 @@
                                 </ul>
                             </li>
                         {% endblock %}
+                        {% block medication_menu %}
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-stethoscope"></i> <span>Medication</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="#"><i class="fa fa-circle-o"></i> Drugs
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li>
+                                                <a href="{% url 'regimens_drug_list' %}">
+                                                    <i class="fa fa-circle-o text-aqua"></i> Drugs List
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'regimens_drug_create' %}">
+                                                    <i class="fa fa-circle-o text-aqua"></i> Add Drug
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-circle-o"></i> Regimens
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li>
+                                                <a href="{% url 'regimens_regimen_list' %}">
+                                                    <i class="fa fa-circle-o text-aqua"></i> Regimens List
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'regimens_regimen_create' %}">
+                                                    <i class="fa fa-circle-o text-aqua"></i> Add Regimen
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endblock %}
                         <li>
                             <a href="#"><i class="fa fa-book"></i> <span>Manual</span></a>
                         </li>

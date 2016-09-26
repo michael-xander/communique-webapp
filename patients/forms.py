@@ -6,6 +6,9 @@ from io import StringIO
 from appointments.models import Appointment
 from appointments.forms import AppointmentForm
 
+from regimens.models import Regimen
+from regimens.forms import RegimenForm
+
 from patients.models import Patient
 from patients.utils.utils_forms import (ORDERED_UPLOAD_COLUMNS, PATIENT_ID_UPLOAD_COLUMN, OTHER_NAMES_UPLOAD_COLUMN,
                                         LAST_NAME_UPLOAD_COLUMN, SEX_UPLOAD_COLUMN)
@@ -18,6 +21,15 @@ class PatientAppointmentForm(AppointmentForm):
     class Meta(AppointmentForm.Meta):
         model = Appointment
         fields = ['title', 'owner', 'appointment_date', 'start_time', 'end_time', 'notes']
+
+
+class PatientRegimenForm(RegimenForm):
+    """
+    A form used to create a regimen for a patient
+    """
+    class Meta(RegimenForm.Meta):
+        model = Regimen
+        fields = ['date_started', 'date_ended', 'drugs', 'notes']
 
 
 class PatientUploadFileForm(forms.Form):

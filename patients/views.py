@@ -7,9 +7,10 @@ from .models import Patient, Enrollment
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
 from medical.models import MedicalReport
-from .forms import PatientAppointmentForm, PatientUploadFileForm
+from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimenForm
 from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
+from regimens.models import Regimen
 from patients.utils.utils_views import import_patients_from_file
 
 
@@ -245,4 +246,24 @@ class PatientAdmissionCreateView(PatientModelCreateView):
         form.instance.patient = patient
 
         return super(PatientAdmissionCreateView, self).form_valid(form)
+
+
+class PatientRegimenCreateView(PatientModelCreateView):
+    """
+    A view that handles adding a regimen for a specific patient.
+    """
+    model = Regimen
+    form_class = PatientRegimenForm
+    template_name = 'patients/patient_regimen_form.html'
+
+    def form_valid(self, form):
+        # set the created by and last modified by fields
+        form.instance.created_by = self.request.user
+        form.instance.last_modified_by = self.request.user
+
+        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
+        form.instance.patient = patient
+
+        return super(PatientRegimenCreateView, self).form_valid(form)
+
 
