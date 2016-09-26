@@ -68,6 +68,9 @@ class Regimen(models.Model):
                                          related_name='modified_regimens', related_query_name='modified_regimen',
                                          help_text='The user that last modified details of this regimen')
 
+    class Meta:
+        ordering = ['-date_started', '-date_ended']
+
     def __str__(self):
         if self.date_ended:
             temp_str = "{0}'s regimen that started on {1} and ended on {2}".format(self.patient.get_full_name(),
