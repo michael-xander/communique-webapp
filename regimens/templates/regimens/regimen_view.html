@@ -146,6 +146,7 @@
                     <hr>
 
                     <strong><i class="fa fa-stethoscope margin-r-5"></i> Drugs</strong>
+
                     <p>
                         {% for drug in regimen.drugs.all %}
                             <a href="{{ drug.get_absolute_url }}">
