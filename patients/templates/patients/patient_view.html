@@ -389,7 +389,7 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <a class="btn btn-primary" href="#">Add Regimen</a>
+                        <a class="btn btn-primary" href="{% url 'patients_patient_regimen_create' patient_pk=patient.pk %}">Add Regimen</a>
                     </div>
                     <div class="tab-pane" id="reports">
                         <table class="table table-bordered table-striped list-table">
