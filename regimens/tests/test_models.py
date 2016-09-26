@@ -77,3 +77,10 @@ class RegimenTestCase(TestCase):
         """
         regimen = Regimen.objects.get(id=1)
         self.assertEqual(regimen.get_delete_url(), reverse('regimens_regimen_delete', kwargs={'pk':regimen.pk}))
+
+    def test_get_update_url(self):
+        """
+        A test case for the get_update_url method of the model
+        """
+        regimen = Regimen.objects.get(id=1)
+        self.assertEqual(regimen.get_update_url(), reverse('regimens_regimen_update', kwargs={'pk':regimen.pk}))

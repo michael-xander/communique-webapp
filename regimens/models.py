@@ -88,7 +88,7 @@ class Regimen(models.Model):
         return reverse('regimens_regimen_detail', kwargs={'pk':self.pk})
 
     def get_update_url(self):
-        pass
+        return reverse('regimens_regimen_update', kwargs={'pk':self.pk})
 
     def get_delete_url(self):
         return reverse('regimens_regimen_delete', kwargs={'pk':self.pk})

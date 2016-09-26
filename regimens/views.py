@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse_lazy
 
 from .models import Drug, Regimen
-from .forms import RegimenForm
+from .forms import RegimenForm, RegimenUpdateForm
 from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
                               CommuniqueDeleteView)
 
@@ -108,3 +108,19 @@ class RegimenDeleteView(CommuniqueDeleteView):
     success_url = reverse_lazy('regimens_regimen_list')
     context_object_name = 'regimen'
     template_name = 'regimens/regimen_confirm_delete.html'
+
+
+class RegimenUpdateView(CommuniqueUpdateView):
+    """
+    A view to handle updating a regimen
+    """
+    model = Regimen
+    form_class = RegimenUpdateForm
+    template_name = 'regimens/regimen_update_form.html'
+    context_object_name = 'regimen'
+
+    def form_valid(self, form):
+        # update the last modified by fields
+        form.instance.last_modified_by = self.request.user
+
+        return super(RegimenUpdateView, self).form_valid(form)
