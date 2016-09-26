@@ -57,13 +57,6 @@ class Regimen(models.Model):
                                                                                                     'patient stopped '
                                                                                                     'this regimen. This '
                                                                                                     'field is optional')
-    current_regimen = models.BooleanField(verbose_name='Current regimen', default=True, help_text='Mark this regimen as '
-                                                                                                  'the current patient '
-                                                                                                  'regimen or not. By '
-                                                                                                  'default, it will be '
-                                                                                                  'marked as the current'
-                                                                                                  ' regimen')
-
     date_created = models.DateField(auto_now_add=True, help_text='The date the regimen was added to the system')
     date_last_modified = models.DateField(auto_now=True, help_text='The date details of this regimen were most recently '
                                                                    'updated')
