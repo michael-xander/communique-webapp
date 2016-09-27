@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'medical',
     'admissions',
     'regimens',
+    'adverse',
     'notifications',
 ]
 
