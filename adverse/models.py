@@ -89,6 +89,8 @@ class AdverseEvent(models.Model):
                                            related_name='adverse_events', related_query_name='adverse_event',
                                            help_text='The category of this adverse event')
     event_date = models.DateField(verbose_name='Event date', help_text='The date the adverse event occurred')
+    notes = models.TextField(verbose_name='Notes', blank=True, null=True,
+                             help_text='Any information with regards to this adverse event')
 
     date_created = models.DateField(auto_now_add=True, help_text='The date the adverse event was added to the system')
     date_last_modified = models.DateField(auto_now=True, help_text='The date that details of this adverse event were '
