@@ -47,7 +47,8 @@ class AdverseEventType(models.Model):
     name = models.CharField(verbose_name='Adverse event type name', unique=True, max_length=100,
                             help_text='The unique name for the adverse event type')
     description = models.TextField(verbose_name='Description', help_text='Information about this adverse event type')
-    emergency_contacts = models.ManyToManyField(EmergencyContact, verbose_name='Emergency contacts', related_name='adverse_event_types',
+    emergency_contacts = models.ManyToManyField(EmergencyContact, verbose_name='Emergency contacts',
+                                                related_name='adverse_event_types',
                                                 related_query_name='adverse_event_type',
                                                 help_text='The emergency contacts that are to receive emails when '
                                                           'adverse events of this type are created')

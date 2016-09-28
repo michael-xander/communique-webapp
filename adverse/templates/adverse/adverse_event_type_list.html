@@ -1,0 +1,83 @@
+{% extends parent_template|default:'adverse/base_adverse.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Adverse Event Types
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+{% endblock %}
+
+{% block event_type_menu %}
+    <li class="active">
+        <a href="{% url 'adverse_event_type_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Adverse Event Types
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Adverse Event Types
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'adverse_event_type_list' %}"><i class="fa fa-wheelchair"></i> Adverse Event Type List</a></li>
+    <li class="active"><i class="fa fa-table"></i> List</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Existing Adverse Event Types</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event_type in adverse_event_type_list %}
+                                <tr>
+                                    <td><a href="{{ event_type.get_absolute_url }}">{{ event_type }}</a></td>
+                                    <td><a href="{{ event_type.get_absolute_url }}">{{ event_type.date_created }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date Created</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <a class="btn btn-primary" href="{% url 'adverse_event_type_create' %}">Add Adverse Event Type</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+    </script>
+{% endblock %}
