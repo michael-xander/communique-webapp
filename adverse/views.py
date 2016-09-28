@@ -11,7 +11,7 @@ class EmergencyContactListView(CommuniqueListView):
     """
     model = EmergencyContact
     template_name = 'adverse/emergency_contact_list.html'
-    context_object_name = 'emergency_contact'
+    context_object_name = 'emergency_contact_list'
 
 
 class EmergencyContactCreateView(CommuniqueCreateView):
