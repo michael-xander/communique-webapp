@@ -31,13 +31,13 @@ class EmergencyContact(models.Model):
         return self.name.title()
 
     def get_absolute_url(self):
-        pass
+        return reverse('adverse_emergency_contact_detail', kwargs={'pk':self.pk})
 
     def get_update_url(self):
-        pass
+        return reverse('adverse_emergency_contact_update', kwargs={'pk':self.pk})
 
     def get_delete_url(self):
-        pass
+        return reverse('adverse_emergency_contact_delete', kwargs={'pk':self.pk})
 
 
 class AdverseEventType(models.Model):
@@ -69,13 +69,13 @@ class AdverseEventType(models.Model):
         return self.name.title()
 
     def get_absolute_url(self):
-        pass
+        return reverse('adverse_event_type_detail', kwargs={'pk':self.pk})
 
     def get_update_url(self):
-        pass
+        return reverse('adverse_event_type_update', kwargs={'pk':self.pk})
 
     def get_delete_url(self):
-        pass
+        return reverse('adverse_event_type_delete', kwargs={'pk':self.pk})
 
 
 class AdverseEvent(models.Model):
@@ -109,10 +109,10 @@ class AdverseEvent(models.Model):
         return temp_str
 
     def get_absolute_url(self):
-        pass
+        return reverse('adverse_event_detail', kwargs={'pk':self.pk})
 
     def get_update_url(self):
-        pass
+        return reverse('adverse_event_update', kwargs={'pk':self.pk})
 
     def get_delete_url(self):
-        pass
+        return reverse('adverse_event_delete', kwargs={'pk':self.pk})

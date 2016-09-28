@@ -120,7 +120,7 @@ class AdverseEventTypeDeleteView(CommuniqueDeleteView):
     A view to handle deletion of an adverse event type
     """
     model = AdverseEventType
-    success_url = reverse_lazy('regimens_adverse_event_type_list')
+    success_url = reverse_lazy('adverse_event_type_list')
     context_object_name = 'adverse_event_type'
     template_name = 'adverse/adverse_event_type_confirm_delete.html'
 
@@ -180,6 +180,6 @@ class AdverseEventDeleteView(CommuniqueDeleteView):
     A view to handle deletion of an adverse event type
     """
     model = AdverseEvent
-    success_url = reverse_lazy('regimens_adverse_event_list')
+    success_url = reverse_lazy('adverse_event_list')
     context_object_name = 'adverse_event'
     template_name = 'adverse/adverse_event_confirm_delete.html'
