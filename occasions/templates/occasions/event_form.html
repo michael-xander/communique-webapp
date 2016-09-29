@@ -13,14 +13,6 @@
     <link rel="stylesheet" href="{% static "plugins/timepicker/bootstrap-timepicker.min.css" %}">
 {% endblock %}
 
-{% block events_add_menu %}
-    <li class="active">
-        <a href="{% url 'occasions_event_create' %}">
-            <i class="fa fa-circle-o text-red"></i> Add Event
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Add Event
 {% endblock %}
