@@ -1,6 +1,5 @@
 {% extends parent_template|default:'admissions/base_admissions.html' %}
 {% load staticfiles %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Add Admission
@@ -37,33 +36,7 @@
                 </div>
                 <form role="form" action="{% url 'admissions_admission_create' %}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-
-                                {% if field.label == 'Patient' %}
-                                    {{ field|add_class:'form-control select2'|append_attr:'style:width: 100%;' }}
-                                {% elif field.label == 'Admission date' or field.label == 'Discharge date' %}
-                                    {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker' }}
-                                {% else %}
-                                    {{ field|add_class:'form-control' }}
-                                {% endif %}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'admissions/admission_form_body.html' %}
                     <div class="box-footer">
                         <button type="reset" class="btn btn-warning">Reset</button>
                         <button type="submit" class="btn btn-success">Submit</button>
