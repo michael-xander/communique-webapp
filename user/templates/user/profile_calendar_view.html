@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
 {% endblock %}
 
+{% block calendar_menu %}
+    <li class="active">
+        <a href="{% url 'user_profile_calendar_view' %}">
+            <i class="fa fa-calendar"></i> <span>Calendar</span>
+        </a>
+    </li>
+{% endblock %}
+
 {% block page_heading %}
     Your Appointments & Events
 {% endblock %}

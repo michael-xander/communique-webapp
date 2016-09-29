@@ -4,6 +4,14 @@
     {{ block.super }} | Dashboard
 {% endblock %}
 
+{% block dashboard_menu %}
+    <li class="active">
+        <a href="{% url 'dashboard_home' %}">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        </a>
+    </li>
+{% endblock %}
+
 {% block page_heading %}
   Dashboard
 {% endblock %}
