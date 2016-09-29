@@ -14,13 +14,6 @@ class EventCreateView(CommuniqueCreateView):
     form_class = EventForm
     template_name = 'occasions/event_form.html'
 
-    def form_valid(self, form):
-        # fill the creator and last modified fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(EventCreateView, self).form_valid(form)
-
 
 class EventDetailView(CommuniqueDetailView):
     """
@@ -39,12 +32,6 @@ class EventUpdateView(CommuniqueUpdateView):
     form_class = EventForm
     template_name = 'occasions/event_update_form.html'
     context_object_name = 'event'
-
-    def form_valid(self, form):
-        # set the last modified by field
-        form.instance.last_modified_by = self.request.user
-
-        return super(EventUpdateView, self).form_valid(form)
 
 
 class EventListView(CommuniqueListView):

@@ -32,6 +32,13 @@ class CommuniqueCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         """
         return self.request.user.is_active
 
+    def form_valid(self, form):
+        # update the creator and modified fields of the models created
+        form.instance.created_by = self.request.user
+        form.instance.last_modified_by = self.request.user
+
+        return super(CommuniqueCreateView, self).form_valid(form)
+
 
 class CommuniqueFormView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     """
@@ -73,6 +80,12 @@ class CommuniqueUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         :return: True if user is active, false otherwise.
         """
         return self.request.user.is_active
+
+    def form_valid(self, form):
+        # update the last modified field of the model
+        form.instance.last_modified_by = self.request.user
+
+        return super(CommuniqueUpdateView, self).form_valid(form)
 
 
 class CommuniqueListView(LoginRequiredMixin, UserPassesTestMixin, ListView):

@@ -22,14 +22,6 @@ class ProgramCreateView(CommuniqueCreateView):
     fields = ['name', 'description', 'is_open']
     template_name = 'programs/program_form.html'
 
-    def form_valid(self, form):
-        program = form.save(commit=False)
-        # update the created by and last modified by markers
-        program.created_by = self.request.user
-        program.last_modified_by = self.request.user
-
-        return super(ProgramCreateView, self).form_valid(form)
-
 
 class ProgramDetailView(CommuniqueDetailView):
     """
@@ -48,13 +40,6 @@ class ProgramUpdateView(CommuniqueUpdateView):
     fields = ['name', 'description', 'is_open']
     template_name = 'programs/program_update_form.html'
     context_object_name = 'program'
-
-    def form_valid(self, form):
-        program = form.save(commit=False)
-        # update the last modified by markers
-        program.last_modified_by = self.request.user
-
-        return super(ProgramUpdateView, self).form_valid(form)
 
 
 class ProgramDeleteView(CommuniqueDeleteView):

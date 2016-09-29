@@ -22,14 +22,6 @@ class CounsellingSessionTypeCreateView(CommuniqueCreateView):
     template_name = 'counselling_sessions/counselling_session_type_form.html'
     fields = ['name', 'description']
 
-    def form_valid(self, form):
-        counselling_session_type = form.save(commit=False)
-        # update the created by and last modified by fields
-        counselling_session_type.created_by = self.request.user
-        counselling_session_type.last_modified_by = self.request.user
-
-        return super(CounsellingSessionTypeCreateView, self).form_valid(form)
-
 
 class CounsellingSessionTypeDetailView(CommuniqueDetailView):
     """
@@ -48,13 +40,6 @@ class CounsellingSessionTypeUpdateView(CommuniqueUpdateView):
     fields = ['name', 'description']
     template_name = 'counselling_sessions/counselling_session_type_update_form.html'
     context_object_name = 'counselling_session_type'
-
-    def form_valid(self, form):
-        session_type = form.save(commit=False)
-        # update the last modified field
-        session_type.last_modified_by = self.request.user
-
-        return super(CounsellingSessionTypeUpdateView, self).form_valid(form)
 
 
 class CounsellingSessionTypeDeleteView(CommuniqueDeleteView):
@@ -84,14 +69,6 @@ class CounsellingSessionCreateView(CommuniqueCreateView):
     template_name = 'counselling_sessions/counselling_session_form.html'
     fields = ['counselling_session_type', 'patient', 'notes']
 
-    def form_valid(self, form):
-        counselling_session = form.save(commit=False)
-        # update the created by and last modified by fields
-        counselling_session.created_by = self.request.user
-        counselling_session.last_modified_by = self.request.user
-
-        return super(CounsellingSessionCreateView, self).form_valid(form)
-
 
 class CounsellingSessionDetailView(CommuniqueDetailView):
     """
@@ -110,13 +87,6 @@ class CounsellingSessionUpdateView(CommuniqueUpdateView):
     fields = ['notes']
     template_name = 'counselling_sessions/counselling_session_update_form.html'
     context_object_name = 'counselling_session'
-
-    def form_valid(self, form):
-        counselling_session = form.save(commit=False)
-        # update the last modified field
-        counselling_session.last_modified_by = self.request.user
-
-        return super(CounsellingSessionUpdateView, self).form_valid(form)
 
 
 class CounsellingSessionDeleteView(CommuniqueDeleteView):

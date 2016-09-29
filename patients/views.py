@@ -33,14 +33,6 @@ class PatientCreateView(CommuniqueCreateView):
               'treatment_start_date', 'interim_outcome', 'contact_number']
     template_name = 'patients/patient_form.html'
 
-    def form_valid(self, form):
-        patient = form.save(commit=False)
-        # update the created by and last modified by user markers
-        patient.created_by = self.request.user
-        patient.last_modified_by = self.request.user
-
-        return super(PatientCreateView, self).form_valid(form)
-
 
 class PatientDetailView(CommuniqueDetailView):
     """
@@ -60,13 +52,6 @@ class PatientUpdateView(CommuniqueUpdateView):
               'treatment_start_date', 'interim_outcome', 'contact_number']
     template_name = 'patients/patient_update_form.html'
     context_object_name = 'patient'
-
-    def form_valid(self, form):
-        patient = form.save(commit=False)
-        # update the last modified markers
-        patient.last_modified_by = self.request.user
-
-        return super(PatientUpdateView, self).form_valid(form)
 
 
 class PatientDeleteView(CommuniqueDeleteView):
@@ -113,9 +98,8 @@ class EnrollmentCreateView(CommuniqueCreateView):
     template_name = 'patients/enrollment_form.html'
 
     def form_valid(self, form):
-        enrollment = form.save(commit=False)
         # add user that has enrolled patient into program
-        enrollment.enrolled_by = self.request.user
+        form.instance.enrolled_by = self.request.user
 
         return super(EnrollmentCreateView, self).form_valid(form)
 
@@ -154,6 +138,13 @@ class PatientModelCreateView(CommuniqueCreateView):
         context['patient'] = patient
         return context
 
+    def form_valid(self, form):
+        # set the patient
+        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
+        form.instance.patient = patient
+
+        return super(PatientModelCreateView, self).form_valid(form)
+
 
 class PatientEnrollmentCreateView(PatientModelCreateView):
     """
@@ -166,8 +157,6 @@ class PatientEnrollmentCreateView(PatientModelCreateView):
     def form_valid(self, form):
         # set the user that's made the enrollment and the patient whom it is for
         form.instance.enrolled_by = self.request.user
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
 
         return super(PatientEnrollmentCreateView, self).form_valid(form)
 
@@ -180,15 +169,6 @@ class PatientSessionCreateView(PatientModelCreateView):
     fields = ['counselling_session_type', 'notes']
     template_name = 'patients/patient_session_form.html'
 
-    def form_valid(self, form):
-        # set the user adding the session and the patient whom it is for
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientSessionCreateView, self).form_valid(form)
-
 
 class PatientMedicalReportCreateView(PatientModelCreateView):
     """
@@ -197,15 +177,6 @@ class PatientMedicalReportCreateView(PatientModelCreateView):
     model = MedicalReport
     fields = ['title', 'report_type', 'notes']
     template_name = 'patients/patient_medical_report_form.html'
-
-    def form_valid(self, form):
-        # set the user adding the medical report and the patient whom it is for
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientMedicalReportCreateView, self).form_valid(form)
 
 
 class PatientAppointmentCreateView(PatientModelCreateView):
@@ -217,15 +188,8 @@ class PatientAppointmentCreateView(PatientModelCreateView):
     template_name = 'patients/patient_appointment_form.html'
 
     def form_valid(self, form):
-        # set the user adding the appointment and the patient whom it is for
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
         if not form.instance.owner:
             form.instance.owner = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
 
         return super(PatientAppointmentCreateView, self).form_valid(form)
 
@@ -238,16 +202,6 @@ class PatientAdmissionCreateView(PatientModelCreateView):
     form_class = AdmissionUpdateForm
     template_name = 'patients/patient_admission_form.html'
 
-    def form_valid(self, form):
-        # set the created by and last modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientAdmissionCreateView, self).form_valid(form)
-
 
 class PatientRegimenCreateView(PatientModelCreateView):
     """
@@ -257,16 +211,6 @@ class PatientRegimenCreateView(PatientModelCreateView):
     form_class = PatientRegimenForm
     template_name = 'patients/patient_regimen_form.html'
 
-    def form_valid(self, form):
-        # set the created by and last modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientRegimenCreateView, self).form_valid(form)
-
 
 class PatientAdverseEventCreateView(PatientModelCreateView):
     """
@@ -275,14 +219,4 @@ class PatientAdverseEventCreateView(PatientModelCreateView):
     model = AdverseEvent
     fields = ['adverse_event_type', 'event_date', 'notes']
     template_name = 'patients/patient_adverse_event_form.html'
-
-    def form_valid(self, form):
-        # set teh created by and last modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientAdverseEventCreateView, self).form_valid(form)
 

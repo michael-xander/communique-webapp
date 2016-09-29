@@ -22,13 +22,6 @@ class EmergencyContactCreateView(CommuniqueCreateView):
     fields = ['name', 'email']
     template_name = 'adverse/emergency_contact_form.html'
 
-    def form_valid(self, form):
-        # fill in the creator fields for the model
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(EmergencyContactCreateView, self).form_valid(form)
-
 
 class EmergencyContactDetailView(CommuniqueDetailView):
     """
@@ -47,12 +40,6 @@ class EmergencyContactUpdateView(CommuniqueUpdateView):
     fields = ['name', 'email']
     template_name = 'adverse/emergency_contact_update_form.html'
     context_object_name = 'emergency_contact'
-
-    def form_valid(self, form):
-        # update the user to last modify the drug
-        form.instance.last_modified_by = self.request.user
-
-        return super(EmergencyContactUpdateView, self).form_valid(form)
 
 
 class EmergencyContactDeleteView(CommuniqueDeleteView):
@@ -82,13 +69,6 @@ class AdverseEventTypeCreateView(CommuniqueCreateView):
     fields = ['name', 'description', 'emergency_contacts']
     template_name = 'adverse/adverse_event_type_form.html'
 
-    def form_valid(self, form):
-        # fill in the creator fields for the model
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(AdverseEventTypeCreateView, self).form_valid(form)
-
 
 class AdverseEventTypeDetailView(CommuniqueDetailView):
     """
@@ -107,12 +87,6 @@ class AdverseEventTypeUpdateView(CommuniqueUpdateView):
     fields = ['name', 'description', 'emergency_contacts']
     template_name = 'adverse/adverse_event_type_update_form.html'
     context_object_name = 'adverse_event_type'
-
-    def form_valid(self, form):
-        # update the modified by field for the model
-        form.instance.last_modified_by = self.request.user
-
-        return super(AdverseEventTypeUpdateView, self).form_valid(form)
 
 
 class AdverseEventTypeDeleteView(CommuniqueDeleteView):
@@ -142,13 +116,6 @@ class AdverseEventCreateView(CommuniqueCreateView):
     fields = ['patient', 'adverse_event_type', 'event_date', 'notes']
     template_name = 'adverse/adverse_event_form.html'
 
-    def form_valid(self, form):
-        # fill in the creator fields for the model
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(AdverseEventCreateView, self).form_valid(form)
-
 
 class AdverseEventDetailView(CommuniqueDetailView):
     """
@@ -167,12 +134,6 @@ class AdverseEventUpdateView(CommuniqueUpdateView):
     fields = ['event_date', 'notes']
     template_name = 'adverse/adverse_event_update_form.html'
     context_object_name = 'adverse_event'
-
-    def form_valid(self, form):
-        # update the modified by field for the model
-        form.instance.last_modified_by = self.request.user
-
-        return super(AdverseEventUpdateView, self).form_valid(form)
 
 
 class AdverseEventDeleteView(CommuniqueDeleteView):

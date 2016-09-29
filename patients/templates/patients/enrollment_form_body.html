@@ -7,7 +7,7 @@
 
             {% if field.label == 'Patient' or field.label == 'Program' %}
                 {{ field|add_class:"form-control select2"|append_attr:"style:width: 100%;" }}
-            {% elif field.label == 'is open' %}
+            {% elif field.label == 'Is open' %}
                 {{ field }}
             {% else %}
                 {{ field|add_class:'form-control' }}
