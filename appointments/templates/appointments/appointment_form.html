@@ -15,14 +15,6 @@
     <link rel="stylesheet" href="{% static "plugins/timepicker/bootstrap-timepicker.min.css" %}">
 {% endblock %}
 
-{% block appointments_add_menu %}
-    <li class="active">
-        <a href="{% url 'appointments_appointment_create' %}">
-            <i class="fa fa-circle-o text-red"></i> Add Appointment
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Add Appointment
 {% endblock %}
