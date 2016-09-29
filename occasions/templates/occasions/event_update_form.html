@@ -1,6 +1,5 @@
 {% extends parent_template|default:'occasions/base_occasions.html' %}
 {% load staticfiles %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Edit Event
@@ -38,57 +37,7 @@
                 </div>
                 <form role="form" action="{{ event.get_update_url }}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            {% if field.label == 'Event start time' or field.label == 'Event end time' %}
-                                <div class="bootstrap-timepicker">
-                                    <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                        {{ field.label_tag }}
-                                        <div class="input-group">
-                                            {{ field|add_class:'form-control timepicker' }}
-
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-clock-o"></i>
-                                            </div>
-                                        </div>
-                                        {% if field.help_text %}
-                                            <p class="help-block">{{ field.help_text }}</p>
-                                        {% endif %}
-
-                                        {% if field.errors %}
-                                            <ul>
-                                                {% for error in field.errors %}
-                                                    <li><p class="help-block">{{ error|escape }}</p></li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% else %}
-                                 <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                    {{ field.label_tag }}
-
-                                    {% if field.label == 'Event date' %}
-                                        {{ field|attr:"placeholder:DD/MM/YYYY"|add_class:"form-control" }}
-                                    {% else %}
-                                        {{ field|add_class:'form-control' }}
-                                    {% endif %}
-
-                                    {% if field.help_text %}
-                                        <p class="help-block">{{ field.help_text }}</p>
-                                    {% endif %}
-
-                                    {% if field.errors %}
-                                        <ul>
-                                            {% for error in field.errors %}
-                                                <li><p class="help-block">{{ error|escape }}</p></li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                    {% include 'occasions/event_form_body.html' %}
                     <div class="box-footer">
                         <a href="{{ event.get_absolute_url }}" class="btn btn-warning">Cancel</a>
                         <button type="submit" class="btn btn-success">Submit</button>
