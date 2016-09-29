@@ -10,14 +10,6 @@
     <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
 {% endblock %}
 
-{% block enrollments_create_menu %}
-    <li class="active">
-        <a href="{% url 'patients_enrollment_create' %}">
-            <i class="fa fa-circle-o text-red"></i> Register Enrollment
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Enroll Patient Into Program
 {% endblock %}
