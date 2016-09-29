@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from communique.utils import send_notification
+from communique.utils.utils_signals import send_notification
 from .models import Patient, Enrollment
 
 

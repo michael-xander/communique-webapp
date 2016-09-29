@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 
 import datetime
 
-from communique.utils import ViewsTestCase
+from communique.utils.utils_tests import ViewsTestCase
 
 from patients.models import Patient
 from adverse.models import EmergencyContact, AdverseEvent, AdverseEventType
