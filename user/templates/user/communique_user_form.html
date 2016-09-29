@@ -5,14 +5,6 @@
     {{ block.super }} | Register User
 {% endblock %}
 
-{% block user_create_menu %}
-    <li class="active">
-        <a href="{% url 'user_communique_user_create' %}">
-            <i class="fa fa-circle-o text-red"></i> Register User
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Register User
 {% endblock %}
@@ -22,7 +14,7 @@
 
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{% url 'user_communique_user_list' %}"><i class="fa fa-user"></i> Communiqué Users</a></li>
+    <li><a href="{% url 'user_communique_user_list' %}"><i class="fa fa-users"></i> Communiqué Users</a></li>
     <li class="active"><i class="fa fa-edit"></i> Register User</li>
 {% endblock %}
 
