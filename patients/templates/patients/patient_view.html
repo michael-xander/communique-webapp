@@ -139,6 +139,7 @@
                     <li><a href="#admissions" data-toggle="tab">Admissions</a></li>
                     <li><a href="#regimens" data-toggle="tab">Regimens</a></li>
                     <li><a href="#reports" data-toggle="tab">Medical Reports</a></li>
+                    <li><a href="#events" data-toggle="tab">Adverse Events</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="registrations">
@@ -442,6 +443,37 @@
                         </table>
                         <a class="btn btn-primary" href="{% url 'patients_patient_medical_report_create' patient_pk=patient.pk %}">
                             Add Medical Report
+                        </a>
+                    </div>
+                    <div class="tab-pane" id="events">
+                        <table class="table table-bordered table-striped list-table">
+                            <thead>
+                                <tr>
+                                    <th>Event Type</th>
+                                    <th>Event Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in patient.adverse_events.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ event.get_absolute_url }}">{{ event.adverse_event_type }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ event.get_absolute_url }}">{{ event.event_date }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Event Type</th>
+                                    <th>Event Date</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <a class="btn btn-primary" href="{% url 'patients_patient_adverse_event_create' patient_pk=patient.pk %}">
+                            Report Adverse Event
                         </a>
                     </div>
                 </div>
