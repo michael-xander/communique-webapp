@@ -1,0 +1,35 @@
+{% extends parent_template|default:'base.html' %}
+
+{% block adverse_menu %}
+    <li class="treeview active">
+        <a href="#">
+            <i class="fa fa-wheelchair"></i> <span>Adverse Events</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            {% block emergency_contact_menu %}
+                <li>
+                    <a href="{% url 'adverse_emergency_contact_list' %}">
+                        <i class="fa fa-circle-o text-aqua"></i> Emergency Contacts
+                    </a>
+                </li>
+            {% endblock %}
+            {% block event_type_menu %}
+                <li>
+                    <a href="{% url 'adverse_event_type_list' %}">
+                        <i class="fa fa-circle-o text-aqua"></i> Adverse Event Types
+                    </a>
+                </li>
+            {% endblock %}
+            {% block event_menu %}
+                <li>
+                    <a href="{% url 'adverse_event_list' %}">
+                        <i class="fa fa-circle-o text-aqua"></i> Adverse Events
+                    </a>
+                </li>
+            {% endblock %}
+        </ul>
+    </li>
+{% endblock %}

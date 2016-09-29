@@ -1,0 +1,136 @@
+{% extends parent_template|default:'adverse/base_adverse.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Adverse Event Type
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+{% endblock %}
+
+{% block event_type_menu %}
+    <li class="active">
+        <a href="{% url 'adverse_event_type_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Adverse Event Types
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Adverse Event Type
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'adverse_event_type_list' %}"><i class="fa fa-wheelchair"></i> Adverse Event Type List</a></li>
+    <li class="active"><i class="fa fa-wheelchair"></i> Adverse Event Type</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-5">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <h3 class="text-center">Adverse Event Type Details</h3>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Name</b> <a class="pull-right">{{ adverse_event_type }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Date added</b> <a class="pull-right">{{ adverse_event_type.date_created }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Added by</b> <a class="pull-right">{{ adverse_event_type.created_by.get_full_name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Last modified</b> <a class="pull-right">{{ adverse_event_type.date_last_modified }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Modified by</b>
+                            <a class="pull-right">{{ adverse_event_type.last_modified_by.get_full_name }}</a>
+                        </li>
+                    </ul>
+                    <a href="{{ adverse_event_type.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
+                    <a href="{{ adverse_event_type.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                </div>
+            </div>
+            <div class="box box-primary">
+                <div class="box-body">
+                    <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
+                    <p>{{ adverse_event_type.description }}</p>
+
+                    <hr>
+
+                    <strong><i class="fa fa-wheelchair"></i> Emergency Contacts</strong>
+                    <p>
+                        {% for contact in adverse_event_type.emergency_contacts.all %}
+                            <a href="{{ contact.get_absolute_url }}">
+                                <span class="label label-warning">{{ contact }}</span>
+                            </a>
+                        {% empty %}
+                            There currently aren't any emergency contacts to be emailed in cases where adverse events of
+                            this type are reported.
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Reported Adverse Events Of This Type</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Patient</th>
+                                <th>Event Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in adverse_event_type.adverse_events.all %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ event.get_absolute_url }}">{{ event.patient.identifier }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ event.get_absolute_url }}">{{ event.patient.get_full_name }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ event.get_absolute_url }}">{{ event.event_date }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Patient</th>
+                                <th>Event Date</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+    </script>
+{% endblock %}

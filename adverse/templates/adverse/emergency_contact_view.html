@@ -1,0 +1,108 @@
+{% extends parent_template|default:'adverse/base_adverse.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Emergency Contact
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+{% endblock %}
+
+{% block emergency_contact_menu %}
+    <li class="active">
+        <a href="{% url 'adverse_emergency_contact_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Emergency Contacts
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Emergency Contact
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'adverse_emergency_contact_list' %}"><i class="fa fa-wheelchair"></i> Emergency Contacts</a></li>
+    <li class="active"><i class="fa fa-wheelchair"></i> Emergency Contact</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-5">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <h3 class="text-center">Emergency Contact Details</h3>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Name</b> <a class="pull-right">{{ emergency_contact.name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Email</b> <a class="pull-right">{{ emergency_contact.email }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Date added</b> <a class="pull-right">{{ emergency_contact.date_created }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Added by</b> <a class="pull-right">{{ emergency_contact.created_by.get_full_name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Last modified</b> <a class="pull-right">{{ emergency_contact.date_last_modified }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Modified by</b>
+                            <a class="pull-right">{{ emergency_contact.last_modified_by.get_full_name }}</a>
+                        </li>
+                    </ul>
+                    <a href="{{ emergency_contact.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
+                    <a href="{{ emergency_contact.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Adverse Event Types That Contact Is Notified On</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event_type in emergency_contact.adverse_event_types.all %}
+                                <tr>
+                                    <td><a href="{{ event_type.get_absolute_url }}">{{ event_type }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+    </script>
+{% endblock %}

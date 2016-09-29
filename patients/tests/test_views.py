@@ -204,3 +204,16 @@ class PatientAdmissionCreateViewTestCase(ExistingPatientViewsTestCase):
         patient = Patient.objects.get(id=1)
         view_url = reverse(self.view_name, kwargs={'patient_pk':patient.pk})
         self.only_active_user_access_test(view_url, self.view_template_name)
+
+
+class PatientAdverseEventCreateViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the view to report an adverse event for a patient.
+    """
+    view_name = 'patients_patient_adverse_event_create'
+    view_template_name = 'patients/patient_adverse_event_form.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        view_url = reverse(self.view_name, kwargs={'patient_pk':patient.pk})
+        self.only_active_user_access_test(view_url, self.view_template_name)

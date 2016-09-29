@@ -1,0 +1,83 @@
+{% extends parent_template|default:'adverse/base_adverse.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Emergency Contacts
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+{% endblock %}
+
+{% block emergency_contact_menu %}
+    <li class="active">
+        <a href="{% url 'adverse_emergency_contact_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Emergency Contacts
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Emergency Contacts
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'adverse_emergency_contact_list' %}"><i class="fa fa-wheelchair"></i> Emergency Contacts</a></li>
+    <li class="active"><i class="fa fa-table"></i> List</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Existing Emergency Contacts</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contact in emergency_contact_list %}
+                                <tr>
+                                    <td><a href="{{ contact.get_absolute_url }}">{{ contact }}</a></td>
+                                    <td><a href="{{ contact.get_absolute_url }}">{{ contact.email }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <a class="btn btn-primary" href="{% url 'adverse_emergency_contact_create' %}">Add Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+    </script>
+{% endblock %}
