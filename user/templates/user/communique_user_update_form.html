@@ -1,5 +1,4 @@
 {% extends parent_template|default:"user/base_user.html" %}
-{% load widget_tweaks %}
 
 {% block title %}
   {{ block.super }} | Update User
@@ -28,25 +27,8 @@
           <h3 class="box-title">User System Information</h3>
         </div>
         <form role="form" action="{{ communique_user.get_update_url }}" method="post">
-          {% csrf_token %}
-          <div class="box-body">
-            {% for field in form %}
-              <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.help_text %}
-                  <p class="help-block">{{ field.help_text }}</p>
-                {% endif %}
-                {% if field.errors %}
-                  <ul>
-                    {% for error in field.errors %}
-                      <li><p class="help-block">{{ error|escape }}</p></li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-              </div>
-            {% endfor %}
-          </div>
+            {% csrf_token %}
+            {% include 'user/communique_user_form_body.html' %}
           <div class="box-footer">
             <a href="{{ communique_user.get_absolute_url }}" class="btn btn-warning">
               Cancel

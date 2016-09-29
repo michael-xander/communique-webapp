@@ -1,0 +1,32 @@
+{% load widget_tweaks %}
+
+<div class="box-body">
+    {% for field in form %}
+        <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+            {{ field.label_tag }}
+            {% if field.label == "Superuser status" or field.label == 'Active' %}
+                {{ field }}
+            {% elif field.label == "Username" %}
+                {{ field|attr:"placeholder:Enter username"|add_class:"form-control" }}
+            {% elif field.label == "First name" %}
+                {{ field|attr:"placeholder:Enter first name"|add_class:"form-control" }}
+            {% elif field.label == "Last name" %}
+                {{ field|attr:"placeholder:Enter last name"|add_class:"form-control" }}
+            {% elif field.label == "Email address" %}
+                {{ field|attr:"placeholder:Enter email address"|add_class:"form-control" }}
+            {% else %}
+                {{ field|add_class:"form-control" }}
+            {% endif %}
+            {% if field.help_text %}
+                <p class="help-block">{{ field.help_text }}</p>
+            {% endif %}
+            {% if field.errors %}
+                <ul>
+                    {% for error in field.errors %}
+                        <li><p class="help-block">{{ error|escape }}</p></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
