@@ -11,6 +11,7 @@ from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimen
 from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
 from regimens.models import Regimen
+from adverse.models import AdverseEvent
 from patients.utils.utils_views import import_patients_from_file
 
 
@@ -266,4 +267,22 @@ class PatientRegimenCreateView(PatientModelCreateView):
 
         return super(PatientRegimenCreateView, self).form_valid(form)
 
+
+class PatientAdverseEventCreateView(PatientModelCreateView):
+    """
+    A view that handles adding an adverse event for a specific patient.
+    """
+    model = AdverseEvent
+    fields = ['adverse_event_type', 'event_date', 'notes']
+    template_name = 'patients/patient_adverse_event_form.html'
+
+    def form_valid(self, form):
+        # set teh created by and last modified by fields
+        form.instance.created_by = self.request.user
+        form.instance.last_modified_by = self.request.user
+
+        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
+        form.instance.patient = patient
+
+        return super(PatientAdverseEventCreateView, self).form_valid(form)
 

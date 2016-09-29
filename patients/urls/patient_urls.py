@@ -3,7 +3,7 @@ from django.conf.urls import url
 from patients.views import (PatientListView, PatientCreateView, PatientDetailView, PatientUpdateView, PatientDeleteView,
                             PatientEnrollmentCreateView, PatientSessionCreateView, PatientAppointmentCreateView,
                             PatientMedicalReportCreateView, PatientAdmissionCreateView, PatientImportView,
-                            PatientRegimenCreateView)
+                            PatientRegimenCreateView, PatientAdverseEventCreateView)
 
 urlpatterns = [
     url(r'^$', PatientListView.as_view(), name='patients_patient_list'),
@@ -24,4 +24,6 @@ urlpatterns = [
         name='patients_patient_admission_create'),
     url(r'^(?P<patient_pk>[0-9]+)/add-regimen/$', PatientRegimenCreateView.as_view(),
         name='patients_patient_regimen_create'),
+    url(r'^(?P<patient_pk>[0-9]+)/report-adverse-event/$', PatientAdverseEventCreateView.as_view(),
+        name='patients_patient_adverse_event_create'),
 ]
