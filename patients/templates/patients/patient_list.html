@@ -10,14 +10,6 @@
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
-{% block patients_list_menu %}
-    <li class="active">
-        <a href="{% url 'patients_patient_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Patients List
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Patients
 {% endblock %}
