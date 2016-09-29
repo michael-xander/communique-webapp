@@ -217,25 +217,10 @@
                             </li>
                         {% endblock %}
                         {% block admissions_menu %}
-                            <li class="treeview">
-                                <a href="#">
+                            <li>
+                                <a href="{% url 'admissions_admission_list' %}">
                                     <i class="fa fa-ambulance"></i> <span>Admissions</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
                                 </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="{% url 'admissions_admission_list' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Admissions List
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'admissions_admission_create' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Add Admission
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                         {% endblock %}
                         {% block counselling_sessions_menu %}
