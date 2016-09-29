@@ -1,5 +1,4 @@
 {% extends parent_template|default:"patients/base_enrollments.html" %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Close Enrollment
@@ -29,27 +28,7 @@
                 </div>
                 <form role="form" action="{{ enrollment.get_update_url }}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {{ enrollment.patient }}'s enrollment in {{ enrollment.program }}
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-                                {{ field }}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'patients/enrollment_form_body.html' %}
                     <div class="box-footer">
                         <a href="{{ enrollment.get_absolute_url }}" class="btn btn-warning">Cancel</a>
                         <button type="submit" class="btn btn-success">Submit</button>
