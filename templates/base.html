@@ -223,7 +223,7 @@
                                 </a>
                             </li>
                         {% endblock %}
-                        {% block counselling_sessions_menu %}
+                        {% block counselling_menu %}
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-plus-square"></i> <span>Counselling Sessions</span>
@@ -233,42 +233,14 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Session Types
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'counselling_sessions_type_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Session Types
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_type_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Session Type List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_type_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Session Type
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Sessions
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'counselling_sessions_session_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Sessions
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_session_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Session List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_session_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Session
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
