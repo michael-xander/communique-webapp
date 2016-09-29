@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
 {% endblock %}
 
-{% block report_add_menu %}
+{% block report_menu %}
     <li class="active">
-        <a href="{% url 'medical_report_create' %}">
-            <i class="fa fa-circle-o text-red"></i> Add Report
+        <a href="{% url 'medical_report_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Reports
         </a>
     </li>
 {% endblock %}
+
 
 {% block page_heading %}
     Add Medical Report

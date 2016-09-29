@@ -255,42 +255,14 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Report Types
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'medical_report_type_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Report Types
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'medical_report_type_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Report Type List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'medical_report_type_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Report Type
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Reports
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'medical_report_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Reports
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'medical_report_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Report List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'medical_report_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Report
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
