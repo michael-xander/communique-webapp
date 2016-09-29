@@ -1,0 +1,72 @@
+{% extends parent_template|default:'adverse/base_adverse.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Update Adverse Event
+{% endblock %}
+
+{% block head %}
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
+    <!-- bootstrap datepicker css -->
+    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
+{% endblock %}
+
+{% block event_menu %}
+    <li class="active">
+        <a href="{% url 'adverse_event_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Adverse Events
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Update Adverse Event
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'adverse_event_list' %}"><i class="fa fa-wheelchair"></i> Adverse Events</a></li>
+    <li class="active"><i class="fa fa-edit"></i> Update Adverse Event</li>
+{% endblock %}
+
+{% block page_content %}
+    {% include 'form_errors.html' with class='col-md-12' %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Adverse Event Details</h3>
+                </div>
+                <form role="form" action="{{ adverse_event.get_update_url }}" method="post">
+                    {% csrf_token %}
+                    {% include 'adverse/adverse_event_form_body.html' %}
+                    <div class="box-footer">
+                        <a class="btn btn-warning" href="{{ adverse_event.get_absolute_url }}">Cancel</a>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- select2 js -->
+    <script src="{% static "plugins/select2/select2.full.min.js" %}"></script>
+    <!-- datepicker js -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
+    <script>
+        $(function () {
+            $(".select2").select2();
+            $(".date-picker").datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy'
+            });
+        });
+    </script>
+{% endblock %}
