@@ -1,5 +1,4 @@
 {% extends parent_template|default:"programs/base_programs.html" %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Add Pilot Program
@@ -29,34 +28,7 @@
                 </div>
                 <form role="form" action="{% url 'programs_program_create' %}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-                                {% if field.label == "Program name" %}
-                                    {{ field|attr:"placeholder:Enter program name"|add_class:"form-control" }}
-                                {% elif field.label == "Description" %}
-                                    {{ field|attr:"placeholder:Enter program description"|add_class:"form-control" }}
-                                {% elif field.label == "Is open" %}
-                                    {{ field }}
-                                {% else %}
-                                    {{ field|add_class:"form-control" }}
-                                {% endif %}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'programs/program_form_body.html' %}
                     <div class="box-footer">
                         <button type="reset" class="btn btn-warning">Reset</button>
                         <button type="submit" class="btn btn-success">Submit</button>
