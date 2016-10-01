@@ -49,9 +49,18 @@ class PatientUpdateView(CommuniqueUpdateView):
     A view to handle updating patient information.
     """
     model = Patient
-    fields = ['last_name', 'other_names', 'identifier', 'reference_health_centre', 'birth_date', 'sex', 'location',
-              'treatment_start_date', 'interim_outcome', 'contact_number']
+    fields = ['last_name', 'other_names', 'identifier', 'birth_date', 'sex', 'treatment_start_date', 'interim_outcome']
     template_name = 'patients/patient_update_form.html'
+    context_object_name = 'patient'
+
+
+class PatientContactUpdateView(CommuniqueUpdateView):
+    """
+    A view to handle updating a patient's contact details
+    """
+    model = Patient
+    fields = ['location', 'reference_health_centre', 'contact_number', 'second_contact_number', 'third_contact_number']
+    template_name = 'patients/patient_contact_update_form.html'
     context_object_name = 'patient'
 
 

@@ -51,6 +51,14 @@ class PatientTestCase(TestCase):
         patient = Patient.objects.get(id=1)
         self.assertEqual(patient.get_delete_url(), reverse('patients_patient_delete', kwargs={'pk':patient.pk}))
 
+    def test_get_contact_update_url(self):
+        """
+        A test case for the get_contact_update_url method for the model
+        """
+        patient = Patient.objects.get(id=1)
+        self.assertEqual(patient.get_contact_update_url(), reverse('patients_patient_contact_update',
+                                                                   kwargs={'pk':patient.pk}))
+
 
 class EnrollmentTestCase(TestCase):
     """

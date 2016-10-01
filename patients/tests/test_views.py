@@ -73,6 +73,17 @@ class PatientUpdateViewTestCase(ExistingPatientViewsTestCase):
         self.only_active_user_access_test(patient.get_update_url(), self.view_template_name)
 
 
+class PatientContactUpdateViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the contact update view fora patient.
+    """
+    view_template_name = 'patients/patient_contact_update_form.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        self.only_active_user_access_test(patient.get_contact_update_url(), self.view_template_name)
+
+
 class PatientDeleteViewTestCase(ExistingPatientViewsTestCase):
     """
     Test cases for the delete view of a patient.
