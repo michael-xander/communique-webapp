@@ -80,6 +80,12 @@ class Patient(models.Model):
     def get_contact_update_url(self):
         return reverse('patients_patient_contact_update', kwargs={'pk':self.pk})
 
+    def get_archive_url(self):
+        return reverse('patients_patient_archive', kwargs={'pk':self.pk})
+
+    def get_unarchive_url(self):
+        return reverse('patients_patient_unarchive', kwargs={'pk':self.pk})
+
     def get_delete_url(self):
         return reverse('patients_patient_delete', kwargs={'pk':self.pk})
 

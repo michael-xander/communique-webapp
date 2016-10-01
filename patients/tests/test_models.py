@@ -55,6 +55,20 @@ class PatientTestCase(TestCase):
         self.assertEqual(patient.get_contact_update_url(), reverse('patients_patient_contact_update',
                                                                    kwargs={'pk':patient.pk}))
 
+    def test_get_archive_url(self):
+        """
+        A test case for the get_archive_url method for the model
+        """
+        patient = Patient.objects.get(id=1)
+        self.assertEqual(patient.get_archive_url(), reverse('patients_patient_archive', kwargs={'pk':patient.pk}))
+
+    def test_get_unarchive_url(self):
+        """
+        A test case for the get_unarchive_url method for the model
+        """
+        patient = Patient.objects.get(id=1)
+        self.assertEqual(patient.get_unarchive_url(), reverse('patients_patient_unarchive', kwargs={'pk':patient.pk}))
+
 
 class EnrollmentTestCase(TestCase):
     """

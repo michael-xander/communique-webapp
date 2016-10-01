@@ -64,6 +64,38 @@ class PatientContactUpdateView(CommuniqueUpdateView):
     context_object_name = 'patient'
 
 
+class PatientArchiveView(CommuniqueUpdateView):
+    """
+    A view to handle archiving a patient
+    """
+    model = Patient
+    fields = []
+    template_name = 'patients/patient_confirm_archive.html'
+    context_object_name = 'patient'
+
+    def form_valid(self, form):
+        # make the patient's archived attribute true
+        form.instance.archived = True
+
+        return super(PatientArchiveView, self).form_valid(form)
+
+
+class PatientUnarchiveView(CommuniqueUpdateView):
+    """
+    A view to handle unarchiving a patient
+    """
+    model = Patient
+    fields = []
+    template_name = 'patients/patient_confirm_unarchive.html'
+    context_object_name = 'patient'
+
+    def form_valid(self, form):
+        # make the patient's archived attribute false
+        form.instance.archived = False
+
+        return super(PatientUnarchiveView, self).form_valid(form)
+
+
 class PatientDeleteView(CommuniqueDeleteView):
     """
     A view to handle the deletion of a patient.
