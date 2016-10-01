@@ -87,7 +87,13 @@
                         </li>
                     </ul>
                     <a href="{{ patient.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ patient.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+
+                    {% if patient.archived %}
+                        <a href="#" class="btn btn-warning"><b>Unarchive</b></a>
+                        <a href="{{ patient.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% else %}
+                        <a href="#" class="btn btn-warning"><b>Archive</b></a>
+                    {% endif %}
                 </div>
             </div>
 
