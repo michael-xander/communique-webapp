@@ -74,16 +74,6 @@
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <b>Contact Number</b>
-                            <a class="pull-right">
-                                {% if patient.contact_number %}
-                                    {{ patient.contact_number }}
-                                {% else %}
-                                    Unavailable
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="list-group-item">
                             <b>Added On</b> <a class="pull-right">{{ patient.date_created }}</a>
                         </li>
                         <li class="list-group-item">
@@ -103,10 +93,33 @@
 
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Patient physical locations</h3>
+                    <h3 class="box-title">Patient Contact Information</h3>
                 </div>
 
                 <div class="box-body">
+                    <strong><i class="fa fa-phone margin-r-5"> Contact numbers</i></strong>
+                    {% if patient.contact_number or patient.second_contact_number or patient.third_contact_number %}
+                        <p>
+                            {% if patient.contact_number %}
+                                <span class="label label-default">{{ patient.contact_number }}</span>
+                            {% endif %}
+
+                            {% if patient.second_contact_number %}
+                                <span class="label label-success">{{ patient.second_contact_number }}</span>
+                            {% endif %}
+
+                            {% if patient.third_contact_number %}
+                                <span class="label label-warning">{{ patient.third_contact_number }}</span>
+                            {% endif %}
+                        </p>
+                    {% else %}
+                        <p>
+                            <span class="label label-danger">This patient doesn't have any listed contact numbers</span>
+                        </p>
+                    {% endif %}
+
+                    <hr>
+
                     <strong><i class="fa fa-home margin-r-5"></i> Home</strong>
                     <p>
                         {% if patient.location %}
@@ -126,6 +139,12 @@
                             Unavailable
                         {% endif %}
                     </p>
+
+                    <hr>
+
+                    <a href="{{ patient.get_contact_update_url }}" class="btn btn-primary btn-block">
+                        Update Information
+                    </a>
                 </div>
             </div>
         </div>
