@@ -25,7 +25,7 @@ class Patient(models.Model):
                            help_text='The sex of the patient')
     birth_date = models.DateField(verbose_name="Birth Date", blank=True, null=True,
                                   help_text='Please use the following format: DD/MM/YYYY. This field is optional.')
-    identifier = models.CharField(verbose_name="Patient Identifier", unique=True, blank=True, null=True, max_length=150,
+    identifier = models.CharField(verbose_name="Patient Identifier", unique=True, max_length=150,
                                   help_text='The identifier used in the existing filing system')
     location = models.CharField(verbose_name="Patient's address", blank=True, null=True, max_length=150,
                                 help_text='The current residential address of the patient. This field is optional.')
