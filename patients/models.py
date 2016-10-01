@@ -31,12 +31,20 @@ class Patient(models.Model):
                                 help_text='The current residential address of the patient. This field is optional.')
     contact_number = models.CharField(verbose_name='Contact number', blank=True, null=True, max_length=50,
                                       help_text='The telephone/mobile number for the patient. This field is optional.')
+    second_contact_number = models.CharField(verbose_name='Second contact number', blank=True, null=True, max_length=50,
+                                             help_text='A second contact number for the patient. This field is optional')
+    third_contact_number = models.CharField(verbose_name='Third contact number', blank=True, null=True, max_length=50,
+                                            help_text='A third contact number for the patient. This field is optional')
+
     reference_health_centre = models.CharField(verbose_name='Reference health centre', blank=True, null=True,
                                                max_length=150,
-                                               help_text='The health centre to be contacted for more information. This field is optional.')
+                                               help_text='The health centre to be contacted for more information. This '
+                                                         'field is optional.')
     interim_outcome = models.CharField(verbose_name='Interim outcome', max_length=200, blank=True, null=True)
     treatment_start_date = models.DateField(verbose_name='Treatment start date', blank=True, null=True,
                                             help_text='The date the patient started treatment')
+    archived = models.BooleanField(verbose_name='Archived', default=False,
+                                   help_text='Whether this patient has been archived')
 
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
                                    related_name='created_patients', related_query_name='created_patient',
