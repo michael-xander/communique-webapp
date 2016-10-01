@@ -170,7 +170,7 @@ class ExistingAdverseEventViewsTestCase(ViewsTestCase):
     """
     def setUp(self):
         super(ExistingAdverseEventViewsTestCase, self).setUp()
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         adverse_event_type = AdverseEventType.objects.create(name='Sample Type', description='Sample description')
         AdverseEvent.objects.create(patient=patient, adverse_event_type=adverse_event_type,
                                     event_date=datetime.date.today())

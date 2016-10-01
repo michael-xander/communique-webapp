@@ -102,7 +102,7 @@ class Enrollment(models.Model):
                                     help_text='Whether this enrollment is still active.')
 
     def __str__(self):
-        temp_str = "{0} into {1}".format(self.patient, self.program)
+        temp_str = "{0} into {1}".format(self.patient.get_full_name(), self.program)
         return temp_str
 
     def get_absolute_url(self):

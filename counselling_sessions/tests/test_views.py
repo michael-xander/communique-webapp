@@ -103,7 +103,7 @@ class ExistingCounsellingSessionViewsTestCase(ViewsTestCase):
     def setUp(self):
         super(ExistingCounsellingSessionViewsTestCase, self).setUp()
         session_type = CounsellingSessionType.objects.create(name='dummy type')
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         CounsellingSession.objects.create(patient=patient, counselling_session_type=session_type)
 
 

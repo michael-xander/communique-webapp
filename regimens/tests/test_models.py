@@ -48,7 +48,7 @@ class RegimenTestCase(TestCase):
     Test cases for the Regimen model
     """
     def setUp(self):
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         Regimen.objects.create(patient=patient, notes='Sample notes', date_started=datetime.date.today())
 
     def test_str(self):

@@ -10,7 +10,7 @@ class PatientTestCase(TestCase):
     Test cases for the Patient model.
     """
     def setUp(self):
-        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
 
     def test_get_full_name(self):
         """
@@ -24,10 +24,6 @@ class PatientTestCase(TestCase):
         A test case for the __str__ method for the Patient model.
         """
         patient = Patient.objects.get(id=1)
-        self.assertEqual(patient.__str__(), 'Jon Snow')
-
-        patient.identifier = 'A001'
-        patient.save()
         self.assertEqual(patient.__str__(), 'A001 - Jon Snow')
 
     def test_get_absolute_url(self):
@@ -65,7 +61,7 @@ class EnrollmentTestCase(TestCase):
     Test cases for the Enrollment model.
     """
     def setUp(self):
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         program = Program.objects.create(name='Sample', description='Sample description')
         Enrollment.objects.create(patient=patient, program=program, comment='No comment')
 

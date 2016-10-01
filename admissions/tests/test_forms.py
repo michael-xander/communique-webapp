@@ -11,7 +11,7 @@ class AdmissionCreateFormTestCase(TestCase):
     Test cases for the admission create form.
     """
     def setUp(self):
-        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
 
     def test_date_validation(self):
         """

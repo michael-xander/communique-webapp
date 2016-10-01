@@ -110,7 +110,7 @@ class ExistingMedicalReportViewTestCase(ViewsTestCase):
         """
         super(ExistingMedicalReportViewTestCase, self).setUp()
         report_type = MedicalReportType.objects.create(name='dummy type')
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         MedicalReport.objects.create(title='dummy report', patient=patient, report_type=report_type,
                                      notes='sample notes')
 
