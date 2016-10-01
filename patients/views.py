@@ -30,7 +30,8 @@ class PatientCreateView(CommuniqueCreateView):
     """
     model = Patient
     fields = ['last_name', 'other_names', 'identifier', 'reference_health_centre', 'birth_date', 'sex', 'location',
-              'treatment_start_date', 'interim_outcome', 'contact_number']
+              'treatment_start_date', 'interim_outcome', 'contact_number', 'second_contact_number',
+              'third_contact_number']
     template_name = 'patients/patient_form.html'
 
 
