@@ -35,7 +35,7 @@ class PatientArchiveListView(CommuniqueListView):
     """
     model = Patient
     template_name = 'patients/patient_archived_list.html'
-    context_object_name = 'patient_list'
+    context_object_name = 'patient_archived_list'
 
     def get_queryset(self):
         # get all the patients that are archived
