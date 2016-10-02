@@ -38,7 +38,8 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Patient</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Date</th>
                                 <th>Starts</th>
                                 <th>Ends</th>
@@ -48,7 +49,16 @@
                             {% for appointment in appointment_list %}
                                 <tr>
                                     <td><a href="{{ appointment.get_absolute_url }}">{{ appointment }}</a></td>
-                                    <td><a href="{{ appointment.get_absolute_url }}">{{ appointment.patient }}</a></td>
+                                    <td>
+                                        <a href="{{ appointment.get_absolute_url }}">
+                                            {{ appointment.patient.identifier }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ appointment.get_absolute_url }}">
+                                            {{ appointment.patient.get_full_name }}
+                                        </a>
+                                    </td>
                                     <td>
                                         <a href="{{ appointment.get_absolute_url }}">{{ appointment.appointment_date }}</a>
                                     </td>
@@ -60,7 +70,8 @@
                         <tfoot>
                             <tr>
                                 <th>Title</th>
-                                <th>Patient</th>
+                                <th>Patient ID</th>
+                                <th>Patient Names</th>
                                 <th>Date</th>
                                 <th>Starts</th>
                                 <th>Ends</th>

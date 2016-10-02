@@ -1,0 +1,68 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+{% load widget_tweaks %}
+
+{% block page_heading %}
+    Import Patients
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_content %}
+    {% include 'form_errors.html' with class='col-md-12' %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Import Patients From File</h3>
+                </div>
+                <form role="form" action="{% url 'patients_patient_import' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <h4><u>Please Note:</u></h4>
+                        <p>
+                            There are specifications that must be met by the file being uploaded in order for it the data
+                            it contains to be processed successfully. These specifications are:
+                        </p>
+                        <h5><u>File Type:</u></h5>
+                        <p>The file should be a UTF-8 csv file with the columns separated with a semicolon (;).</p>
+                        <h5><u>Columns</u></h5>
+                        <p>
+                            The file should contain the following columns in this specific order: patient_id, last_name,
+                            names, health_centre, dob, sex, address, treatment_start_date and interim_outcome. Each
+                            value in column is expected to be filled.
+                        </p>
+                        <h5><u>Field Formatting:</u></h5>
+                        <p>
+                            Any of the date (dob and treatment_start_date) columns should be in the YYYY/MM/DD format
+                            and the sex column should have either male/female as its values.
+                        </p>
+                        {% for field in form %}
+                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+                                {{ field.label_tag }}
+                                {{ field }}
+
+                                {% if field.help_text %}
+                                    <p class="help-block">{{ field.help_text }}</p>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <ul>
+                                        {% for error in field.errors %}
+                                            <li><p class="help-block">{{ error|escape }}</p></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-warning" href="{% url 'patients_patient_list' %}">Cancel</a>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

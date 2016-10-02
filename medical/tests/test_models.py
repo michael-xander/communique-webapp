@@ -50,7 +50,7 @@ class MedicalReportTestCase(TestCase):
     """
     def setUp(self):
         report_type = MedicalReportType.objects.create(name='dummy type')
-        patient = Patient.objects.create(first_name='Jon', last_name='Snow')
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
         MedicalReport.objects.create(title='dummy report', report_type=report_type, patient=patient,
                                      notes='Sample notes')
 

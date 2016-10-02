@@ -35,7 +35,7 @@ class Admission(models.Model):
                                           help_text='The date on which the details of this admission were last updated')
 
     def __str__(self):
-        temp_str = "{0} to {1}".format(self.patient, self.health_centre)
+        temp_str = "{0} to {1}".format(self.patient.get_full_name(), self.health_centre)
         return temp_str
 
     def get_absolute_url(self):

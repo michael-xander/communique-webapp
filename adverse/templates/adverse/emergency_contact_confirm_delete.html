@@ -1,0 +1,50 @@
+{% extends parent_template|default:'adverse/base_adverse.html' %}
+
+{% block title %}
+    {{ block.super }} Delete Emergency Contact
+{% endblock %}
+
+{% block emergency_contact_menu %}
+    <li class="active">
+        <a href="{% url 'adverse_emergency_contact_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Emergency Contacts
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Delete {{ emergency_contact }}
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'adverse_emergency_contact_list' %}"><i class="fa fa-wheelchair"></i> Emergency Contacts</a></li>
+    <li class="active"><i class="fa fa-edit"></i> Delete Emergency Contact</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-danger box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Delete Emergency Contact Confirmation</h3>
+                </div>
+                <form role="form" action="{{ emergency_contact.get_delete_url }}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        Are you sure that you want to delete the emergency contact: {{ emergency_contact }} with email
+                        address {{ emergency_contact.email }}?
+                    </div>
+                    <div class="box-footer">
+                        <a href="{{ emergency_contact.get_absolute_url }}" class="btn btn-success">Cancel</a>
+                        <button type="submit" class="btn btn-danger">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
