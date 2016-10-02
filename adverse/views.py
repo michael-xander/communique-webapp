@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from .models import EmergencyContact, AdverseEvent, AdverseEventType
 from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
                               CommuniqueDeleteView)
+from .forms import AdverseEventForm
 
 
 class EmergencyContactListView(CommuniqueListView):
@@ -113,7 +114,7 @@ class AdverseEventCreateView(CommuniqueCreateView):
     A view to handle the form for creation of an adverse event
     """
     model = AdverseEvent
-    fields = ['patient', 'adverse_event_type', 'event_date', 'notes']
+    form_class = AdverseEventForm
     template_name = 'adverse/adverse_event_form.html'
 
 

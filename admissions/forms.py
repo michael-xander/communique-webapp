@@ -1,9 +1,10 @@
 from django import forms
 
 from .models import Admission
+from communique.forms import PatientFieldForm
 
 
-class AdmissionCreateForm(forms.ModelForm):
+class AdmissionCreateForm(PatientFieldForm):
     """
     A form used to create an admission for a patient.
     """
