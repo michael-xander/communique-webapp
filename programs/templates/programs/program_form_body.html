@@ -8,8 +8,6 @@
                 {{ field|attr:"placeholder:Enter program name"|add_class:"form-control" }}
             {% elif field.label == "Description" %}
                 {{ field|attr:"placeholder:Enter program description"|add_class:"form-control" }}
-            {% elif field.label == "Is open" %}
-                {{ field }}
             {% else %}
                 {{ field|add_class:"form-control" }}
             {% endif %}

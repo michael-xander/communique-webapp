@@ -24,17 +24,6 @@
 {% endblock %}
 
 {% block page_content %}
-    {% if not program.is_open %}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-info alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-info"></i> Alert!</h4>
-                    This program has been closed and as such, patients cannot be registered to it.
-                </div>
-            </div>
-        </div>
-    {% endif %}
     <div class="row">
         <div class="col-md-4">
             <div class="box box-primary">
@@ -52,16 +41,6 @@
                         </li>
                         <li class="list-group-item">
                             <b>Modified by</b> <a class="pull-right">{{ program.last_modified_by.get_full_name }}</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Status</b>
-                            <a class="pull-right">
-                                {% if program.is_open %}
-                                    <span class="label label-success">Open</span>
-                                {% else %}
-                                    <span class="label label-danger">Closed</span>
-                                {% endif %}
-                            </a>
                         </li>
                         <li class="list-group-item">
                             <b>Registered patients</b> <a class="pull-right">{{ program.enrolled_patients.count }}</a>
@@ -97,7 +76,7 @@
                 </div>
 
                 <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <table id="table1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Patient ID</th>
@@ -156,15 +135,7 @@
   <!-- page script -->
   <script>
     $(function () {
-      $("#example1").DataTable();
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false
-      });
+      $("#table1").DataTable();
     });
   </script>
 {% endblock %}

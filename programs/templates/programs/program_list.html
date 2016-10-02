@@ -36,39 +36,24 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Status</th>
                                 <th>Date Created</th>
                                 <th>Created By</th>
-                                <th>Date Last Modified</th>
-                                <th>Last Modified By</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for program in program_list %}
                                 <tr>
                                     <td><a href="{{ program.get_absolute_url }}">{{ program }}</a></td>
-                                    <td>
-                                        {% if program.is_open %}
-                                            <span class="label label-success">Open</span>
-                                        {% else %}
-                                            <span class="label label-danger">Closed</span>
-                                        {% endif %}
-                                    </td>
                                     <td><a href="{{ program.get_absolute_url }}">{{ program.date_created }}</a></td>
                                     <td><a href="{{ program.get_absolute_url }}">{{ program.created_by.get_full_name }}</a></td>
-                                    <td><a href="{{ program.get_absolute_url }}">{{ program.date_last_modified }}</a></td>
-                                    <td><a href="{{ program.get_absolute_url }}">{{ program.last_modified_by.get_full_name }}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>Name</th>
-                                <th>Status</th>
                                 <th>Date Created</th>
                                 <th>Created By</th>
-                                <th>Date Last Modified</th>
-                                <th>Last Modified By</th>
                             </tr>
                         </tfoot>
                     </table>

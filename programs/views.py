@@ -19,7 +19,7 @@ class ProgramCreateView(CommuniqueCreateView):
     A view to handle creation of a Program by displaying the form and handling the post request.
     """
     model = Program
-    fields = ['name', 'description', 'is_open']
+    fields = ['name', 'description']
     template_name = 'programs/program_form.html'
 
 
@@ -37,7 +37,7 @@ class ProgramUpdateView(CommuniqueUpdateView):
     A view to update the details of a Program.
     """
     model = Program
-    fields = ['name', 'description', 'is_open']
+    fields = ['name', 'description']
     template_name = 'programs/program_update_form.html'
     context_object_name = 'program'
 
