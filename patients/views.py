@@ -7,7 +7,7 @@ from .models import Patient, Enrollment
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
 from medical.models import MedicalReport
-from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimenForm
+from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimenForm, EnrollmentForm
 from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
 from regimens.models import Regimen
@@ -155,7 +155,7 @@ class EnrollmentCreateView(CommuniqueCreateView):
     A view to handle creation of an enrollment.
     """
     model = Enrollment
-    fields = ['patient', 'program', 'comment']
+    form_class = EnrollmentForm
     template_name = 'patients/enrollment_form.html'
 
     def form_valid(self, form):

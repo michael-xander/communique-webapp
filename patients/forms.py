@@ -9,9 +9,19 @@ from appointments.forms import AppointmentForm
 from regimens.models import Regimen
 from regimens.forms import RegimenForm
 
-from patients.models import Patient
+from patients.models import Patient, Enrollment
 from patients.utils.utils_forms import (ORDERED_UPLOAD_COLUMNS, PATIENT_ID_UPLOAD_COLUMN, OTHER_NAMES_UPLOAD_COLUMN,
                                         LAST_NAME_UPLOAD_COLUMN, SEX_UPLOAD_COLUMN)
+from communique.forms import PatientFieldForm
+
+
+class EnrollmentForm(PatientFieldForm):
+    """
+    A form to create an enrollment
+    """
+    class Meta:
+        model = Enrollment
+        fields = ['patient', 'program', 'comment']
 
 
 class PatientAppointmentForm(AppointmentForm):
