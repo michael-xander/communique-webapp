@@ -28,19 +28,28 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Enrollment Details</h3>
+            {% if patient.archived %}
+                <div class="callout callout-danger">
+                    <h4>Patient Is Archived</h4>
+                    <p>
+                        This patient is currently archived and therefore cannot be enrolled into a program.
+                    </p>
                 </div>
-                <form role="form" action="{% url 'patients_patient_enroll_create' patient_pk=patient.pk %}" method="post">
-                    {% csrf_token %}
-                    {% include 'patients/enrollment_form_body.html' %}
-                    <div class="box-footer">
-                        <a href="{{ patient.get_absolute_url }}" class="btn btn-warning">Cancel</a>
-                        <button type="submit" class="btn btn-success">Submit</button>
+            {% else %}
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Enrollment Details</h3>
                     </div>
-                </form>
-            </div>
+                    <form role="form" action="{% url 'patients_patient_enroll_create' patient_pk=patient.pk %}" method="post">
+                        {% csrf_token %}
+                        {% include 'patients/enrollment_form_body.html' %}
+                        <div class="box-footer">
+                            <a href="{{ patient.get_absolute_url }}" class="btn btn-warning">Cancel</a>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

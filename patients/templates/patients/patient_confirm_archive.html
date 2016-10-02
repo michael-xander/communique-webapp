@@ -1,0 +1,42 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+
+{% block title %}
+    {{ block.super }} | Archive Patient
+{% endblock %}
+
+{% block page_heading %}
+    Archive Patient
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    <li class="active"><i class="fa fa-edit"></i> Archive Patient</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Archive Patient Confirmation</h3>
+                </div>
+                <form role="form" action="{{ patient.get_archive_url }}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        Are you sure that you want to archive the patient: {{ patient }}? If archived, this patient will
+                        not be able to receive any services until he/she is unarchived.
+                    </div>
+                    <div class="box-footer">
+                        <a href="{{ patient.get_absolute_url }}" class="btn btn-success">Cancel</a>
+                        <button type="submit" class="btn btn-warning">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
