@@ -69,7 +69,7 @@ class MedicalReportCreateView(CommuniqueCreateView):
     model = MedicalReport
     template_name = 'medical/medical_report_form.html'
     form_class = MedicalReportForm
-    
+
 
 class MedicalReportDetailView(CommuniqueDetailView):
     """
