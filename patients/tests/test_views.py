@@ -75,13 +75,35 @@ class PatientUpdateViewTestCase(ExistingPatientViewsTestCase):
 
 class PatientContactUpdateViewTestCase(ExistingPatientViewsTestCase):
     """
-    Test cases for the contact update view fora patient.
+    Test cases for the contact update view for a patient.
     """
     view_template_name = 'patients/patient_contact_update_form.html'
 
     def test_active_user_access(self):
         patient = Patient.objects.get(id=1)
         self.only_active_user_access_test(patient.get_contact_update_url(), self.view_template_name)
+
+
+class PatientArchiveViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the patient archive view
+    """
+    view_template_name = 'patients/patient_confirm_archive.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        self.only_active_user_access_test(patient.get_archive_url(), self.view_template_name)
+
+
+class PatientUnarchiveViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the patient unarchive view
+    """
+    view_template_name = 'patients/patient_confirm_unarchive.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        self.only_active_user_access_test(patient.get_unarchive_url(), self.view_template_name)
 
 
 class PatientDeleteViewTestCase(ExistingPatientViewsTestCase):
