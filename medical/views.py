@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from .models import MedicalReport, MedicalReportType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView)
+from .forms import MedicalReportForm
 
 
 class MedicalReportTypeListView(CommuniqueListView):
@@ -67,8 +68,8 @@ class MedicalReportCreateView(CommuniqueCreateView):
     """
     model = MedicalReport
     template_name = 'medical/medical_report_form.html'
-    fields = ['title', 'report_type', 'patient', 'notes']
-
+    form_class = MedicalReportForm
+    
 
 class MedicalReportDetailView(CommuniqueDetailView):
     """
