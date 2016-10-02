@@ -1,8 +1,9 @@
 from django.core.urlresolvers import reverse_lazy
 
-from .models import *
+from .models import CounsellingSession, CounsellingSessionType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView)
+from .forms import CounsellingSessionForm
 
 
 class CounsellingSessionTypeListView(CommuniqueListView):
@@ -67,7 +68,7 @@ class CounsellingSessionCreateView(CommuniqueCreateView):
     """
     model = CounsellingSession
     template_name = 'counselling_sessions/counselling_session_form.html'
-    fields = ['counselling_session_type', 'patient', 'notes']
+    form_class = CounsellingSessionForm
 
 
 class CounsellingSessionDetailView(CommuniqueDetailView):
