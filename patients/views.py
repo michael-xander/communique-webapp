@@ -17,11 +17,30 @@ from patients.utils.utils_views import import_patients_from_file
 
 class PatientListView(CommuniqueListView):
     """
-    A view to list all patients that currently exist in the system.
+    A view to list all patients that currently exist in the system and are not archived.
     """
     model = Patient
     template_name = 'patients/patient_list.html'
     context_object_name = 'patient_list'
+
+    def get_queryset(self):
+        # get all the patients that are not archived
+        patients = Patient.objects.filter(archived=False)
+        return patients
+
+
+class PatientArchiveListView(CommuniqueListView):
+    """
+    A view to list all patients that have been archived
+    """
+    model = Patient
+    template_name = 'patients/patient_archived_list.html'
+    context_object_name = 'patient_list'
+
+    def get_queryset(self):
+        # get all the patients that are archived
+        patients = Patient.objects.filter(archived=True)
+        return patients
 
 
 class PatientCreateView(CommuniqueCreateView):

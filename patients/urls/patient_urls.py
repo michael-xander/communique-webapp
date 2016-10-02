@@ -4,10 +4,11 @@ from patients.views import (PatientListView, PatientCreateView, PatientDetailVie
                             PatientEnrollmentCreateView, PatientSessionCreateView, PatientAppointmentCreateView,
                             PatientMedicalReportCreateView, PatientAdmissionCreateView, PatientImportView,
                             PatientRegimenCreateView, PatientAdverseEventCreateView, PatientContactUpdateView,
-                            PatientArchiveView, PatientUnarchiveView)
+                            PatientArchiveView, PatientUnarchiveView, PatientArchiveListView)
 
 urlpatterns = [
     url(r'^$', PatientListView.as_view(), name='patients_patient_list'),
+    url(r'^archive/$', PatientArchiveListView.as_view(), name='patients_patient_archived_list'),
     url(r'^create/$', PatientCreateView.as_view(), name='patients_patient_create'),
     url(r'^import/$', PatientImportView.as_view(), name='patients_patient_import'),
     url(r'^(?P<pk>[0-9]+)/$', PatientDetailView.as_view(), name='patients_patient_detail'),
