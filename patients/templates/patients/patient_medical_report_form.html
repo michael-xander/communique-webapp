@@ -16,6 +16,11 @@
 {% block page_subheading %}
 {% endblock %}
 
+{% block page_breadcrumb %}
+    {{ block.super }}
+    <li class="active"><i class="fa fa-medkit"></i> Add Medical Report</li>
+{% endblock %}
+
 {% block page_content %}
     {% include 'form_errors.html' with class='col-md-12' %}
 

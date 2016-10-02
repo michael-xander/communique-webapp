@@ -23,8 +23,7 @@
 {% endblock %}
 
 {% block page_breadcrumb %}
-    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    {{ block.super }}
     <li class="active"><i class="fa fa-calendar-plus-o"></i> Add Appointment</li>
 {% endblock %}
 

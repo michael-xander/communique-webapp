@@ -8,6 +8,11 @@
 {% block page_subheading %}
 {% endblock %}
 
+{% block page_breadcrumb %}
+    {{ block.super }}
+    <li class="active"><i class="fa fa-upload"></i> Import Patients</li>
+{% endblock %}
+
 {% block page_content %}
     {% include 'form_errors.html' with class='col-md-12' %}
 

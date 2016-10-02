@@ -1,5 +1,15 @@
 {% extends parent_template|default:"base.html" %}
 
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <!-- check whether the current request is for the archived patient list or viewing an archived patient -->
+    {% if request.resolver_match.url_name == "patients_patient_archived_list" or patient.archived %}
+        <li><a href="{% url 'patients_patient_archived_list' %}"><i class="fa fa-heartbeat"></i> Archived Patients</a></li>
+    {% else %}
+        <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    {% endif %}
+{% endblock %}
+
 {% block patients_menu %}
     <li class="treeview active">
         <a href="#">
