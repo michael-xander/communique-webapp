@@ -147,3 +147,4 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ('name', 'description', 'event_date', 'start_time', 'end_time', 'created_by', 'last_modified_by',
                   'date_created', 'date_last_modified')
         ead_only_fields = ('date_created', 'date_last_modified')
+
