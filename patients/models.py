@@ -118,3 +118,52 @@ class Enrollment(models.Model):
         return reverse('patients_enrollment_update', kwargs={'pk':self.pk})
 
 
+class OutcomeType(models.Model):
+    """
+    A model representing the category of an outcome for a patient
+    """
+    name = models.CharField(verbose_name='Patient outcome name', unique=True, max_length=100,
+                            help_text='The unique name for the patient outcome category')
+    description = models.TextField(verbose_name='Description', help_text='Definition of this patient outcome')
+
+    date_created = models.DateField(auto_now_add=True,
+                                    help_text='The date this patient outcome type was added to the system')
+    date_last_modified = models.DateField(auto_now=True,
+                                          help_text='The most recent date that details on this outcome type were last '
+                                                    'modified')
+
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   related_name='created_patient_outcome_types',
+                                   related_query_name='created_patient_outcome_type',
+                                   help_text='The user that added this outcome type to the system')
+    last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                         related_name='modified_patient_outcome_types',
+                                         related_query_name='modified_patient_outcome_type',
+                                         help_text='The user that last modified details on this outcome type')
+
+
+class Outcome(models.Model):
+    """
+    A model representing the outcome of a patient on a particular day
+    """
+    patient = models.ForeignKey(Patient, verbose_name='Patient', on_delete=models.CASCADE, related_name='outcomes',
+                                related_query_name='outcome', help_text='The patient whom the outcome is for')
+    outcome_type = models.ForeignKey(OutcomeType, verbose_name='Patient outcome type', on_delete=models.CASCADE,
+                                     related_name='outcomes', related_query_name='outcome',
+                                     help_text='The category of the patient outcome')
+    outcome_date = models.DateField(verbose_name='Outcome date',
+                                    help_text='The date the outcome for the patient was obtained')
+    notes = models.TextField(verbose_name='Notes', blank=True, null=True,
+                             help_text='Any information with regards to this patient outcome. This field is optional')
+
+    date_created = models.DateField(auto_now_add=True, help_text='The date the outcome was added to the system')
+    date_last_modified = models.DateField(auto_now=True,
+                                          help_text='The date the details of this outcome were last modified')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   related_name='created_patient_outcomes', related_query_name='created_patient_outcome',
+                                   help_text='The user that created this patient outcome')
+    last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                         related_name='modified_patient_outcomes',
+                                         related_query_name='modified_patient_outcome',
+                                         help_text='The user that last modified details on this patient outcome')
+
