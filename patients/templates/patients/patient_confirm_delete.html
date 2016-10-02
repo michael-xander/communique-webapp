@@ -19,21 +19,30 @@
 {% block page_content %}
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-danger box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Delete Patient Confirmation</h3>
+            {% if not patient.archived %}
+                <div class="callout callout-danger">
+                    <h4>Patient not archived</h4>
+                    <p>
+                        This patient is currently not archived so he/she cannot be deleted from the system.
+                    </p>
                 </div>
-                <form role="form" action="{{ patient.get_delete_url }}" method="post">
-                    {% csrf_token %}
-                    <div class="box-body">
-                        Are you sure that you want to delete the patient named: {{ patient }}?
+            {% else %}
+                <div class="box box-danger box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Delete Patient Confirmation</h3>
                     </div>
-                    <div class="box-footer">
-                        <a href="{{ patient.get_absolute_url }}" class="btn btn-success">Cancel</a>
-                        <button type="submit" class="btn btn-danger">Confirm</button>
-                    </div>
-                </form>
-            </div>
+                    <form role="form" action="{{ patient.get_delete_url }}" method="post">
+                        {% csrf_token %}
+                        <div class="box-body">
+                            Are you sure that you want to delete the patient named: {{ patient }}?
+                        </div>
+                        <div class="box-footer">
+                            <a href="{{ patient.get_absolute_url }}" class="btn btn-success">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
