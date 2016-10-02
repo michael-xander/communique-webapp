@@ -14,14 +14,18 @@ class Appointment(models.Model):
                              help_text='Any comments on this appointment. This field is optional')
     patient = models.ForeignKey(Patient, verbose_name='Patient', blank=True, null=True, on_delete=models.SET_NULL,
                                 related_name='appointments', related_query_name='appointment',
-                                help_text='The patient whom the user is scheduled to meet with. This field is optional but recommended')
+                                help_text='The patient whom the user is scheduled to meet with. This field is optional '
+                                          'but recommended')
     owner = models.ForeignKey(User, verbose_name='Appointment owner', blank=True, null=True, on_delete=models.SET_NULL,
                               related_name='owned_appointments', related_query_name='owned_appointment',
-                              help_text='The user that is to meet with the patient. If not supplied, this is set as the user creating the appointment')
-    appointment_date = models.DateField(verbose_name='Appointment date', help_text='The date the appointment is to take place')
+                              help_text='The user that is to meet with the patient. If not supplied, this is set as the'
+                                        ' user creating the appointment')
+    appointment_date = models.DateField(verbose_name='Appointment date',
+                                        help_text='The date the appointment is to take place')
     start_time = models.TimeField(verbose_name='Appointment start time',
                                   help_text='The time the appointment is scheduled to start')
-    end_time = models.TimeField(verbose_name='Appointment end time', help_text='The time the appointment is scheduled to end')
+    end_time = models.TimeField(verbose_name='Appointment end time',
+                                help_text='The time the appointment is scheduled to end')
     created_by = models.ForeignKey(User, verbose_name='Created by', on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name='created_appointments', related_query_name='created_appointment',
                                    help_text='The user that created the appointment')
