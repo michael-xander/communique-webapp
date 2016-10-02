@@ -18,6 +18,9 @@ router.register(r'admissions', AdmissionsViewSet)
 router.register(r'medicalReportType', MedicalReportTypeViewSet)
 router.register(r'medicalReport', MedicalReportViewSet)
 router.register(r'events', EventViewSet)
+router.register(r'adverseEvents', AdverseEventViewSet)
+router.register(r'adverseEventType', AdverseEventTypeViewSet)
+router.register(r'contact', EmergencyContactViewSet)
 
 
 urlpatterns = [
