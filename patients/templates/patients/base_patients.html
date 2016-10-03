@@ -2,12 +2,6 @@
 
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <!-- check whether the current request is for the archived patient list or viewing an archived patient -->
-    {% if request.resolver_match.url_name == "patients_patient_archived_list" or patient.archived %}
-        <li><a href="{% url 'patients_patient_archived_list' %}"><i class="fa fa-heartbeat"></i> Archived Patients</a></li>
-    {% else %}
-        <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
-    {% endif %}
 {% endblock %}
 
 {% block patients_menu %}
@@ -19,29 +13,20 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            {% if patient_archived_list or patient.archived or request.resolver_match.url_name == "patients_patient_archived_list" %}
+            {% block current_patients_menu %}
                 <li>
                     <a href="{% url 'patients_patient_list' %}">
                         <i class="fa fa-circle-o text-aqua"></i> Current Patients
                     </a>
                 </li>
-                <li class="active">
-                    <a href="{% url 'patients_patient_archived_list' %}">
-                        <i class="fa fa-circle-o text-red"></i> Archived Patients
-                    </a>
-                </li>
-            {% else %}
-                <li class="active">
-                    <a href="{% url 'patients_patient_list' %}">
-                        <i class="fa fa-circle-o text-red"></i> Current Patients
-                    </a>
-                </li>
+            {% endblock %}
+            {% block archived_patients_menu %}
                 <li>
                     <a href="{% url 'patients_patient_archived_list' %}">
                         <i class="fa fa-circle-o text-aqua"></i> Archived Patients
                     </a>
                 </li>
-            {% endif %}
+            {% endblock %}
         </ul>
     </li>
 {% endblock %}

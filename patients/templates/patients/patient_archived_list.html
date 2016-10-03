@@ -10,6 +10,14 @@
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
+{% block archived_patients_menu %}
+    <li class="active">
+        <a href="{% url 'patients_patient_archived_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Archived Patients
+        </a>
+    </li>
+{% endblock %}
+
 {% block page_heading %}
     Archived Patients
 {% endblock %}
@@ -19,6 +27,7 @@
 
 {% block page_breadcrumb %}
     {{ block.super }}
+    <li><a href="{% url 'patients_patient_archived_list' %}"><i class="fa fa-heartbeat"></i> Archived Patients</a></li>
     <li class="active"><i class="fa fa-table"></i> List</li>
 {% endblock %}
 
