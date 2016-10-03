@@ -160,7 +160,7 @@ class Outcome(models.Model):
     """
     patient = models.ForeignKey(Patient, verbose_name='Patient', on_delete=models.CASCADE, related_name='outcomes',
                                 related_query_name='outcome', help_text='The patient whom the outcome is for')
-    outcome_type = models.ForeignKey(OutcomeType, verbose_name='Patient outcome type', on_delete=models.CASCADE,
+    outcome_type = models.ForeignKey(OutcomeType, verbose_name='Patient outcome category', on_delete=models.CASCADE,
                                      related_name='outcomes', related_query_name='outcome',
                                      help_text='The category of the patient outcome')
     outcome_date = models.DateField(verbose_name='Outcome date',
