@@ -141,6 +141,18 @@ class OutcomeType(models.Model):
                                          related_query_name='modified_patient_outcome_type',
                                          help_text='The user that last modified details on this outcome type')
 
+    def __str__(self):
+        return self.name.title()
+
+    def get_absolute_url(self):
+        return reverse('patients_outcome_type_detail', kwargs={'pk':self.pk})
+
+    def get_update_url(self):
+        return reverse('patients_outcome_type_update', kwargs={'pk':self.pk})
+
+    def get_delete_url(self):
+        return reverse('patients_outcome_type_delete', kwargs={'pk':self.pk})
+
 
 class Outcome(models.Model):
     """
@@ -166,4 +178,15 @@ class Outcome(models.Model):
                                          related_name='modified_patient_outcomes',
                                          related_query_name='modified_patient_outcome',
                                          help_text='The user that last modified details on this patient outcome')
+
+    def __str__(self):
+        temp_str = "{0} outcome for {1} on {2}".format(self.outcome_type, self.patient.get_full_name(),
+                                                       self.outcome_date)
+        return temp_str
+
+    def get_absolute_url(self):
+        return reverse('patients_outcome_detail', kwargs={'pk':self.pk})
+
+    def get_update_url(self):
+        return reverse('patients_outcome_update', kwargs={'pk':self.pk})
 

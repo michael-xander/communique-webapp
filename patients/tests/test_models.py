@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from patients.models import Patient, Enrollment
+import datetime
+
+from patients.models import Patient, Enrollment, Outcome, OutcomeType
 from programs.models import Program
 
 
@@ -101,3 +103,71 @@ class EnrollmentTestCase(TestCase):
         enrollment = Enrollment.objects.get(id=1)
         self.assertEqual(enrollment.get_update_url(), reverse('patients_enrollment_update',
                                                               kwargs={'pk':enrollment.pk}))
+
+
+class OutcomeTypeTestCase(TestCase):
+    """
+    Test cases for the outcome type model
+    """
+    def setUp(self):
+        self.outcome_type = OutcomeType.objects.create(name='Outcome type', description='Sample description')
+
+    def test_str(self):
+        """
+        Test the __str__ method of the model
+        """
+        self.assertEqual(self.outcome_type.__str__(), self.outcome_type.name.title())
+
+    def test_get_absolute_url(self):
+        """
+        Test the get_absolute_url method of the model
+        """
+        self.assertEqual(self.outcome_type.get_absolute_url(), reverse('patients_outcome_type_detail',
+                                                                       kwargs={'pk':self.outcome_type.pk}))
+
+    def test_get_update_url(self):
+        """
+        Test the get_update_url method of the model
+        """
+        self.assertEqual(self.outcome_type.get_update_url(), reverse('patients_outcome_type_update',
+                                                                     kwargs={'pk':self.outcome_type.pk}))
+
+    def test_get_delete_url(self):
+        """
+        Test the get_delete_url method of the model
+        """
+        self.assertEqual(self.outcome_type.get_delete_url(), reverse('patients_outcome_type_delete',
+                                                                     kwargs={'pk':self.outcome_type.pk}))
+
+
+class OutcomeTestCase(TestCase):
+    """
+    Test cases for the outcome model
+    """
+    def setUp(self):
+        self.patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
+        self.outcome_type = OutcomeType.objects.create(name='Outcome type', description='Sample description')
+        self.outcome = Outcome.objects.create(patient=self.patient, outcome_type=self.outcome_type,
+                                              outcome_date=datetime.date.today())
+
+    def test_str(self):
+        """
+        Test the __str__ method of the model
+        """
+        self.assertEqual(self.outcome.__str__(), "{0} outcome for {1} on {2}".format(self.outcome_type,
+                                                                                     self.patient.get_full_name(),
+                                                                                     self.outcome.outcome_date))
+
+    def test_get_absolute_url(self):
+        """
+        Test the get_absolute_url method of the model
+        """
+        self.assertEqual(self.outcome.get_absolute_url(), reverse('patients_outcome_detail',
+                                                                  kwargs={'pk':self.outcome.pk}))
+
+    def test_get_update_url(self):
+        """
+        Test the get_update_url method of the model
+        """
+        self.assertEqual(self.outcome.get_update_url(), reverse('patients_outcome_update',
+                                                                kwargs={'pk':self.outcome.pk}))
