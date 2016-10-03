@@ -183,6 +183,7 @@
                     <li><a href="#regimens" data-toggle="tab">Regimens</a></li>
                     <li><a href="#reports" data-toggle="tab">Medical Reports</a></li>
                     <li><a href="#events" data-toggle="tab">Adverse Events</a></li>
+                    <li><a href="#outcomes" data-toggle="tab">Outcomes</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="registrations">
@@ -532,6 +533,39 @@
                         {% if not patient.archived %}
                             <a class="btn btn-primary" href="{% url 'patients_patient_adverse_event_create' patient_pk=patient.pk %}">
                                 Report Adverse Event
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane" id="outcomes">
+                        <table class="table table-bordered table-striped list-table">
+                            <thead>
+                                <tr>
+                                    <th>Outcome Category</th>
+                                    <th>Outcome Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for outcome in patient.outcomes.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_type }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_date }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Outcome Category</th>
+                                    <th>Outcome Date</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_outcome_create' patient_pk=patient.pk %}">
+                                Add Patient Outcome
                             </a>
                         {% endif %}
                     </div>
