@@ -27,6 +27,20 @@
                     </a>
                 </li>
             {% endblock %}
+            {% block outcome_type_menu %}
+                <li>
+                    <a href="{% url 'patients_outcome_type_list' %}">
+                        <i class="fa fa-circle-o text-aqua"></i> Patient Outcome Categories
+                    </a>
+                </li>
+            {% endblock %}
+            {% block outcome_menu %}
+                <li>
+                    <a href="{% url 'patients_outcome_list' %}">
+                        <i class="fa fa-circle-o text-aqua"></i> Patient Outcomes
+                    </a>
+                </li>
+            {% endblock %}
         </ul>
     </li>
 {% endblock %}
