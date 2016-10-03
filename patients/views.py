@@ -3,11 +3,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView, CommuniqueFormView)
-from .models import Patient, Enrollment
+from .models import Patient, Enrollment, Outcome, OutcomeType
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
 from medical.models import MedicalReport
-from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimenForm, EnrollmentForm
+from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimenForm, EnrollmentForm, OutcomeForm
 from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
 from regimens.models import Regimen
@@ -141,6 +141,90 @@ class PatientImportView(SuccessMessageMixin, CommuniqueFormView):
         return super(PatientImportView, self).form_valid(form)
 
 
+class OutcomeTypeListView(CommuniqueListView):
+    """
+    A view to list all outcome types
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_list.html'
+    context_object_name = 'outcome_type_list'
+
+
+class OutcomeTypeCreateView(CommuniqueCreateView):
+    """
+    A view to create an outcome type
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_form.html'
+    fields = ['name', 'description']
+
+
+class OutcomeTypeUpdateView(CommuniqueUpdateView):
+    """
+    A view to update an outcome type
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_update_form.html'
+    fields = ['name', 'description']
+    context_object_name = 'outcome_type'
+
+
+class OutcomeTypeDetailView(CommuniqueDetailView):
+    """
+    A view to display details of an outcome type
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_view.html'
+    context_object_name = 'outcome_type'
+
+
+class OutcomeTypeDeleteView(CommuniqueDeleteView):
+    """
+    A view to delete an outcome type
+    """
+    model = OutcomeType
+    success_url = reverse_lazy('patient_outcome_type_list')
+    context_object_name = 'outcome_type'
+    template_name = 'patients/outcome_type_confirm_delete.html'
+
+
+class OutcomeListView(CommuniqueListView):
+    """
+    A view to list the outcomes of patients
+    """
+    model = Outcome
+    template_name = 'patients/outcome_list.html'
+    context_object_name = 'outcome_list'
+
+
+class OutcomeCreateView(CommuniqueCreateView):
+    """
+    A view to create a patient outcome
+    """
+    model = Outcome
+    form_class = OutcomeForm
+    template_name = 'patients/outcome_form.html'
+
+
+class OutcomeUpdateView(CommuniqueUpdateView):
+    """
+    A view to update a patient outcome
+    """
+    model = Outcome
+    fields = ['outcome_date', 'notes']
+    context_object_name = 'outcome'
+    template_name = 'patients/outcome_update_form.html'
+
+
+class OutcomeDetailView(CommuniqueDetailView):
+    """
+    A view to view the details of an outcome
+    """
+    model = Outcome
+    template_name = 'patients/outcome_view.html'
+    context_object_name = 'outcome'
+
+
 class EnrollmentListView(CommuniqueListView):
     """
     A view to list all the enrollments that currently exist in the system.
@@ -229,6 +313,15 @@ class PatientSessionCreateView(PatientModelCreateView):
     model = CounsellingSession
     fields = ['counselling_session_type', 'notes']
     template_name = 'patients/patient_session_form.html'
+
+
+class PatientOutcomeCreateView(PatientModelCreateView):
+    """
+    A view that handles creation of an outcome for a patient
+    """
+    model = Outcome
+    fields = ['outcome_type', 'outcome_date', 'notes']
+    template_name = 'patients/patient_outcome_form.html'
 
 
 class PatientMedicalReportCreateView(PatientModelCreateView):
