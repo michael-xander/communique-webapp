@@ -282,7 +282,8 @@ class ExistingEnrollmentViewsTestCase(ViewsTestCase):
         super(ExistingEnrollmentViewsTestCase, self).setUp()
         patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         program = Program.objects.create(name='Sample', description='sample text')
-        Enrollment.objects.create(patient=patient, program=program, comment='No comment')
+        Enrollment.objects.create(patient=patient, program=program, comment='No comment',
+                                  date_enrolled=datetime.date.today())
 
 
 class EnrollmentDetailViewTestCase(ExistingEnrollmentViewsTestCase):

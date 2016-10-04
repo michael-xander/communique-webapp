@@ -77,32 +77,32 @@ class EnrollmentTestCase(TestCase):
     Test cases for the Enrollment model.
     """
     def setUp(self):
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
-        program = Program.objects.create(name='Sample', description='Sample description')
-        Enrollment.objects.create(patient=patient, program=program, comment='No comment')
+        self.patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
+        self.program = Program.objects.create(name='Sample', description='Sample description')
+        self.enrollment = Enrollment.objects.create(patient=self.patient, program=self.program,
+                                                    date_enrolled=datetime.date.today(), comment='No comment')
 
     def test_str(self):
         """
         Test for the __str__  method of the model
         """
-        enrollment = Enrollment.objects.get(id=1)
-        self.assertEqual(enrollment.__str__(), 'Jon Snow into Sample')
+        self.assertEqual(self.enrollment.__str__(), "{0} into {1} on {2}".format(self.patient.get_full_name(),
+                                                                                 self.program,
+                                                                                 self.enrollment.date_enrolled))
 
     def test_get_absolute_url(self):
         """
         Tests the get_absolute_url method of the model
         """
-        enrollment = Enrollment.objects.get(id=1)
-        self.assertEqual(enrollment.get_absolute_url(), reverse('patients_enrollment_detail',
-                                                                kwargs={'pk':enrollment.pk}))
+        self.assertEqual(self.enrollment.get_absolute_url(), reverse('patients_enrollment_detail',
+                                                                kwargs={'pk':self.enrollment.pk}))
 
     def test_get_update_url(self):
         """
         Tests the get_update_url method of the model
         """
-        enrollment = Enrollment.objects.get(id=1)
-        self.assertEqual(enrollment.get_update_url(), reverse('patients_enrollment_update',
-                                                              kwargs={'pk':enrollment.pk}))
+        self.assertEqual(self.enrollment.get_update_url(), reverse('patients_enrollment_update',
+                                                              kwargs={'pk':self.enrollment.pk}))
 
 
 class OutcomeTypeTestCase(TestCase):
