@@ -37,5 +37,5 @@ def post_enrollment_save_callback(sender, **kwargs):
     if enrollment.last_modified_by and kwargs['created']:
         verb = "added the enrollment:"
 
-        send_notification(actor=enrollment.enrolled_by, action_object=enrollment, verb=verb, entity_name='enrollment',
+        send_notification(actor=enrollment.last_modified_by, action_object=enrollment, verb=verb, entity_name='enrollment',
                           description=enrollment.comment)
