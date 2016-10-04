@@ -38,8 +38,6 @@
                             <th>Patient Name</th>
                             <th>Program</th>
                             <th>Date Enrolled</th>
-                            <th>Enrolled By</th>
-                            <th>Enrollment Status</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -55,16 +53,6 @@
                                     </td>
                                     <td><a href="{{ enrollment.get_absolute_url }}">{{ enrollment.program }}</a></td>
                                     <td><a href="{{ enrollment.get_absolute_url }}">{{ enrollment.date_enrolled }}</a></td>
-                                    <td><a href="{{ enrollment.get_absolute_url }}">{{ enrollment.enrolled_by.get_full_name }}</a></td>
-                                    <td>
-                                        <a href="{{ enrollment.get_absolute_url }}">
-                                            {% if enrollment.is_active %}
-                                                <span class="label label-success">Open</span>
-                                            {% else %}
-                                                <span class="label label-danger">Closed</span>
-                                            {% endif %}
-                                        </a>
-                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -74,8 +62,6 @@
                             <th>Patient Name</th>
                             <th>Program</th>
                             <th>Date Enrolled</th>
-                            <th>Enrolled By</th>
-                            <th>Enrollment Status</th>
                         </tr>
                         </tfoot>
                     </table>

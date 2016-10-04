@@ -94,21 +94,28 @@ class Enrollment(models.Model):
     """
     A model representing an enrollment between a patient and a program.
     """
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='enrollments',
-                                related_query_name='enrollment', help_text='The patient enrolled in the program.')
-    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='enrollments',
+    patient = models.ForeignKey(Patient, verbose_name='Patient', on_delete=models.CASCADE, related_name='enrollments',
+                                related_query_name='enrollment', help_text='The patient being enrolled into a program')
+    program = models.ForeignKey(Program, verbose_name='Program', on_delete=models.CASCADE, related_name='enrollments',
                                 related_query_name='enrollment', help_text='The program to which a patient is enrolled')
-    date_enrolled = models.DateField(verbose_name='date of enrollment', auto_now_add=True,
+    date_enrolled = models.DateField(verbose_name='Enrollment date',
                                      help_text='The date the patient was enrolled into the program.')
-    enrolled_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
-                                    related_name='registered_enrollments', related_query_name='registered_enrollment',
-                                    help_text="The user that registers a patient's enrollment into a program.")
-    comment = models.TextField(verbose_name='comment', help_text='A comment on the enrollment')
-    is_active = models.BooleanField(verbose_name='is open', default=True,
-                                    help_text='Whether this enrollment is still active.')
+    comment = models.TextField(verbose_name='comment', blank=True, null=True,
+                               help_text='A comment on the enrollment')
+
+    date_created = models.DateField(auto_now_add=True, help_text='The date that this enrollment was added to the system')
+    date_last_modified = models.DateField(auto_now=True,
+                                          help_text='The date the details of this enrollment were last modified')
+
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   related_name='created_enrollments', related_query_name='created_enrollment',
+                                   help_text='The user that added this enrollment to the system')
+    last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                         related_name='modified_enrollments', related_query_name='modified_enrollment',
+                                         help_text='The user that last modified details on this enrollment')
 
     def __str__(self):
-        temp_str = "{0} into {1}".format(self.patient.get_full_name(), self.program)
+        temp_str = "{0} into {1} on {2}".format(self.patient.get_full_name(), self.program, self.date_enrolled)
         return temp_str
 
     def get_absolute_url(self):

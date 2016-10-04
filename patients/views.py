@@ -242,12 +242,6 @@ class EnrollmentCreateView(CommuniqueCreateView):
     form_class = EnrollmentForm
     template_name = 'patients/enrollment_form.html'
 
-    def form_valid(self, form):
-        # add user that has enrolled patient into program
-        form.instance.enrolled_by = self.request.user
-
-        return super(EnrollmentCreateView, self).form_valid(form)
-
 
 class EnrollmentDetailView(CommuniqueDetailView):
     """
@@ -263,7 +257,7 @@ class EnrollmentUpdateView(CommuniqueUpdateView):
     A view to handle updating an enrollment.
     """
     model = Enrollment
-    fields = ['is_active']
+    fields = ['date_enrolled', 'comment']
     template_name = 'patients/enrollment_update_form.html'
     context_object_name = 'enrollment'
 
@@ -296,14 +290,8 @@ class PatientEnrollmentCreateView(PatientModelCreateView):
     A view to create an enrollment for a defined patient.
     """
     model = Enrollment
-    fields = ['program', 'comment']
+    fields = ['program', 'date_enrolled','comment']
     template_name = 'patients/patient_enrollment_form.html'
-
-    def form_valid(self, form):
-        # set the user that's made the enrollment and the patient whom it is for
-        form.instance.enrolled_by = self.request.user
-
-        return super(PatientEnrollmentCreateView, self).form_valid(form)
 
 
 class PatientSessionCreateView(PatientModelCreateView):

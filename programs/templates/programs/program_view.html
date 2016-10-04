@@ -80,9 +80,8 @@
                         <thead>
                             <tr>
                                 <th>Patient ID</th>
-                                <th>Patient Names</th>
+                                <th>Patient</th>
                                 <th>Enrollment Date</th>
-                                <th>Enrollment Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,24 +100,14 @@
                                             {{ enrollment.date_enrolled }}
                                         </a>
                                     </td>
-                                    <td>
-                                        <a href="{{ enrollment.patient.get_absolute_url }}">
-                                            {% if enrollment.is_active %}
-                                                <span class="label label-success">Open</span>
-                                            {% else %}
-                                                <span class="label label-danger">Closed</span>
-                                            {% endif %}
-                                        </a>
-                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>Patient ID</th>
-                                <th>Patient Names</th>
-                                <th>Enrollment</th>
-                                <th>Enrollment Status</th>
+                                <th>Patient</th>
+                                <th>Enrollment Date</th>
                             </tr>
                         </tfoot>
                     </table>

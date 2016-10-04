@@ -21,7 +21,7 @@ class EnrollmentForm(PatientFieldForm):
     """
     class Meta:
         model = Enrollment
-        fields = ['patient', 'program', 'comment']
+        fields = ['patient', 'program', 'date_enrolled', 'comment']
 
 
 class OutcomeForm(PatientFieldForm):
