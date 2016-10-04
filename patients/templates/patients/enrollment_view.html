@@ -18,19 +18,6 @@
 {% endblock %}
 
 {% block page_content %}
-    {% if not enrollment.is_active %}
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-info alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-info"></i> Alert!</h4>
-                    This enrollment has been marked as no longer active. The patient is therefore no longer enrolled in
-                    the program.
-                </div>
-            </div>
-        </div>
-    {% endif %}
-
     <div class="row">
         <div class="col-md-4">
             <div class="box box-primary">
@@ -41,22 +28,27 @@
                             <b>Date of enrollment</b> <a class="pull-right">{{ enrollment.date_enrolled }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Created by</b> <a class="pull-right">{{ enrollment.enrolled_by.get_full_name }}</a>
+                            <b>Added by</b> <a class="pull-right">{{ enrollment.created_by.get_full_name }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Status</b>
-                            <a class="pull-right">
-                                {% if enrollment.is_active %}
-                                    <span class="label label-success">Open</span>
-                                {% else %}
-                                    <span class="label label-danger">Closed</span>
-                                {% endif %}
-                            </a>
+                            <b>Date added</b> <a class="pull-right">{{ enrollment.date_created }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Modified by</b> <a class="pull-right">{{ enrollment.last_modified_by.get_full_name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Modified on</b> <a class="pull-right">{{ enrollment.date_last_modified }}</a>
                         </li>
                     </ul>
 
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Comments on enrollment</strong>
-                    <p>{{ enrollment.comment }}</p>
+                    <p>
+                        {% if enrollment.comment %}
+                            {{ enrollment.comment }}
+                        {% else %}
+                            There currently isn't any comment about this enrollment
+                        {% endif %}
+                    </p>
                 </div>
                 <div class="box-footer">
                     <a href="{{ enrollment.get_update_url }}" class="btn btn-warning btn-block"><b>Edit Enrollment Status</b></a>
@@ -126,16 +118,6 @@
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
                             <b>Name</b> <a class="pull-right">{{ enrollment.program.name }}</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Status</b>
-                            <a class="pull-right">
-                                {% if enrollment.program.is_open %}
-                                    <span class="label label-success">Open</span>
-                                {% else %}
-                                    <span class="label label-danger">Closed</span>
-                                {% endif %}
-                            </a>
                         </li>
                     </ul>
                     <strong><i class="fa fa-book margin-r-5"></i> Description</strong>

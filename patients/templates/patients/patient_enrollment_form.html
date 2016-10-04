@@ -6,11 +6,14 @@
 {% endblock %}
 
 {% block head %}
+    <!-- select2 css -->
     <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
+    <!-- bootstrap datepicker css -->
+    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
 {% endblock %}
 
 {% block page_heading %}
-    Enroll {{ patient }} Into Program
+    Enroll {{ patient.get_full_name }} Into Program
 {% endblock %}
 
 {% block page_subheading %}
@@ -59,10 +62,17 @@
 {% endblock %}
 
 {% block scripts %}
+    <!-- select2 js -->
     <script src="{% static "plugins/select2/select2.full.min.js" %}"></script>
+    <!-- datepicker js -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
     <script>
         $(function () {
             $(".select2").select2();
+            $('.date-picker').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy'
+            });
         });
     </script>
 {% endblock %}
