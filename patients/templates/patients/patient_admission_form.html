@@ -1,6 +1,5 @@
 {% extends parent_template|default:"patients/base_patients.html" %}
 {% load staticfiles %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Add Admission For Patient
@@ -21,8 +20,12 @@
 {% endblock %}
 
 {% block page_breadcrumb %}
-    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    {{ block.super }}
+    {% if patient.archived %}
+        <li><a href="{% url 'patients_patient_archived_list' %}"><i class="fa fa-heartbeat"></i> Archived Patients</a></li>
+    {% else %}
+        <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    {% endif %}
     <li class="active"><i class="fa fa-ambulance"></i> Add Admission</li>
 {% endblock %}
 
@@ -31,45 +34,29 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Admission Details</h3>
+            <!-- check that patient is not archived to display form -->
+            {% if patient.archived %}
+                <div class="callout callout-danger">
+                    <h4>Patient Is Archived</h4>
+                    <p>
+                        This patient is currently archived and cannot therefore have an admission registered.
+                    </p>
                 </div>
-                <form role="form" action="{% url 'patients_patient_admission_create' patient_pk=patient.pk %}" method="post">
-                    {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-
-                                {% if field.label == 'Patient' %}
-                                    {{ field|add_class:'form-control select2'|append_attr:'style:width: 100%;' }}
-                                {% elif field.label == 'Admission date' or field.label == 'Discharge date' %}
-                                    {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker' }}
-                                {% else %}
-                                    {{ field|add_class:'form-control' }}
-                                {% endif %}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+            {% else %}
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Admission Details</h3>
                     </div>
-                    <div class="box-footer">
-                        <a class="btn btn-warning" href="{{ patient.get_absolute_url }}">Cancel</a>
-                        <button type="submit" class="btn btn-success">Submit</button>
-                    </div>
-                </form>
-            </div>
+                    <form role="form" action="{% url 'patients_patient_admission_create' patient_pk=patient.pk %}" method="post">
+                        {% csrf_token %}
+                        {% include 'admissions/admission_form_body.html' %}
+                        <div class="box-footer">
+                            <a class="btn btn-warning" href="{{ patient.get_absolute_url }}">Cancel</a>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

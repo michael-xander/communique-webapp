@@ -1,28 +1,9 @@
 {% extends parent_template|default:"base.html" %}
 
 {% block enrollments_menu %}
-    <li class="treeview active">
-        <a href="#">
+    <li class="active">
+        <a href="{% url 'patients_enrollment_list' %}">
             <i class="fa fa-support"></i> <span>Enrollments</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-            </span>
         </a>
-        <ul class="treeview-menu">
-            {% block enrollments_list_menu %}
-                <li>
-                    <a href="{% url 'patients_enrollment_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Enrollment List
-                    </a>
-                </li>
-            {% endblock %}
-            {% block enrollments_create_menu %}
-                <li>
-                    <a href="{% url 'patients_enrollment_create' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Register Enrollment
-                    </a>
-                </li>
-            {% endblock %}
-        </ul>
     </li>
 {% endblock %}

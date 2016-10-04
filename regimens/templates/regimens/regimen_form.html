@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
 {% endblock %}
 
-{% block add_regimen_menu %}
+{% block regimens_menu %}
     <li class="active">
-        <a href="{% url 'regimens_regimen_create' %}">
-            <i class="fa fa-circle-o text-red"></i> Add Regimen
+        <a href="{% url 'regimens_regimen_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Regimens
         </a>
     </li>
 {% endblock %}

@@ -1,13 +1,7 @@
 {% extends parent_template|default:"user/base_user.html" %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | User Profile
-{% endblock %}
-
-{% block head %}
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
 {% block page_heading %}
@@ -19,7 +13,7 @@
 
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{% url 'user_communique_user_list' %}"><i class="fa fa-user"></i> Communiqué Users</a></li>
+    <li><a href="{% url 'user_communique_user_list' %}"><i class="fa fa-users"></i> Communiqué Users</a></li>
     <li class="active"><i class="fa fa-user"></i> User Profile</li>
 {% endblock %}
 
@@ -96,22 +90,3 @@
     </div>
 {% endblock %}
 
-{% block scripts %}
-    <!-- DataTables -->
-    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
-    <!-- page script -->
-    <script>
-        $(function () {
-            $("#example1").DataTable();
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
-        });
-    </script>
-{% endblock %}

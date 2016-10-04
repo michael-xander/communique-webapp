@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
+
 {% block page_heading %}
     Patient Details
 {% endblock %}
@@ -19,12 +20,29 @@
 {% endblock %}
 
 {% block page_breadcrumb %}
-    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    {{ block.super }}
+    {% if patient.archived %}
+        <li><a href="{% url 'patients_patient_archived_list' %}"><i class="fa fa-heartbeat"></i> Archived Patients</a></li>
+    {% else %}
+        <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    {% endif %}
     <li class="active"><i class="fa fa-heartbeat"></i> Patient Details</li>
 {% endblock %}
 
 {% block page_content %}
+    <!-- banner informing user that this patient is archived -->
+    {% if patient.archived %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-info"></i> Alert!</h4>
+                    This patient is currently archived and as such cannot receive any services.
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-md-4">
             <div class="box box-primary">
@@ -74,16 +92,6 @@
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <b>Contact Number</b>
-                            <a class="pull-right">
-                                {% if patient.contact_number %}
-                                    {{ patient.contact_number }}
-                                {% else %}
-                                    Unavailable
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="list-group-item">
                             <b>Added On</b> <a class="pull-right">{{ patient.date_created }}</a>
                         </li>
                         <li class="list-group-item">
@@ -97,16 +105,45 @@
                         </li>
                     </ul>
                     <a href="{{ patient.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ patient.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+
+                    {% if patient.archived %}
+                        <a href="{{ patient.get_unarchive_url }}" class="btn btn-warning"><b>Unarchive</b></a>
+                        <a href="{{ patient.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% else %}
+                        <a href="{{ patient.get_archive_url }}" class="btn btn-warning"><b>Archive</b></a>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Patient physical locations</h3>
+                    <h3 class="box-title">Patient Contact Information</h3>
                 </div>
 
                 <div class="box-body">
+                    <strong><i class="fa fa-phone margin-r-5"></i> Contact numbers</strong>
+                    {% if patient.contact_number or patient.second_contact_number or patient.third_contact_number %}
+                        <p>
+                            {% if patient.contact_number %}
+                                <span class="label label-default">{{ patient.contact_number }}</span>
+                            {% endif %}
+
+                            {% if patient.second_contact_number %}
+                                <span class="label label-success">{{ patient.second_contact_number }}</span>
+                            {% endif %}
+
+                            {% if patient.third_contact_number %}
+                                <span class="label label-warning">{{ patient.third_contact_number }}</span>
+                            {% endif %}
+                        </p>
+                    {% else %}
+                        <p>
+                            <span class="label label-danger">This patient doesn't have any listed contact numbers</span>
+                        </p>
+                    {% endif %}
+
+                    <hr>
+
                     <strong><i class="fa fa-home margin-r-5"></i> Home</strong>
                     <p>
                         {% if patient.location %}
@@ -126,6 +163,12 @@
                             Unavailable
                         {% endif %}
                     </p>
+
+                    <hr>
+
+                    <a href="{{ patient.get_contact_update_url }}" class="btn btn-primary btn-block">
+                        Update Information
+                    </a>
                 </div>
             </div>
         </div>
@@ -140,16 +183,19 @@
                     <li><a href="#regimens" data-toggle="tab">Regimens</a></li>
                     <li><a href="#reports" data-toggle="tab">Medical Reports</a></li>
                     <li><a href="#events" data-toggle="tab">Adverse Events</a></li>
+                    <li><a href="#outcomes" data-toggle="tab">Outcomes</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="registrations">
                         <ul class="timeline timeline-inverse">
-                            <!-- add enrollment link -->
-                            <li>
-                                <a class="btn btn-warning" href="{% url 'patients_patient_enroll_create' patient_pk=patient.pk %}">
-                                    <b>Enroll patient in new program</b>
-                                </a>
-                            </li>
+                            <!-- add enrollment link if patient is not archived -->
+                            {% if not patient.archived %}
+                                <li>
+                                    <a class="btn btn-warning" href="{% url 'patients_patient_enroll_create' patient_pk=patient.pk %}">
+                                        <b>Enroll patient in new program</b>
+                                    </a>
+                                </li>
+                            {% endif %}
                             <!-- list of enrollments -->
                             {% for enrollment in patient.enrollments.all %}
                                 <li>
@@ -235,9 +281,11 @@
                             </tr>
                             </tfoot>
                         </table>
-                        <a class="btn btn-primary" href="{% url 'patients_patient_session_create' patient_pk=patient.pk %}">
-                            Add session
-                        </a>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_session_create' patient_pk=patient.pk %}">
+                                Add session
+                            </a>
+                        {% endif %}
                     </div>
                     <div class="tab-pane" id="appointments">
                         <table class="table table-bordered table-striped list-table">
@@ -291,9 +339,11 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <a class="btn btn-primary" href="{% url 'patients_patient_appointment_create' patient_pk=patient.pk %}">
-                            Add Appointment
-                        </a>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_appointment_create' patient_pk=patient.pk %}">
+                                Add Appointment
+                            </a>
+                        {% endif %}
                     </div>
 
                     <div class="tab-pane" id="admissions">
@@ -352,9 +402,11 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <a class="btn btn-primary" href="{% url 'patients_patient_admission_create' patient_pk=patient.pk %}">
-                            Add Admission
-                        </a>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_admission_create' patient_pk=patient.pk %}">
+                                Add Admission
+                            </a>
+                        {% endif %}
                     </div>
 
                     <div class="tab-pane" id="regimens">
@@ -390,7 +442,11 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <a class="btn btn-primary" href="{% url 'patients_patient_regimen_create' patient_pk=patient.pk %}">Add Regimen</a>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_regimen_create' patient_pk=patient.pk %}">
+                                Add Regimen
+                            </a>
+                        {% endif %}
                     </div>
                     <div class="tab-pane" id="reports">
                         <table class="table table-bordered table-striped list-table">
@@ -441,9 +497,11 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <a class="btn btn-primary" href="{% url 'patients_patient_medical_report_create' patient_pk=patient.pk %}">
-                            Add Medical Report
-                        </a>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_medical_report_create' patient_pk=patient.pk %}">
+                                Add Medical Report
+                            </a>
+                        {% endif %}
                     </div>
                     <div class="tab-pane" id="events">
                         <table class="table table-bordered table-striped list-table">
@@ -472,9 +530,44 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <a class="btn btn-primary" href="{% url 'patients_patient_adverse_event_create' patient_pk=patient.pk %}">
-                            Report Adverse Event
-                        </a>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_adverse_event_create' patient_pk=patient.pk %}">
+                                Report Adverse Event
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane" id="outcomes">
+                        <table class="table table-bordered table-striped list-table">
+                            <thead>
+                                <tr>
+                                    <th>Outcome Category</th>
+                                    <th>Outcome Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for outcome in patient.outcomes.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_type }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_date }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Outcome Category</th>
+                                    <th>Outcome Date</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        {% if not patient.archived %}
+                            <a class="btn btn-primary" href="{% url 'patients_patient_outcome_create' patient_pk=patient.pk %}">
+                                Add Patient Outcome
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

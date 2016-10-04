@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 import datetime
 
-from communique.utils import ViewsTestCase
+from communique.utils.utils_tests import ViewsTestCase
 from appointments.models import Appointment
 
 

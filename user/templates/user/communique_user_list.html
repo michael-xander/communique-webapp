@@ -10,14 +10,6 @@
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
-{% block user_list_menu %}
-    <li class="active">
-        <a href="{% url 'user_communique_user_list' %}">
-            <i class="fa fa-circle-o text-red"></i> User List
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Communiqué Users
 {% endblock %}

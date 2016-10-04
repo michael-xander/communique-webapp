@@ -2,63 +2,38 @@
 {% load widget_tweaks %}
 
 {% block title %}
-  {{ block.super }} | Update Profile
+    {{ block.super }} | Update Profile
 {% endblock %}
 
 {% block page_heading %}
-  Update Profile
+    Update Profile
 {% endblock %}
 
 {% block page_subheading %}
 {% endblock %}
 
 {% block page_breadcrumb %}
-  <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-  <li class="active"><i class="fa fa-edit"></i> Edit Profile</li>
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active"><i class="fa fa-edit"></i> Edit Profile</li>
 {% endblock %}
 
 {% block page_content %}
-  {% include "form_errors.html" with class="col-md-12" %}
-  <div class="row">
-    <div class="col-md-12">
-      <div class="box box-primary">
-        <div class="box-header with-border">
-          <h3 class="box-title">Profile Details</h3>
+    {% include "form_errors.html" with class="col-md-12" %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Profile Details</h3>
+                </div>
+                <form role="form" action="{{ user_profile.get_update_url }}" method="post">
+                    {% csrf_token %}
+                    {% include 'user/communique_user_form_body.html' %}
+                    <div class="box-footer">
+                        <a href="{{ user_profile.get_absolute_url }}" class="btn btn-warning">Cancel</a>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form role="form" action="{{ user_profile.get_update_url }}" method="post">
-          {% csrf_token %}
-          <div class="box-body">
-            {% for field in form %}
-              <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                {{ field.label_tag }}
-                {% if field.label == "First name" %}
-                  {{ field|attr:"placeholder:Enter first name"|add_class:"form-control" }}
-                {% elif field.label == "Last name" %}
-                  {{ field|attr:"placeholder:Enter last name"|add_class:"form-control" }}
-                {% elif field.label == "Email address" %}
-                  {{ field|attr:"placeholder:Enter email address"|add_class:"form-control" }}
-                {% else %}
-                  {{ field|add_class:"form-control" }}
-                {% endif %}
-                {% if field.help_text %}
-                  <p class="help-block">{{ field.help_text }}</p>
-                {% endif %}
-                {% if field.errors %}
-                  <ul>
-                    {% for error in field.errors %}
-                      <li><p class="help-block">{{ error|escape }}</p></li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-              </div>
-            {% endfor %}
-          </div>
-          <div class="box-footer">
-            <a href="{{ user_profile.get_absolute_url }}" class="btn btn-warning">Cancel</a>
-            <button type="submit" class="btn btn-success">Submit</button>
-          </div>
-        </form>
-      </div>
     </div>
-  </div>
 {% endblock %}

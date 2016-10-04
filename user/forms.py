@@ -48,3 +48,21 @@ class ProfileUpdateForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'email']
+
+    def clean_first_name(self):
+        # check that the first name field is not empty
+        first_name = self.cleaned_data.get('first_name')
+
+        if not first_name:
+            raise forms.ValidationError('A first name must be provided', code='invalid')
+
+        return first_name
+
+    def clean_last_name(self):
+        # check that the last name field is not empty
+        last_name = self.cleaned_data.get('last_name')
+
+        if not last_name:
+            raise forms.ValidationError('A last name must be provided', code='invalid')
+
+        return last_name

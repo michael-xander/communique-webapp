@@ -12,7 +12,7 @@ class AdmissionTestCase(TestCase):
     Test cases for the Admission model.
     """
     def setUp(self):
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         Admission.objects.create(patient=patient, admission_date=datetime.date.today(), health_centre="St.Michael's")
 
     def test_str(self):

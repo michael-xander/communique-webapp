@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 
 import datetime
 
-from communique.utils import ViewsTestCase
+from communique.utils.utils_tests import ViewsTestCase
 
 from regimens.models import Drug, Regimen
 from patients.models import Patient
@@ -104,7 +104,7 @@ class ExistingRegimenViewsTestCase(ViewsTestCase):
     """
     def setUp(self):
         super(ExistingRegimenViewsTestCase, self).setUp()
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         Regimen.objects.create(patient=patient, notes='Sample notes', date_started=datetime.date.today())
 
 

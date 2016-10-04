@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
-{% block report_list_menu %}
+{% block report_menu %}
     <li class="active">
         <a href="{% url 'medical_report_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Report List
+            <i class="fa fa-circle-o text-red"></i> Reports
         </a>
     </li>
 {% endblock %}
@@ -35,60 +35,60 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box box-primary">
-               <div class="box-header with-border">
+                <div class="box-header with-border">
                     <h3 class="box-title">Existing Medical Reports</h3>
                 </div>
                 <div class="box-body">
                     <table id="table1" class="table table-bordered table-striped">
                         <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Report Type</th>
-                                <th>Patient ID</th>
-                                <th>Patient Names</th>
-                                <th>Date Created</th>
-                                <th>Created By</th>
-                            </tr>
+                        <tr>
+                            <th>Title</th>
+                            <th>Report Type</th>
+                            <th>Patient ID</th>
+                            <th>Patient Names</th>
+                            <th>Date Created</th>
+                            <th>Created By</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for report in medical_report_list %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ report.get_absolute_url }}">{{ report.title|capfirst }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ report.get_absolute_url }}">{{ report.report_type }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ report.get_absolute_url }}">{{ report.patient.identifier }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ report.get_absolute_url }}">{{ report.patient.get_full_name }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ report.get_absolute_url }}">{{ report.date_created }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ report.get_absolute_url }}">
-                                            {% if report.created_by %}
-                                                {{ report.created_by.get_full_name }}
-                                            {% else %}
-                                                Unavailable
-                                            {% endif %}
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                        {% for report in medical_report_list %}
+                            <tr>
+                                <td>
+                                    <a href="{{ report.get_absolute_url }}">{{ report.title|capfirst }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ report.get_absolute_url }}">{{ report.report_type }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ report.get_absolute_url }}">{{ report.patient.identifier }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ report.get_absolute_url }}">{{ report.patient.get_full_name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ report.get_absolute_url }}">{{ report.date_created }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ report.get_absolute_url }}">
+                                        {% if report.created_by %}
+                                            {{ report.created_by.get_full_name }}
+                                        {% else %}
+                                            Unavailable
+                                        {% endif %}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <th>Title</th>
-                                <th>Report Type</th>
-                                <th>Patient ID</th>
-                                <th>Patient Names</th>
-                                <th>Date Created</th>
-                                <th>Created By</th>
-                            </tr>
+                        <tr>
+                            <th>Title</th>
+                            <th>Report Type</th>
+                            <th>Patient ID</th>
+                            <th>Patient Names</th>
+                            <th>Date Created</th>
+                            <th>Created By</th>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>

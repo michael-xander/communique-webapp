@@ -1,28 +1,9 @@
 {% extends parent_template|default:"base.html" %}
 
 {% block user_menu %}
-    <li class="treeview active">
-        <a href="#">
+    <li class="active">
+        <a href="{% url 'user_communique_user_list' %}">
             <i class="fa fa-users"></i> <span>Communiqué Users</span>
-      <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-      </span>
         </a>
-        <ul class="treeview-menu">
-            {% block user_list_menu %}
-                <li>
-                    <a href="{% url 'user_communique_user_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> User List
-                    </a>
-                </li>
-            {% endblock %}
-            {% block user_create_menu %}
-                <li>
-                    <a href="{% url 'user_communique_user_create' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Register User
-                    </a>
-                </li>
-            {% endblock %}
-        </ul>
     </li>
 {% endblock %}

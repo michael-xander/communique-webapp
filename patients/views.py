@@ -3,11 +3,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView, CommuniqueFormView)
-from .models import Patient, Enrollment
+from .models import Patient, Enrollment, Outcome, OutcomeType
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
 from medical.models import MedicalReport
-from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimenForm
+from .forms import PatientAppointmentForm, PatientUploadFileForm, PatientRegimenForm, EnrollmentForm, OutcomeForm
 from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
 from regimens.models import Regimen
@@ -17,11 +17,30 @@ from patients.utils.utils_views import import_patients_from_file
 
 class PatientListView(CommuniqueListView):
     """
-    A view to list all patients that currently exist in the system.
+    A view to list all patients that currently exist in the system and are not archived.
     """
     model = Patient
     template_name = 'patients/patient_list.html'
     context_object_name = 'patient_list'
+
+    def get_queryset(self):
+        # get all the patients that are not archived
+        patients = Patient.objects.filter(archived=False)
+        return patients
+
+
+class PatientArchiveListView(CommuniqueListView):
+    """
+    A view to list all patients that have been archived
+    """
+    model = Patient
+    template_name = 'patients/patient_archived_list.html'
+    context_object_name = 'patient_archived_list'
+
+    def get_queryset(self):
+        # get all the patients that are archived
+        patients = Patient.objects.filter(archived=True)
+        return patients
 
 
 class PatientCreateView(CommuniqueCreateView):
@@ -30,16 +49,9 @@ class PatientCreateView(CommuniqueCreateView):
     """
     model = Patient
     fields = ['last_name', 'other_names', 'identifier', 'reference_health_centre', 'birth_date', 'sex', 'location',
-              'treatment_start_date', 'interim_outcome', 'contact_number']
+              'treatment_start_date', 'interim_outcome', 'contact_number', 'second_contact_number',
+              'third_contact_number']
     template_name = 'patients/patient_form.html'
-
-    def form_valid(self, form):
-        patient = form.save(commit=False)
-        # update the created by and last modified by user markers
-        patient.created_by = self.request.user
-        patient.last_modified_by = self.request.user
-
-        return super(PatientCreateView, self).form_valid(form)
 
 
 class PatientDetailView(CommuniqueDetailView):
@@ -56,17 +68,51 @@ class PatientUpdateView(CommuniqueUpdateView):
     A view to handle updating patient information.
     """
     model = Patient
-    fields = ['last_name', 'other_names', 'identifier', 'reference_health_centre', 'birth_date', 'sex', 'location',
-              'treatment_start_date', 'interim_outcome', 'contact_number']
+    fields = ['last_name', 'other_names', 'identifier', 'birth_date', 'sex', 'treatment_start_date', 'interim_outcome']
     template_name = 'patients/patient_update_form.html'
     context_object_name = 'patient'
 
-    def form_valid(self, form):
-        patient = form.save(commit=False)
-        # update the last modified markers
-        patient.last_modified_by = self.request.user
 
-        return super(PatientUpdateView, self).form_valid(form)
+class PatientContactUpdateView(CommuniqueUpdateView):
+    """
+    A view to handle updating a patient's contact details
+    """
+    model = Patient
+    fields = ['location', 'reference_health_centre', 'contact_number', 'second_contact_number', 'third_contact_number']
+    template_name = 'patients/patient_contact_update_form.html'
+    context_object_name = 'patient'
+
+
+class PatientArchiveView(CommuniqueUpdateView):
+    """
+    A view to handle archiving a patient
+    """
+    model = Patient
+    fields = []
+    template_name = 'patients/patient_confirm_archive.html'
+    context_object_name = 'patient'
+
+    def form_valid(self, form):
+        # make the patient's archived attribute true
+        form.instance.archived = True
+
+        return super(PatientArchiveView, self).form_valid(form)
+
+
+class PatientUnarchiveView(CommuniqueUpdateView):
+    """
+    A view to handle unarchiving a patient
+    """
+    model = Patient
+    fields = []
+    template_name = 'patients/patient_confirm_unarchive.html'
+    context_object_name = 'patient'
+
+    def form_valid(self, form):
+        # make the patient's archived attribute false
+        form.instance.archived = False
+
+        return super(PatientUnarchiveView, self).form_valid(form)
 
 
 class PatientDeleteView(CommuniqueDeleteView):
@@ -95,6 +141,90 @@ class PatientImportView(SuccessMessageMixin, CommuniqueFormView):
         return super(PatientImportView, self).form_valid(form)
 
 
+class OutcomeTypeListView(CommuniqueListView):
+    """
+    A view to list all outcome types
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_list.html'
+    context_object_name = 'outcome_type_list'
+
+
+class OutcomeTypeCreateView(CommuniqueCreateView):
+    """
+    A view to create an outcome type
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_form.html'
+    fields = ['name', 'description']
+
+
+class OutcomeTypeUpdateView(CommuniqueUpdateView):
+    """
+    A view to update an outcome type
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_update_form.html'
+    fields = ['name', 'description']
+    context_object_name = 'outcome_type'
+
+
+class OutcomeTypeDetailView(CommuniqueDetailView):
+    """
+    A view to display details of an outcome type
+    """
+    model = OutcomeType
+    template_name = 'patients/outcome_type_view.html'
+    context_object_name = 'outcome_type'
+
+
+class OutcomeTypeDeleteView(CommuniqueDeleteView):
+    """
+    A view to delete an outcome type
+    """
+    model = OutcomeType
+    success_url = reverse_lazy('patient_outcome_type_list')
+    context_object_name = 'outcome_type'
+    template_name = 'patients/outcome_type_confirm_delete.html'
+
+
+class OutcomeListView(CommuniqueListView):
+    """
+    A view to list the outcomes of patients
+    """
+    model = Outcome
+    template_name = 'patients/outcome_list.html'
+    context_object_name = 'outcome_list'
+
+
+class OutcomeCreateView(CommuniqueCreateView):
+    """
+    A view to create a patient outcome
+    """
+    model = Outcome
+    form_class = OutcomeForm
+    template_name = 'patients/outcome_form.html'
+
+
+class OutcomeUpdateView(CommuniqueUpdateView):
+    """
+    A view to update a patient outcome
+    """
+    model = Outcome
+    fields = ['outcome_date', 'notes']
+    context_object_name = 'outcome'
+    template_name = 'patients/outcome_update_form.html'
+
+
+class OutcomeDetailView(CommuniqueDetailView):
+    """
+    A view to view the details of an outcome
+    """
+    model = Outcome
+    template_name = 'patients/outcome_view.html'
+    context_object_name = 'outcome'
+
+
 class EnrollmentListView(CommuniqueListView):
     """
     A view to list all the enrollments that currently exist in the system.
@@ -109,13 +239,12 @@ class EnrollmentCreateView(CommuniqueCreateView):
     A view to handle creation of an enrollment.
     """
     model = Enrollment
-    fields = ['patient', 'program', 'comment']
+    form_class = EnrollmentForm
     template_name = 'patients/enrollment_form.html'
 
     def form_valid(self, form):
-        enrollment = form.save(commit=False)
         # add user that has enrolled patient into program
-        enrollment.enrolled_by = self.request.user
+        form.instance.enrolled_by = self.request.user
 
         return super(EnrollmentCreateView, self).form_valid(form)
 
@@ -154,6 +283,13 @@ class PatientModelCreateView(CommuniqueCreateView):
         context['patient'] = patient
         return context
 
+    def form_valid(self, form):
+        # set the patient
+        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
+        form.instance.patient = patient
+
+        return super(PatientModelCreateView, self).form_valid(form)
+
 
 class PatientEnrollmentCreateView(PatientModelCreateView):
     """
@@ -166,8 +302,6 @@ class PatientEnrollmentCreateView(PatientModelCreateView):
     def form_valid(self, form):
         # set the user that's made the enrollment and the patient whom it is for
         form.instance.enrolled_by = self.request.user
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
 
         return super(PatientEnrollmentCreateView, self).form_valid(form)
 
@@ -180,14 +314,14 @@ class PatientSessionCreateView(PatientModelCreateView):
     fields = ['counselling_session_type', 'notes']
     template_name = 'patients/patient_session_form.html'
 
-    def form_valid(self, form):
-        # set the user adding the session and the patient whom it is for
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
 
-        return super(PatientSessionCreateView, self).form_valid(form)
+class PatientOutcomeCreateView(PatientModelCreateView):
+    """
+    A view that handles creation of an outcome for a patient
+    """
+    model = Outcome
+    fields = ['outcome_type', 'outcome_date', 'notes']
+    template_name = 'patients/patient_outcome_form.html'
 
 
 class PatientMedicalReportCreateView(PatientModelCreateView):
@@ -197,15 +331,6 @@ class PatientMedicalReportCreateView(PatientModelCreateView):
     model = MedicalReport
     fields = ['title', 'report_type', 'notes']
     template_name = 'patients/patient_medical_report_form.html'
-
-    def form_valid(self, form):
-        # set the user adding the medical report and the patient whom it is for
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientMedicalReportCreateView, self).form_valid(form)
 
 
 class PatientAppointmentCreateView(PatientModelCreateView):
@@ -217,15 +342,8 @@ class PatientAppointmentCreateView(PatientModelCreateView):
     template_name = 'patients/patient_appointment_form.html'
 
     def form_valid(self, form):
-        # set the user adding the appointment and the patient whom it is for
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
         if not form.instance.owner:
             form.instance.owner = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
 
         return super(PatientAppointmentCreateView, self).form_valid(form)
 
@@ -238,16 +356,6 @@ class PatientAdmissionCreateView(PatientModelCreateView):
     form_class = AdmissionUpdateForm
     template_name = 'patients/patient_admission_form.html'
 
-    def form_valid(self, form):
-        # set the created by and last modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientAdmissionCreateView, self).form_valid(form)
-
 
 class PatientRegimenCreateView(PatientModelCreateView):
     """
@@ -257,16 +365,6 @@ class PatientRegimenCreateView(PatientModelCreateView):
     form_class = PatientRegimenForm
     template_name = 'patients/patient_regimen_form.html'
 
-    def form_valid(self, form):
-        # set the created by and last modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientRegimenCreateView, self).form_valid(form)
-
 
 class PatientAdverseEventCreateView(PatientModelCreateView):
     """
@@ -275,14 +373,4 @@ class PatientAdverseEventCreateView(PatientModelCreateView):
     model = AdverseEvent
     fields = ['adverse_event_type', 'event_date', 'notes']
     template_name = 'patients/patient_adverse_event_form.html'
-
-    def form_valid(self, form):
-        # set teh created by and last modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        patient = Patient.objects.get(pk=int(self.kwargs['patient_pk']))
-        form.instance.patient = patient
-
-        return super(PatientAdverseEventCreateView, self).form_valid(form)
 

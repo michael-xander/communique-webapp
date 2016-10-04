@@ -4,10 +4,10 @@
     {{ block.super }} | Add Drug
 {% endblock %}
 
-{% block add_drug_menu %}
+{% block drugs_menu %}
     <li class="active">
-        <a href="{% url 'regimens_drug_create' %}">
-            <i class="fa fa-circle-o text-red"></i> Add Drug
+        <a href="{% url 'regimens_drug_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Drugs
         </a>
     </li>
 {% endblock %}

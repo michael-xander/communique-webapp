@@ -19,16 +19,8 @@ class ProgramCreateView(CommuniqueCreateView):
     A view to handle creation of a Program by displaying the form and handling the post request.
     """
     model = Program
-    fields = ['name', 'description', 'is_open']
+    fields = ['name', 'description']
     template_name = 'programs/program_form.html'
-
-    def form_valid(self, form):
-        program = form.save(commit=False)
-        # update the created by and last modified by markers
-        program.created_by = self.request.user
-        program.last_modified_by = self.request.user
-
-        return super(ProgramCreateView, self).form_valid(form)
 
 
 class ProgramDetailView(CommuniqueDetailView):
@@ -45,16 +37,9 @@ class ProgramUpdateView(CommuniqueUpdateView):
     A view to update the details of a Program.
     """
     model = Program
-    fields = ['name', 'description', 'is_open']
+    fields = ['name', 'description']
     template_name = 'programs/program_update_form.html'
     context_object_name = 'program'
-
-    def form_valid(self, form):
-        program = form.save(commit=False)
-        # update the last modified by markers
-        program.last_modified_by = self.request.user
-
-        return super(ProgramUpdateView, self).form_valid(form)
 
 
 class ProgramDeleteView(CommuniqueDeleteView):

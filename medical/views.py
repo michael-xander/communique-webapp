@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from .models import MedicalReport, MedicalReportType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView)
+from .forms import MedicalReportForm
 
 
 class MedicalReportTypeListView(CommuniqueListView):
@@ -22,13 +23,6 @@ class MedicalReportTypeCreateView(CommuniqueCreateView):
     template_name = 'medical/medical_report_type_form.html'
     fields = ['name', 'description']
 
-    def form_valid(self, form):
-        # fill the created by and modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(MedicalReportTypeCreateView, self).form_valid(form)
-
 
 class MedicalReportTypeDetailView(CommuniqueDetailView):
     """
@@ -47,12 +41,6 @@ class MedicalReportTypeUpdateView(CommuniqueUpdateView):
     fields = ['name', 'description']
     template_name = 'medical/medical_report_type_update_form.html'
     context_object_name = 'medical_report_type'
-
-    def form_valid(self, form):
-        # update the modified by fields
-        form.instance.last_modified_by = self.request.user
-
-        return super(MedicalReportTypeUpdateView, self).form_valid(form)
 
 
 class MedicalReportTypeDeleteView(CommuniqueDeleteView):
@@ -80,14 +68,7 @@ class MedicalReportCreateView(CommuniqueCreateView):
     """
     model = MedicalReport
     template_name = 'medical/medical_report_form.html'
-    fields = ['title', 'report_type', 'patient', 'notes']
-
-    def form_valid(self, form):
-        # set the created by and modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(MedicalReportCreateView, self).form_valid(form)
+    form_class = MedicalReportForm
 
 
 class MedicalReportDetailView(CommuniqueDetailView):
@@ -107,12 +88,6 @@ class MedicalReportUpdateView(CommuniqueUpdateView):
     template_name = 'medical/medical_report_update_form.html'
     fields = ['title', 'report_type', 'notes']
     context_object_name = 'medical_report'
-
-    def form_valid(self, form):
-        # set the modified fields
-        form.instance.last_modified_by = self.request.user
-
-        return super(MedicalReportUpdateView, self).form_valid(form)
 
 
 class MedicalReportDeleteView(CommuniqueDeleteView):

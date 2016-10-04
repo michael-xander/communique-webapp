@@ -1,5 +1,4 @@
 {% extends parent_template|default:'counselling_sessions/base_counselling_sessions.html' %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Update Session Type
@@ -29,26 +28,7 @@
                 </div>
                 <form role="form" action="{{ counselling_session_type.get_update_url }}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-                                {{ field|add_class:"form-control" }}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'counselling_sessions/counselling_session_type_form_body.html' %}
                     <div class="box-footer">
                         <a href="{{ counselling_session_type.get_absolute_url }}" class="btn btn-warning">Cancel</a>
                         <button type="submit" class="btn btn-success">Submit</button>

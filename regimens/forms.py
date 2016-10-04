@@ -1,9 +1,10 @@
 from django import forms
 
 from .models import Regimen
+from communique.forms import PatientFieldForm
 
 
-class RegimenForm(forms.ModelForm):
+class RegimenForm(PatientFieldForm):
     """
     A form used to create a Regimen
     """

@@ -1,0 +1,55 @@
+{% load widget_tweaks %}
+
+<div class="box-body">
+    {% for field in form %}
+        {% if field.label == 'Appointment start time' or field.label == 'Appointment end time' %}
+            <div class="bootstrap-timepicker">
+                <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+                    {{ field.label_tag }}
+                    <div class="input-group">
+                        {{ field|add_class:'form-control timepicker' }}
+
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                    </div>
+                    {% if field.help_text %}
+                        <p class="help-block">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li><p class="help-block">{{ error|escape }}</p></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+                {{ field.label_tag }}
+
+                {% if field.label == 'Patient' or field.label == 'Appointment owner' %}
+                    {{ field|add_class:'form-control select2'|append_attr:'style:width: 100%;' }}
+                {% elif field.label == 'Appointment date' %}
+                    {{ field|attr:"placeholder:DD/MM/YYYY"|add_class:"form-control" }}
+                {% else %}
+                    {{ field|add_class:'form-control' }}
+                {% endif %}
+
+                {% if field.help_text %}
+                    <p class="help-block">{{ field.help_text }}</p>
+                {% endif %}
+
+                {% if field.errors %}
+                    <ul>
+                        {% for error in field.errors %}
+                            <li><p class="help-block">{{ error|escape }}</p></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

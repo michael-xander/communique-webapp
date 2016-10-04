@@ -1,0 +1,128 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Patient Outcome Category
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+{% endblock %}
+
+{% block outcome_type_menu %}
+    <li class="active">
+        <a href="{% url 'patients_outcome_type_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Patient Outcome Categories
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Patient Outcome Category
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    {{ block.super }}
+    <li>
+        <a href="{% url 'patients_outcome_type_list' %}"><i class="fa fa-heartbeat"></i> Patient Outcome Categories</a>
+    </li>
+    <li class="active"><i class="fa fa-heartbeat"></i> Patient Outcome Category</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <h3 class="text-center">Patient Outcome Category</h3>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Name</b> <a class="pull-right">{{ outcome_type }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Date added</b> <a class="pull-right">{{ outcome_type.date_created }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Added by</b> <a class="pull-right">{{ outcome_type.created_by.get_full_name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Last modified</b> <a class="pull-right">{{ outcome_type.date_last_modified }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Modified by</b> <a class="pull-right">{{ outcome_type.last_modified_by.get_full_name }}</a>
+                        </li>
+                    </ul>
+                    <a href="{{ outcome_type.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
+                    <a href="{{ outcome_type.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                </div>
+            </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">About Category</h3>
+                </div>
+                <div class="box-body">
+                    <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
+
+                    <p>{{ outcome_type.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Existing Patient Outcomes For This Category</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Patient</th>
+                                <th>Outcome Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for outcome in outcome_type.outcomes.all %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.patient.identifier }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.patient.get_full_name }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_date }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Patient</th>
+                                <th>Outcome Date</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+    </script>
+{% endblock %}

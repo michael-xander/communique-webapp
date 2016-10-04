@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 
-from communique.utils import ViewsTestCase
+from communique.utils.utils_tests import ViewsTestCase
 
 from counselling_sessions.models import CounsellingSessionType, CounsellingSession
 from patients.models import Patient
@@ -103,7 +103,7 @@ class ExistingCounsellingSessionViewsTestCase(ViewsTestCase):
     def setUp(self):
         super(ExistingCounsellingSessionViewsTestCase, self).setUp()
         session_type = CounsellingSessionType.objects.create(name='dummy type')
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         CounsellingSession.objects.create(patient=patient, counselling_session_type=session_type)
 
 

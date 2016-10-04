@@ -14,13 +14,6 @@ class AdmissionCreateView(CommuniqueCreateView):
     form_class = AdmissionCreateForm
     template_name = 'admissions/admission_form.html'
 
-    def form_valid(self, form):
-        # the creator and modified by fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(AdmissionCreateView, self).form_valid(form)
-
 
 class AdmissionDetailView(CommuniqueDetailView):
     """
@@ -39,12 +32,6 @@ class AdmissionUpdateView(CommuniqueUpdateView):
     form_class = AdmissionUpdateForm
     template_name = 'admissions/admission_update_form.html'
     context_object_name = 'admission'
-
-    def form_valid(self, form):
-        # update the last modified by field
-        form.instance.last_modified_by = self.request.user
-
-        return super(AdmissionUpdateView, self).form_valid(form)
 
 
 class AdmissionListView(CommuniqueListView):

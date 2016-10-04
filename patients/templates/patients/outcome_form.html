@@ -1,0 +1,74 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Add Patient Outcome
+{% endblock %}
+
+{% block head %}
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
+    <!-- bootstrap datepicker css -->
+    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
+{% endblock %}
+
+{% block outcome_menu %}
+    <li class="active">
+        <a href="{% url 'patients_outcome_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Patient Outcomes
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Add Patient Outcome
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    {{ block.super }}
+    <li>
+        <a href="{% url 'patients_outcome_list' %}"><i class="fa fa-heartbeat"></i> Patient Outcomes</a>
+    </li>
+    <li class="active"><i class="fa fa-edit"></i> Add Patient Outcome</li>
+{% endblock %}
+
+{% block page_content %}
+    {% include 'form_errors.html' with class='col-md-12' %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Patient Outcome Details</h3>
+                </div>
+                <form role="form" action="{% url 'patients_outcome_create' %}" method="post">
+                    {% csrf_token %}
+                    {% include 'patients/outcome_form_body.html' %}
+                    <div class="box-footer">
+                        <button type="reset" class="btn btn-warning">Reset</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- select2 js -->
+    <script src="{% static "plugins/select2/select2.full.min.js" %}"></script>
+    <!-- datepicker js -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
+    <script>
+        $(function () {
+            $(".select2").select2();
+            $(".date-picker").datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy'
+            });
+        });
+    </script>
+{% endblock %}

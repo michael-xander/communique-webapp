@@ -1,6 +1,5 @@
 {% extends parent_template|default:'medical/base_medical.html' %}
 {% load staticfiles %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Update Medical Report
@@ -34,31 +33,7 @@
                 </div>
                 <form role="form" action="{{ medical_report.get_update_url }}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-
-                                {% if field.label == 'Medical report type' %}
-                                    {{ field|add_class:'form-control select2'|append_attr:'style:width: 100%;' }}
-                                {% else %}
-                                    {{ field|add_class:'form-control' }}
-                                {% endif %}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'medical/medical_report_form_body.html' %}
                     <div class="box-footer">
                         <a class="btn btn-warning" href="{{ medical_report.get_absolute_url }}">Cancel</a>
                         <button type="submit" class="btn btn-success">Submit</button>

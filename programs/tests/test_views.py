@@ -3,7 +3,7 @@ This file contains test cases for views of the programs app.
 """
 from django.core.urlresolvers import reverse
 
-from communique.utils import ViewsTestCase
+from communique.utils.utils_tests import ViewsTestCase
 
 from programs.models import Program
 

@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
-{% block regimen_list_menu %}
+{% block regimens_menu %}
     <li class="active">
         <a href="{% url 'regimens_regimen_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Regimens List
+            <i class="fa fa-circle-o text-red"></i> Regimens
         </a>
     </li>
 {% endblock %}
@@ -41,44 +41,44 @@
                 <div class="box-body">
                     <table id="table1" class="table table-bordered table-striped">
                         <thead>
-                            <tr>
-                                <th>Patient ID</th>
-                                <th>Patient</th>
-                                <th>Date Started</th>
-                                <th>Date Ended</th>
-                            </tr>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Patient</th>
+                            <th>Date Started</th>
+                            <th>Date Ended</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for regimen in regimen_list %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ regimen.get_absolute_url }}">{{ regimen.patient.identifier }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ regimen.get_absolute_url }}">{{ regimen.patient.get_full_name }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ regimen.get_absolute_url }}">{{ regimen.date_started }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ regimen.get_absolute_url }}">
-                                            {% if regimen.date_ended %}
-                                                {{ regimen.date_ended }}
-                                            {% else %}
-                                                Unavailable
-                                            {% endif %}
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                        {% for regimen in regimen_list %}
+                            <tr>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">{{ regimen.patient.identifier }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">{{ regimen.patient.get_full_name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">{{ regimen.date_started }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">
+                                        {% if regimen.date_ended %}
+                                            {{ regimen.date_ended }}
+                                        {% else %}
+                                            Unavailable
+                                        {% endif %}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <th>Patient ID</th>
-                                <th>Patient</th>
-                                <th>Date Started</th>
-                                <th>Date Ended</th>
-                            </tr>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Patient</th>
+                            <th>Date Started</th>
+                            <th>Date Ended</th>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>

@@ -3,9 +3,10 @@ from django import forms
 import datetime
 
 from .models import Appointment
+from communique.forms import PatientFieldForm
 
 
-class AppointmentForm(forms.ModelForm):
+class AppointmentForm(PatientFieldForm):
     """
     A form used to create and update an appointment
     """

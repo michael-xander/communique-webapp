@@ -1,17 +1,31 @@
 from django.core.urlresolvers import reverse
 
-from communique.utils import ViewsTestCase
+import datetime
 
-from patients.models import Patient, Enrollment
+from communique.utils.utils_tests import ViewsTestCase
+
+from patients.models import Patient, Enrollment, Outcome, OutcomeType
 from programs.models import Program
 
 
 class PatientListViewTestCase(ViewsTestCase):
     """
-    Test cases for the view that lists patients.
+    Test cases for the view that lists patients that are not archived.
     """
     view_name = 'patients_patient_list'
     view_template_name = 'patients/patient_list.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class PatientArchiveListViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view that lists patients that are archived
+    """
+    view_name = 'patients_patient_archived_list'
+    view_template_name = 'patients/patient_archived_list.html'
     view_url = reverse(view_name)
 
     def test_active_user_access(self):
@@ -48,7 +62,7 @@ class ExistingPatientViewsTestCase(ViewsTestCase):
     """
     def setUp(self):
         super(ExistingPatientViewsTestCase, self).setUp()
-        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
 
 
 class PatientDetailViewTestCase(ExistingPatientViewsTestCase):
@@ -73,6 +87,39 @@ class PatientUpdateViewTestCase(ExistingPatientViewsTestCase):
         self.only_active_user_access_test(patient.get_update_url(), self.view_template_name)
 
 
+class PatientContactUpdateViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the contact update view for a patient.
+    """
+    view_template_name = 'patients/patient_contact_update_form.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        self.only_active_user_access_test(patient.get_contact_update_url(), self.view_template_name)
+
+
+class PatientArchiveViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the patient archive view
+    """
+    view_template_name = 'patients/patient_confirm_archive.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        self.only_active_user_access_test(patient.get_archive_url(), self.view_template_name)
+
+
+class PatientUnarchiveViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the patient unarchive view
+    """
+    view_template_name = 'patients/patient_confirm_unarchive.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        self.only_active_user_access_test(patient.get_unarchive_url(), self.view_template_name)
+
+
 class PatientDeleteViewTestCase(ExistingPatientViewsTestCase):
     """
     Test cases for the delete view of a patient.
@@ -82,6 +129,125 @@ class PatientDeleteViewTestCase(ExistingPatientViewsTestCase):
     def test_active_user_access(self):
         patient = Patient.objects.get(id=1)
         self.only_active_user_access_test(patient.get_delete_url(), self.view_template_name)
+
+
+class OutcomeTypeListViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view to list outcome types
+    """
+    view_name = 'patients_outcome_type_list'
+    view_template_name = 'patients/outcome_type_list.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class OutcomeTypeCreateViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view to create an outcome type
+    """
+    view_name = 'patients_outcome_type_create'
+    view_template_name = 'patients/outcome_type_form.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class ExistingOutcomeTypeViewsTestCase(ViewsTestCase):
+    """
+    Test cases for views that require an existing outcome type
+    """
+    def setUp(self):
+        super(ExistingOutcomeTypeViewsTestCase, self).setUp()
+        self.outcome_type = OutcomeType.objects.create(name='Outcome type', description='Sample description')
+
+
+class OutcomeTypeDetailViewTestCase(ExistingOutcomeTypeViewsTestCase):
+    """
+    Test cases for the detail view of an outcome type
+    """
+    view_template_name = 'patients/outcome_type_view.html'
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.outcome_type.get_absolute_url(), self.view_template_name)
+
+
+class OutcomeTypeUpdateViewTestCase(ExistingOutcomeTypeViewsTestCase):
+    """
+    Test cases for the update view of an outcome type
+    """
+    view_template_name = 'patients/outcome_type_update_form.html'
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.outcome_type.get_update_url(), self.view_template_name)
+
+
+class OutcomeTypeDeleteViewTestCase(ExistingOutcomeTypeViewsTestCase):
+    """
+    Test cases for the view to delete an outcome type
+    """
+    view_template_name = 'patients/outcome_type_confirm_delete.html'
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.outcome_type.get_delete_url(), self.view_template_name)
+
+
+class OutcomeListViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view list outcomes
+    """
+    view_name = 'patients_outcome_list'
+    view_template_name = 'patients/outcome_list.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class OutcomeCreateViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view to create an outcome
+    """
+    view_name = 'patients_outcome_create'
+    view_template_name = 'patients/outcome_form.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class ExistingOutcomeViewsTestCase(ViewsTestCase):
+    """
+    Test cases for views that require an existing outcome
+    """
+    def setUp(self):
+        super(ExistingOutcomeViewsTestCase, self).setUp()
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
+        outcome_type = OutcomeType.objects.create(name='Outcome type', description='Sample description')
+        self.outcome = Outcome.objects.create(patient=patient, outcome_type=outcome_type,
+                                              outcome_date=datetime.date.today())
+
+
+class OutcomeDetailViewTestCase(ExistingOutcomeViewsTestCase):
+    """
+    Test cases for the outcome detail view
+    """
+    view_template_name = 'patients/outcome_view.html'
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.outcome.get_absolute_url(), self.view_template_name)
+
+
+class OutcomeUpdateViewTestCase(ExistingOutcomeViewsTestCase):
+    """
+    Test cases for the outcome update view
+    """
+    view_template_name = 'patients/outcome_update_form.html'
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.outcome.get_update_url(), self.view_template_name)
 
 
 class EnrollmentListViewTestCase(ViewsTestCase):
@@ -114,7 +280,7 @@ class ExistingEnrollmentViewsTestCase(ViewsTestCase):
     """
     def setUp(self):
         super(ExistingEnrollmentViewsTestCase, self).setUp()
-        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE)
+        patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         program = Program.objects.create(name='Sample', description='sample text')
         Enrollment.objects.create(patient=patient, program=program, comment='No comment')
 
@@ -212,6 +378,19 @@ class PatientAdverseEventCreateViewTestCase(ExistingPatientViewsTestCase):
     """
     view_name = 'patients_patient_adverse_event_create'
     view_template_name = 'patients/patient_adverse_event_form.html'
+
+    def test_active_user_access(self):
+        patient = Patient.objects.get(id=1)
+        view_url = reverse(self.view_name, kwargs={'patient_pk':patient.pk})
+        self.only_active_user_access_test(view_url, self.view_template_name)
+
+
+class PatientOutcomeCreateViewTestCase(ExistingPatientViewsTestCase):
+    """
+    Test cases for the view to add an outcome for a patient
+    """
+    view_name = 'patients_patient_outcome_create'
+    view_template_name = 'patients/patient_outcome_form.html'
 
     def test_active_user_access(self):
         patient = Patient.objects.get(id=1)

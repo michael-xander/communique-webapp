@@ -1,14 +1,13 @@
 {% extends parentemplate|default:'medical/base_medical.html' %}
-{% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Add Medical Report Type
 {% endblock %}
 
-{% block report_types_add_menu %}
+{% block report_type_menu %}
     <li class="active">
-        <a href="{% url 'medical_report_type_create' %}">
-            <i class="fa fa-circle-o text-aqua"></i> Add Report Type
+        <a href="{% url 'medical_report_type_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Report Types
         </a>
     </li>
 {% endblock %}
@@ -37,26 +36,7 @@
                 </div>
                 <form role="form" action="{% url 'medical_report_type_create' %}" method="post">
                     {% csrf_token %}
-                    <div class="box-body">
-                        {% for field in form %}
-                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
-                                {{ field.label_tag }}
-                                {{ field|add_class:"form-control" }}
-
-                                {% if field.help_text %}
-                                    <p class="help-block">{{ field.help_text }}</p>
-                                {% endif %}
-
-                                {% if field.errors %}
-                                    <ul>
-                                        {% for error in field.errors %}
-                                            <li><p class="help-block">{{ error|escape }}</p></li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'medical/medical_report_type_form_body.html' %}
                     <div class="box-footer">
                         <button type="reset" class="btn btn-warning">Reset</button>
                         <button type="submit" class="btn btn-success">Submit</button>

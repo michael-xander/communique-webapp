@@ -158,104 +158,48 @@
                     <!-- sidebar menu -->
                     <ul class="sidebar-menu">
                         <li class="header">MAIN NAVIGATION</li>
-                        <li>
-                            <a href="{% url 'dashboard_home' %}">
-                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'user_profile_calendar_view' %}">
-                                <i class="fa fa-calendar"></i> <span>Calendar</span>
-                            </a>
-                        </li>
+                        {% block dashboard_menu %}
+                            <li>
+                                <a href="{% url 'dashboard_home' %}">
+                                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                                </a>
+                            </li>
+                        {% endblock %}
+                        {% block calendar_menu %}
+                            <li>
+                                <a href="{% url 'user_profile_calendar_view' %}">
+                                    <i class="fa fa-calendar"></i> <span>Calendar</span>
+                                </a>
+                            </li>
+                        {% endblock %}
                         {% if user.is_superuser %}
                             {% block user_menu %}
-                                <li class="treeview">
-                                    <a href="#">
+                                <li>
+                                    <a href="{% url 'user_communique_user_list' %}">
                                         <i class="fa fa-users"></i> <span>Communiqué Users</span>
-                                          <span class="pull-right-container">
-                                            <i class="fa fa-angle-left pull-right"></i>
-                                          </span>
                                     </a>
-                                    <ul class="treeview-menu">
-                                        <li>
-                                            <a href="{% url 'user_communique_user_list' %}">
-                                                <i class="fa fa-circle-o text-aqua"></i> User List
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{% url 'user_communique_user_create' %}">
-                                                <i class="fa fa-circle-o text-aqua"></i> Register User
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
                             {% endblock %}
                         {% endif %}
                         {% block appointments_menu %}
-                            <li class="treeview">
-                                <a href="#">
+                            <li>
+                                <a href="{% url 'appointments_appointment_list' %}">
                                     <i class="fa fa-calendar-plus-o"></i> <span>Appointments</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
                                 </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="{% url 'appointments_appointment_list' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Appointments List
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'appointments_appointment_create' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Add Appointment
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                         {% endblock %}
                         {% block events_menu %}
-                            <li class="treeview">
-                                <a href="#">
+                            <li>
+                                <a href="{% url 'occasions_event_list' %}">
                                     <i class="fa fa-calendar-o"></i> <span>Events</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
                                 </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                       <a href="{% url 'occasions_event_list' %}">
-                                           <i class="fa fa-circle-o text-aqua"></i> Events List
-                                       </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'occasions_event_create' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Add Event
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                         {% endblock %}
                         {% block programs_menu %}
-                            <li class="treeview">
-                                <a href="#">
+                            <li>
+                                <a href="{% url 'programs_program_list' %}">
                                     <i class="fa fa-tags"></i> <span>Pilot Programs</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
                                 </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="{% url 'programs_program_list' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Pilot Programs List
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'programs_program_create' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Add Pilot Program
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                         {% endblock %}
                         {% block patients_menu %}
@@ -269,62 +213,42 @@
                                 <ul class="treeview-menu">
                                     <li>
                                         <a href="{% url 'patients_patient_list' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Patients List
+                                            <i class="fa fa-circle-o text-aqua"></i> Current Patients
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'patients_patient_create' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Register Patient
+                                        <a href="{% url 'patients_patient_archived_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Archived Patients
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'patients_outcome_type_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Patient Outcome Categories
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'patients_outcome_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Patient Outcomes
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         {% endblock %}
                         {% block enrollments_menu %}
-                            <li class="treeview">
-                                <a href="#">
+                            <li>
+                                <a href="{% url 'patients_enrollment_list' %}">
                                     <i class="fa fa-support"></i> <span>Enrollments</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
                                 </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="{% url 'patients_enrollment_list' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Enrollment List
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'patients_enrollment_create' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Register Enrollment
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                         {% endblock %}
                         {% block admissions_menu %}
-                            <li class="treeview">
-                                <a href="#">
+                            <li>
+                                <a href="{% url 'admissions_admission_list' %}">
                                     <i class="fa fa-ambulance"></i> <span>Admissions</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
                                 </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="{% url 'admissions_admission_list' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Admissions List
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'admissions_admission_create' %}">
-                                            <i class="fa fa-circle-o text-aqua"></i> Add Admission
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                         {% endblock %}
-                        {% block counselling_sessions_menu %}
+                        {% block counselling_menu %}
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-plus-square"></i> <span>Counselling Sessions</span>
@@ -334,42 +258,14 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Session Types
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'counselling_sessions_type_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Session Types
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_type_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Session Type List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_type_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Session Type
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Sessions
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'counselling_sessions_session_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Sessions
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_session_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Session List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'counselling_sessions_session_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Session
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
@@ -384,42 +280,14 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Report Types
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'medical_report_type_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Report Types
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'medical_report_type_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Report Type List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'medical_report_type_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Report Type
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Reports
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'medical_report_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Reports
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'medical_report_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Report List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'medical_report_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Report
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
@@ -434,42 +302,14 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Drugs
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'regimens_drug_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Drugs
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'regimens_drug_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Drugs List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'regimens_drug_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Drug
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Regimens
-                                            <span class="pull-right-container">
-                                                <i class="fa fa-angle-left pull-right"></i>
-                                            </span>
+                                        <a href="{% url 'regimens_regimen_list' %}">
+                                            <i class="fa fa-circle-o text-aqua"></i> Regimens
                                         </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="{% url 'regimens_regimen_list' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Regimens List
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'regimens_regimen_create' %}">
-                                                    <i class="fa fa-circle-o text-aqua"></i> Add Regimen
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>

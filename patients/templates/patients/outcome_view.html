@@ -1,0 +1,126 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+
+{% block title %}
+    {{ block.super }} | Patient Outcome
+{% endblock %}
+
+{% block outcome_menu %}
+    <li class="active">
+        <a href="{% url 'patients_outcome_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Patient Outcomes
+        </a>
+    </li>
+{% endblock %}
+
+
+{% block page_heading %}
+    Patient Outcome
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    {{ block.super }}
+    <li>
+        <a href="{% url 'patients_outcome_list' %}"><i class="fa fa-heartbeat"></i> Patient Outcomes</a>
+    </li>
+    <li class="active"><i class="fa fa-heartbeat"></i> Patient Outcome</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <h3 class="text-center">Patient Outcome Details</h3>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Category</b> <a class="pull-right">{{ outcome.outcome_type }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Outcome date</b> <a class="pull-right">{{ outcome.outcome_date }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Added on</b> <a class="pull-right">{{ outcome.date_created }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Added by</b> <a class="pull-right">{{ outcome.created_by.get_full_name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Last modified</b> <a class="pull-right">{{ outcome.date_last_modified }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Modified by</b> <a class="pull-right">{{ outcome.last_modified_by.get_full_name }}</a>
+                        </li>
+                    </ul>
+                    <a class="btn btn-primary" href="{{ outcome.get_update_url }}"><b>Edit</b></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <h3 class="text-center">Patient Details</h3>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Name</b> <a class="pull-right">{{ outcome.patient.get_full_name }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Patient ID</b> <a class="pull-right">{{ outcome.patient.identifier }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Health Centre</b>
+                            <a class="pull-right">
+                                {% if outcome.patient.reference_health_centre %}
+                                    {{ outcome.patient.reference_health_centre }}
+                                {% else %}
+                                    Unavailable
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Address</b>
+                            <a class="pull-right">
+                                {% if outcome.patient.location %}
+                                    {{ outcome.patient.location }}
+                                {% else %}
+                                    Unavailable
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Contact Number</b>
+                            <a class="pull-right">
+                                {% if outcome.patient.contact_number %}
+                                    {{ outcome.patient.contact_number }}
+                                {% else %}
+                                    Unavailable
+                                {% endif %}
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="{{ outcome.patient.get_absolute_url }}" class="btn btn-primary btn-block">
+                        <b>More patient details</b>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+                    <p>
+                        {% if outcome.notes %}
+                            {{ outcome.notes }}
+                        {% else %}
+                            This outcome currently doesn't have any notes.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ block.super }} | Patient Outcomes
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+{% endblock %}
+
+{% block outcome_menu %}
+    <li class="active">
+        <a href="{% url 'patients_outcome_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Patient Outcomes
+        </a>
+    </li>
+{% endblock %}
+
+
+{% block page_heading %}
+    Patient Outcomes
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    {{ block.super }}
+    <li>
+        <a href="{% url 'patients_outcome_list' %}"><i class="fa fa-heartbeat"></i> Patient Outcomes</a>
+    </li>
+    <li class="active"><i class="fa fa-table"></i> List</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Patient Outcomes</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Outcome Category</th>
+                                <th>Patient ID</th>
+                                <th>Patient</th>
+                                <th>Outcome Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for outcome in outcome_list %}
+                                <tr>
+                                    <td><a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_type }}</a></td>
+                                    <td>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.patient.identifier }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.patient.get_full_name }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_date }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Outcome Category</th>
+                                <th>Patient ID</th>
+                                <th>Patient</th>
+                                <th>Outcome Date</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <a class="btn btn-primary" href="{% url 'patients_outcome_create' %}">Add Patient Outcome</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+    </script>
+{% endblock %}

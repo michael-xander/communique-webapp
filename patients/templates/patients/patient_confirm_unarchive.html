@@ -1,0 +1,55 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+
+{% block title %}
+    {{ block.super }} | Unarchive Patient
+{% endblock %}
+
+{% block page_heading %}
+    Unarchive Patient
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    {{ block.super }}
+    {% if patient.archived %}
+        <li><a href="{% url 'patients_patient_archived_list' %}"><i class="fa fa-heartbeat"></i> Archived Patients</a></li>
+    {% else %}
+        <li><a href="{% url 'patients_patient_list' %}"><i class="fa fa-heartbeat"></i> Patients</a></li>
+    {% endif %}
+    <li class="active"><i class="fa fa-edit"></i> Unarchive Patient</li>
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {% if not patient.archived %}
+                <div class="callout callout-warning">
+                    <h4>Patient not archived</h4>
+                    <p>
+                        This patient is currently not archived so confirming that he/she should be unarchived will not
+                        lead to any changes to patient's details nor affect the services that can be logged for him/her.
+                    </p>
+                </div>
+            {% endif %}
+            <div class="box box-warning box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Unarchive Patient Confirmation</h3>
+                </div>
+                <form role="form" action="{{ patient.get_unarchive_url }}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        Are you sure that you want to unarchive the patient: {{ patient }}? If unarchived, the patient
+                        will be able to have his/her services logged in the system.
+                    </div>
+                    <div class="box-footer">
+                        <a href="{{ patient.get_absolute_url }}" class="btn btn-success">Cancel</a>
+                        <button type="submit" class="btn btn-warning">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

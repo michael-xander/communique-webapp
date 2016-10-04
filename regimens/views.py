@@ -23,13 +23,6 @@ class DrugCreateView(CommuniqueCreateView):
     fields = ['name', 'description']
     template_name = 'regimens/drug_form.html'
 
-    def form_valid(self, form):
-        # fill in the creator fields for the drug model
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(DrugCreateView, self).form_valid(form)
-
 
 class DrugDetailView(CommuniqueDetailView):
     """
@@ -49,12 +42,6 @@ class DrugUpdateView(CommuniqueUpdateView):
     template_name = 'regimens/drug_update_form.html'
     context_object_name = 'drug'
 
-    def form_valid(self, form):
-        # update the user to last modify the drug
-        form.instance.last_modified_by = self.request.user
-
-        return super(DrugUpdateView, self).form_valid(form)
-
 
 class DrugDeleteView(CommuniqueDeleteView):
     """
@@ -73,13 +60,6 @@ class RegimenCreateView(CommuniqueCreateView):
     model = Regimen
     form_class = RegimenForm
     template_name = 'regimens/regimen_form.html'
-
-    def form_valid(self, form):
-        # fill in the creator fields for the regimen model
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
-        return super(RegimenCreateView, self).form_valid(form)
 
 
 class RegimenDetailView(CommuniqueDetailView):
@@ -118,9 +98,3 @@ class RegimenUpdateView(CommuniqueUpdateView):
     form_class = RegimenUpdateForm
     template_name = 'regimens/regimen_update_form.html'
     context_object_name = 'regimen'
-
-    def form_valid(self, form):
-        # update the last modified by fields
-        form.instance.last_modified_by = self.request.user
-
-        return super(RegimenUpdateView, self).form_valid(form)

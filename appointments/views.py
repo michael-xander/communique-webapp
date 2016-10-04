@@ -15,10 +15,6 @@ class AppointmentCreateView(CommuniqueCreateView):
     template_name = 'appointments/appointment_form.html'
 
     def form_valid(self, form):
-        # the creator and last modified fields
-        form.instance.created_by = self.request.user
-        form.instance.last_modified_by = self.request.user
-
         # set the owner of the appointment as current user if not chosen in form
         if not form.instance.owner:
             form.instance.owner = self.request.user
@@ -45,9 +41,6 @@ class AppointmentUpdateView(CommuniqueUpdateView):
     context_object_name = 'appointment'
 
     def form_valid(self, form):
-        # set the last modified by field and owner if necessary
-        form.instance.last_modified_by = self.request.user
-
         # set the owner as currently logged in user if none chosen in form
         if not form.instance.owner:
             form.instance.owner = self.request.owner

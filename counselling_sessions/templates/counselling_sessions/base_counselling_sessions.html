@@ -1,6 +1,6 @@
 {% extends parent_template|default:'base.html' %}
 
-{% block counselling_sessions_menu %}
+{% block counselling_menu %}
     <li class="treeview active">
         <a href="#">
             <i class="fa fa-plus-square"></i> <span>Counselling Sessions</span>
@@ -9,52 +9,21 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li>
-                <a href="#"><i class="fa fa-circle-o"></i> Session Types
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    {% block session_types_list_menu %}
-                        <li>
-                            <a href="{% url 'counselling_sessions_type_list' %}">
-                                <i class="fa fa-circle-o text-aqua"></i> Session Type List
-                            </a>
-                        </li>
-                    {% endblock %}
-                    {% block session_types_add_menu %}
-                        <li>
-                            <a href="{% url 'counselling_sessions_type_create' %}">
-                                <i class="fa fa-circle-o text-aqua"></i> Add Session Type
-                            </a>
-                        </li>
-                    {% endblock %}
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-circle-o"></i> Sessions
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    {% block session_list_menu %}
-                        <li>
-                            <a href="{% url 'counselling_sessions_session_list' %}">
-                                <i class="fa fa-circle-o text-aqua"></i> Session List
-                            </a>
-                        </li>
-                    {% endblock %}
-                    {% block session_add_menu %}
-                        <li>
-                            <a href="{% url 'counselling_sessions_session_create' %}">
-                                <i class="fa fa-circle-o text-aqua"></i> Add Session
-                            </a>
-                        </li>
-                    {% endblock %}
-                </ul>
-            </li>
+            {% block session_type_menu %}
+                <li>
+                    <a href="{% url 'counselling_sessions_type_list' %}">
+                        <i class="fa fa-circle-o text-aqua"></i> Session Types
+                    </a>
+                </li>
+            {% endblock %}
+            {% block session_menu %}
+                <li>
+                    <a href="{% url 'counselling_sessions_session_list' %}">
+                        <i class="fa fa-circle-o text-aqua"></i> Sessions
+                    </a>
+                </li>
+            {% endblock %}
         </ul>
     </li>
+
 {% endblock %}
