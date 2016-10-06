@@ -111,12 +111,15 @@ class CounsellingSessionExportFormView(CommuniqueFormView):
 
     def form_valid(self, form):
         # get the start and end date on valid form submission
+        self.start_date = form.cleaned_data['start_date']
+        self.end_date = form.cleaned_data['end_date']
         return super(CounsellingSessionExportFormView, self).form_valid(form)
 
     def get_success_url(self):
         # on successful validation of the form, redirect to the export list view with the provided start and end date
-        start_date = self.get_form_kwargs().get('post')['start_date']
-        end_date = self.get_form_kwargs().get('post')['end_date']
+
+        start_date = self.start_date
+        end_date = self.end_date
 
         start_year = '{:04d}'.format(start_date.year)
         end_year = '{:04d}'.format(end_date.year)
@@ -137,7 +140,7 @@ class CounsellingSessionExportListView(CommuniqueListView):
     """
     model = CounsellingSession
     template_name = 'counselling_sessions/counselling_session_export_list.html'
-    context_object_name = 'patient_export_list'
+    context_object_name = 'counselling_session_export_list'
 
     def get_queryset(self):
         # get all the counselling sessions within the provided date range
