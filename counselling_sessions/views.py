@@ -144,12 +144,22 @@ class CounsellingSessionExportListView(CommuniqueListView):
     template_name = 'counselling_sessions/counselling_session_export_list.html'
     context_object_name = 'counselling_session_export_list'
 
-    def get_queryset(self):
-        # get all the counselling sessions within the provided date range
+    def get_export_start_date(self):
+        # returns the start date from which sessions created are filtered
         start_date = datetime.date(year=int(self.kwargs['start_year']), month=int(self.kwargs['start_month']),
                                    day=int(self.kwargs['start_day']))
+        return start_date
+
+    def get_export_end_date(self):
+        # returns the end date from which sessions created are filtered
         end_date = datetime.date(year=int(self.kwargs['end_year']), month=int(self.kwargs['end_month']),
                                  day=int(self.kwargs['end_day']))
+        return end_date
+
+    def get_queryset(self):
+        # get all the counselling sessions within the provided date range
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
         counselling_sessions = CounsellingSession.objects.filter(date_created__range=[start_date, end_date])
         return counselling_sessions
 
@@ -157,10 +167,8 @@ class CounsellingSessionExportListView(CommuniqueListView):
         # add the duration form to the context
         context = super(CounsellingSessionExportListView, self).get_context_data(**kwargs)
 
-        start_date = datetime.date(year=int(self.kwargs['start_year']), month=int(self.kwargs['start_month']),
-                                   day=int(self.kwargs['start_day']))
-        end_date = datetime.date(year=int(self.kwargs['end_year']), month=int(self.kwargs['end_month']),
-                                 day=int(self.kwargs['end_day']))
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
         data = {'start_date':start_date, 'end_date':end_date}
 
         context['form'] = DurationForm(data)

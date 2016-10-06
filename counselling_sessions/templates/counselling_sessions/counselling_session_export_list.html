@@ -139,7 +139,7 @@
                 <div class="box-footer">
                     <!-- if there is a list of sessions to export, make the export button active -->
                     {% if counselling_session_export_list %}
-                        <a class="btn btn-primary" href="{{ request.path|add:'?export=csv' }}">Download as CSV</a>
+                        <a class="btn btn-primary" target="_blank" href="{{ request.path|add:'?export=csv' }}">Download as CSV</a>
                     {% else %}
                         <a class="btn btn-primary disabled">Download as CSV</a>
                     {% endif %}
