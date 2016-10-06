@@ -96,6 +96,28 @@ class CounsellingSessionCreateViewTestCase(ViewsTestCase):
         self.only_active_user_access_test(self.view_url, self.view_template_name)
 
 
+class CounsellingSessionExportFormViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view that displays the export form
+    """
+    view_name = 'counselling_sessions_export_form'
+    view_template_name = 'counselling_sessions/counselling_session_export_list.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class CounsellingSessionExportListViewTestCase(ViewsTestCase):
+    view_name = 'counselling_sessions_export_list'
+    view_template_name = 'counselling_sessions/counselling_session_export_list.html'
+    view_url = reverse(view_name, kwargs={'start_year':'2000', 'start_month':'01', 'start_day':'01',
+                                          'end_year':'2001', 'end_month':'01', 'end_day':'01'})
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
 class ExistingCounsellingSessionViewsTestCase(ViewsTestCase):
     """
     Test cases for views that require an existing counselling session
