@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.http import HttpResponse
 
 import datetime
+import csv
 
 from .models import CounsellingSession, CounsellingSessionType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
@@ -163,4 +165,29 @@ class CounsellingSessionExportListView(CommuniqueListView):
 
         context['form'] = DurationForm(data)
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        # if there is a get parameter ,export, with the value csv and there are objects in the list then respond with a
+        # csv file of the data
+        if ('csv' in self.request.GET.get('export', '')) and context[self.context_object_name]:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="sessions.csv"'
+
+            fieldnames = ['session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
+                          'date_added (dd/mm/yyyy)', 'notes']
+            writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
+            writer.writeheader()
+            for counselling_session in context[self.context_object_name]:
+                session_type = counselling_session.counselling_session_type
+                patient = counselling_session.patient
+                writer.writerow({'session_type':session_type.__str__(), 'patient_id':patient.identifier,
+                                 'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
+                                 'added_by':counselling_session.created_by.get_full_name(),
+                                 'date_added (dd/mm/yyyy)':counselling_session.date_created.strftime('%d-%m-%Y'),
+                                 'notes':counselling_session.notes})
+            return response
+        else:
+            return super(CounsellingSessionExportListView, self).render_to_response(context, **response_kwargs)
+
+
 
