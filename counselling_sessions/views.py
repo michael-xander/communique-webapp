@@ -6,7 +6,7 @@ import csv
 
 from .models import CounsellingSession, CounsellingSessionType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
-                              CommuniqueCreateView, CommuniqueExportFormView)
+                              CommuniqueCreateView, CommuniqueExportFormView, CommuniqueExportListView)
 from communique.forms import DurationForm
 from .forms import CounsellingSessionForm
 
@@ -116,25 +116,13 @@ class CounsellingSessionExportFormView(CommuniqueExportFormView):
         return 'counselling_sessions_export_list'
 
 
-class CounsellingSessionExportListView(CommuniqueListView):
+class CounsellingSessionExportListView(CommuniqueExportListView):
     """
     A view that lists counselling sessions to be exported depending on the provided start and end dates
     """
     model = CounsellingSession
     template_name = 'counselling_sessions/counselling_session_export_list.html'
     context_object_name = 'counselling_session_export_list'
-
-    def get_export_start_date(self):
-        # returns the start date from which sessions created are filtered
-        start_date = datetime.date(year=int(self.kwargs['start_year']), month=int(self.kwargs['start_month']),
-                                   day=int(self.kwargs['start_day']))
-        return start_date
-
-    def get_export_end_date(self):
-        # returns the end date from which sessions created are filtered
-        end_date = datetime.date(year=int(self.kwargs['end_year']), month=int(self.kwargs['end_month']),
-                                 day=int(self.kwargs['end_day']))
-        return end_date
 
     def get_queryset(self):
         # get all the counselling sessions within the provided date range
@@ -143,39 +131,23 @@ class CounsellingSessionExportListView(CommuniqueListView):
         counselling_sessions = CounsellingSession.objects.filter(date_created__range=[start_date, end_date])
         return counselling_sessions
 
-    def get_context_data(self, **kwargs):
-        # add the duration form to the context
-        context = super(CounsellingSessionExportListView, self).get_context_data(**kwargs)
+    def csv_export_response(self, context):
+        # generate an HTTP response with the csv file for download
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="sessions.csv"'
 
-        start_date = self.get_export_start_date()
-        end_date = self.get_export_end_date()
-        data = {'start_date':start_date, 'end_date':end_date}
-
-        context['form'] = DurationForm(data)
-        return context
-
-    def render_to_response(self, context, **response_kwargs):
-        # if there is a get parameter ,export, with the value csv and there are objects in the list then respond with a
-        # csv file of the data
-        if ('csv' in self.request.GET.get('export', '')) and context[self.context_object_name]:
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename="sessions.csv"'
-
-            fieldnames = ['session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
-                          'date_added (dd/mm/yyyy)', 'notes']
-            writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-            writer.writeheader()
-            for counselling_session in context[self.context_object_name]:
-                session_type = counselling_session.counselling_session_type
-                patient = counselling_session.patient
-                writer.writerow({'session_type':session_type.__str__(), 'patient_id':patient.identifier,
+        fieldnames = ['session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
+                      'date_added (dd/mm/yyyy)', 'notes']
+        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+        for counselling_session in context[self.context_object_name]:
+            session_type = counselling_session.counselling_session_type
+            patient = counselling_session.patient
+            writer.writerow({'session_type':session_type.__str__(), 'patient_id':patient.identifier,
                                  'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
                                  'added_by':counselling_session.created_by.get_full_name(),
                                  'date_added (dd/mm/yyyy)':counselling_session.date_created.strftime('%d-%m-%Y'),
                                  'notes':counselling_session.notes})
-            return response
-        else:
-            return super(CounsellingSessionExportListView, self).render_to_response(context, **response_kwargs)
-
+        return response
 
 
