@@ -7,7 +7,8 @@ import csv
 from .models import CounsellingSession, CounsellingSessionType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView, CommuniqueFormView)
-from .forms import CounsellingSessionForm, DurationForm
+from communique.forms import DurationForm
+from .forms import CounsellingSessionForm
 
 
 class CounsellingSessionTypeListView(CommuniqueListView):

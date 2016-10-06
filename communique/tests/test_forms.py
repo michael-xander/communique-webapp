@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from counselling_sessions.forms import DurationForm
+from communique.forms import DurationForm
 
 import datetime
 
