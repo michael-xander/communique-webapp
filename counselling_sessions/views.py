@@ -6,7 +6,7 @@ import csv
 
 from .models import CounsellingSession, CounsellingSessionType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
-                              CommuniqueCreateView, CommuniqueFormView)
+                              CommuniqueCreateView, CommuniqueExportFormView)
 from communique.forms import DurationForm
 from .forms import CounsellingSessionForm
 
@@ -105,36 +105,15 @@ class CounsellingSessionDeleteView(CommuniqueDeleteView):
     template_name = 'counselling_sessions/counselling_session_confirm_delete.html'
 
 
-class CounsellingSessionExportFormView(CommuniqueFormView):
+class CounsellingSessionExportFormView(CommuniqueExportFormView):
     """
     A view that handles the form for picking the creation dates for counselling sessions to be exported
     """
-    form_class = DurationForm
     template_name = 'counselling_sessions/counselling_session_export_list.html'
 
-    def form_valid(self, form):
-        # get the start and end date on valid form submission
-        self.start_date = form.cleaned_data['start_date']
-        self.end_date = form.cleaned_data['end_date']
-        return super(CounsellingSessionExportFormView, self).form_valid(form)
-
-    def get_success_url(self):
-        # on successful validation of the form, redirect to the export list view with the provided start and end date
-
-        start_date = self.start_date
-        end_date = self.end_date
-
-        start_year = '{:04d}'.format(start_date.year)
-        end_year = '{:04d}'.format(end_date.year)
-
-        start_month = '{:02d}'.format(start_date.month)
-        end_month = '{:02d}'.format(end_date.month)
-
-        start_day = '{:02d}'.format(start_date.day)
-        end_day = '{:02d}'.format(end_date.day)
-        return reverse('counselling_sessions_export_list', kwargs={'start_year':start_year, 'start_month':start_month,
-                                                                   'start_day':start_day, 'end_year':end_year,
-                                                                   'end_month':end_month, 'end_day':end_day})
+    def get_success_view_name(self):
+        # return the name of the view to which to redirect to on successful validation
+        return 'counselling_sessions_export_list'
 
 
 class CounsellingSessionExportListView(CommuniqueListView):
