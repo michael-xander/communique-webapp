@@ -109,6 +109,9 @@ class CounsellingSessionExportFormViewTestCase(ViewsTestCase):
 
 
 class CounsellingSessionExportListViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view to list sessions for exportation
+    """
     view_name = 'counselling_sessions_export_list'
     view_template_name = 'counselling_sessions/counselling_session_export_list.html'
     view_url = reverse(view_name, kwargs={'start_year':'2000', 'start_month':'01', 'start_day':'01',

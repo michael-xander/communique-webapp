@@ -297,7 +297,7 @@ class EnrollmentExportListView(CommuniqueExportListView):
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_{1}.csv"'.format(
+        response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_to_{1}.csv"'.format(
             start_date.strftime('%d-%m-%Y'), end_date.strftime('%d-%m-%Y'))
 
         fieldnames = ['program', 'patient_id', 'patient_last_name', 'patient_other_names', 'date_enrolled (dd-mm-yyyy)',
