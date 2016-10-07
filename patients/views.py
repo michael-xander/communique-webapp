@@ -289,19 +289,20 @@ class EnrollmentExportListView(CommuniqueExportListView):
         # get all the enrollments within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        enrollments = Enrollment.objects.filter(date_enrolled__range=[start_date, end_date])
+        enrollments = Enrollment.objects.filter(date_created__range=[start_date, end_date])
         return enrollments
 
     def csv_export_response(self, context):
         # generate an HTTP response with the csv file for download
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
+        date_format = '%d-%m-%Y'
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_to_{1}.csv"'.format(
-            start_date.strftime('%d-%m-%Y'), end_date.strftime('%d-%m-%Y'))
+            start_date.strftime(date_format), end_date.strftime(date_format))
 
         fieldnames = ['program', 'patient_id', 'patient_last_name', 'patient_other_names', 'date_enrolled (dd-mm-yyyy)',
-                      'enrolled_by', 'comment']
+                      'enrolled_by', 'date_added (dd-mm-yyyy)', 'comment']
 
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
@@ -311,8 +312,10 @@ class EnrollmentExportListView(CommuniqueExportListView):
             patient = enrollment.patient
             writer.writerow({'program':program.__str__(), 'patient_id':patient.identifier,
                              'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
-                             'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime('%d-%m-%Y'),
-                             'enrolled_by':enrollment.created_by.get_full_name(), 'comment':enrollment.comment})
+                             'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime(date_format),
+                             'enrolled_by':enrollment.created_by.get_full_name(),
+                             'date_added (dd-mm-yyyy)':enrollment.date_created.strftime(date_format),
+                             'comment':enrollment.comment})
         return response
 
 
