@@ -1,13 +1,11 @@
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 
-import datetime
 import csv
 
 from .models import CounsellingSession, CounsellingSessionType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView, CommuniqueExportFormView, CommuniqueExportListView)
-from communique.forms import DurationForm
 from .forms import CounsellingSessionForm
 
 
