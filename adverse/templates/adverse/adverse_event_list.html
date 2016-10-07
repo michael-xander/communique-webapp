@@ -46,6 +46,7 @@
                                 <th>Patient ID</th>
                                 <th>Patient</th>
                                 <th>Event Date</th>
+                                <th>Date Added</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,6 +62,9 @@
                                     <td>
                                         <a href="{{ event.get_absolute_url }}">{{ event.event_date }}</a>
                                     </td>
+                                    <td>
+                                        <a href="{{ event.get_absolute_url }}">{{ event.date_created }}</a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -70,12 +74,14 @@
                                 <th>Patient ID</th>
                                 <th>Patient</th>
                                 <th>Event Date</th>
+                                <th>Date Added</th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
                 <div class="box-footer">
                     <a class="btn btn-primary" href="{% url 'adverse_event_create' %}">Report Adverse Event</a>
+                    <a class="btn btn-success" href="{% url 'adverse_event_export_form' %}">Export Adverse Events</a>
                 </div>
             </div>
         </div>

@@ -46,7 +46,7 @@
                 <form role="form" action="{% url 'counselling_sessions_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        This search looks for sessions that were created/added on a date that lies in the range starting
+                        This search looks for sessions that were created/added to the system on a date that lies in the range starting
                         from the start date and ending at the end date that you'll pick below with both dates being
                         included in the range.
                         {% for field in form %}
