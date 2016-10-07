@@ -133,9 +133,10 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
         # generate an HTTP response with the csv file for download
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
+        date_format = '%d-%m-%Y'
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="sessions_{0}_to_{1}.csv"'.format(
-            start_date.strftime('%d-%m-%Y'), end_date.strftime('%d-%m-%Y'))
+            start_date.strftime(date_format), end_date.strftime(date_format))
 
         fieldnames = ['session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
                       'date_added (dd-mm-yyyy)', 'notes']
@@ -147,7 +148,7 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
             writer.writerow({'session_type':session_type.__str__(), 'patient_id':patient.identifier,
                                  'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
                                  'added_by':counselling_session.created_by.get_full_name(),
-                                 'date_added (dd-mm-yyyy)':counselling_session.date_created.strftime('%d-%m-%Y'),
+                                 'date_added (dd-mm-yyyy)':counselling_session.date_created.strftime(date_format),
                                  'notes':counselling_session.notes})
         return response
 
