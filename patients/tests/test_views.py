@@ -274,6 +274,31 @@ class EnrollmentCreateViewTestCase(ViewsTestCase):
         self.only_active_user_access_test(self.view_url, self.view_template_name)
 
 
+class EnrollmentExportFormViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view displaying the export form for enrollments
+    """
+    view_name = 'patients_enrollment_export_form'
+    view_template_name = 'patients/enrollment_export_list.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class EnrollmentExportListViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view that displays the list of enrollments to be exported
+    """
+    view_name = 'patients_enrollment_export_list'
+    view_template_name = 'patients/enrollment_export_list.html'
+    view_url = reverse(view_name, kwargs={'start_year':'2000', 'start_month':'01', 'start_day':'01',
+                                          'end_year':'2001', 'end_month':'01', 'end_day':'01'})
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
 class ExistingEnrollmentViewsTestCase(ViewsTestCase):
     """
     Test case for views that require an existing enrollment

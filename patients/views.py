@@ -1,8 +1,12 @@
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse
+
+import csv
 
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
-                              CommuniqueCreateView, CommuniqueFormView)
+                              CommuniqueCreateView, CommuniqueFormView, CommuniqueExportFormView,
+                              CommuniqueExportListView)
 from .models import Patient, Enrollment, Outcome, OutcomeType
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
@@ -260,6 +264,56 @@ class EnrollmentUpdateView(CommuniqueUpdateView):
     fields = ['date_enrolled', 'comment']
     template_name = 'patients/enrollment_update_form.html'
     context_object_name = 'enrollment'
+
+
+class EnrollmentExportFormView(CommuniqueExportFormView):
+    """
+    A view that displays the form to be pick the duration to be considered for selecting enrollments for exportation
+    """
+    template_name = 'patients/enrollment_export_list.html'
+
+    def get_success_view_name(self):
+        # return the name of the view to which to redirect to on successful validation
+        return 'patients_enrollment_export_list'
+
+
+class EnrollmentExportListView(CommuniqueExportListView):
+    """
+    A view that retrieves the list of enrollments to be exported
+    """
+    model = Enrollment
+    template_name = 'patients/enrollment_export_list.html'
+    context_object_name = 'enrollment_export_list'
+
+    def get_queryset(self):
+        # get all the enrollments within the provided date range
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        enrollments = Enrollment.objects.filter(date_enrolled__range=[start_date, end_date])
+        return enrollments
+
+    def csv_export_response(self, context):
+        # generate an HTTP response with the csv file for download
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_{1}.csv"'.format(
+            start_date.strftime('%d-%m-%Y'), end_date.strftime('%d-%m-%Y'))
+
+        fieldnames = ['program', 'patient_id', 'patient_last_name', 'patient_other_names', 'date_enrolled (dd-mm-yyyy)',
+                      'enrolled_by', 'comment']
+
+        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+
+        for enrollment in context[self.context_object_name]:
+            program = enrollment.program
+            patient = enrollment.patient
+            writer.writerow({'program':program.__str__(), 'patient_id':patient.identifier,
+                             'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
+                             'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime('%d-%m-%Y'),
+                             'enrolled_by':enrollment.created_by.get_full_name(), 'comment':enrollment.comment})
+        return response
 
 
 class PatientModelCreateView(CommuniqueCreateView):
