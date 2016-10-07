@@ -46,8 +46,9 @@
                 <form role="form" action="{% url 'counselling_sessions_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        To search for sessions to be exported, please select a start date and end date within which
-                        sessions added to the system will be returned.
+                        This search looks for sessions that were created/added on a date that lies in the range starting
+                        from the start date and ending at the end date that you'll pick below with both dates being
+                        included in the range.
                         {% for field in form %}
                             <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
                                 {{ field.label_tag }}
