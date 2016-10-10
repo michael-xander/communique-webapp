@@ -301,8 +301,8 @@ class EnrollmentExportListView(CommuniqueExportListView):
         response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_to_{1}.csv"'.format(
             start_date.strftime(date_format), end_date.strftime(date_format))
 
-        fieldnames = ['program', 'patient_id', 'patient_last_name', 'patient_other_names', 'date_enrolled (dd-mm-yyyy)',
-                      'enrolled_by', 'date_added (dd-mm-yyyy)', 'comment']
+        fieldnames = ['id', 'program', 'patient_id', 'patient_last_name', 'patient_other_names',
+                      'date_enrolled (dd-mm-yyyy)', 'enrolled_by', 'date_added (dd-mm-yyyy)', 'comment']
 
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
@@ -310,7 +310,7 @@ class EnrollmentExportListView(CommuniqueExportListView):
         for enrollment in context[self.context_object_name]:
             program = enrollment.program
             patient = enrollment.patient
-            writer.writerow({'program':program.__str__(), 'patient_id':patient.identifier,
+            writer.writerow({'id':enrollment.id,'program':program.__str__(), 'patient_id':patient.identifier,
                              'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
                              'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime(date_format),
                              'enrolled_by':enrollment.created_by.get_full_name(),
