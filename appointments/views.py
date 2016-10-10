@@ -77,7 +77,7 @@ class AppointmentExportFormView(CommuniqueExportFormView):
     template_name = 'appointments/appointment_export_list.html'
 
     def get_success_view_name(self):
-        return 'appointments_export_list'
+        return 'appointments_appointment_export_list'
 
 
 class AppointmentExportListView(CommuniqueExportListView):
@@ -86,7 +86,7 @@ class AppointmentExportListView(CommuniqueExportListView):
     """
     model = Appointment
     template_name = 'appointments/appointment_export_list.html'
-    context_object_name = 'appointments_appointment_export_list'
+    context_object_name = 'appointment_export_list'
 
     def get_queryset(self):
         # get all the appointments within the provided date range
