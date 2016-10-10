@@ -210,6 +210,57 @@ class OutcomeCreateView(CommuniqueCreateView):
     template_name = 'patients/outcome_form.html'
 
 
+class OutcomeExportFormView(CommuniqueExportFormView):
+    """
+    A view that handles the form for picking the creation dates for patient outcomes to be exported
+    """
+    template_name = 'patients/outcome_export_list.html'
+
+    def get_success_view_name(self):
+        return 'patients_outcome_export_list'
+
+
+class OutcomeExportListView(CommuniqueExportListView):
+    """
+    A view that lists the patient outcomes to be exported depending on the provided start and end dates
+    """
+    model = Outcome
+    template_name = 'patients/outcome_export_list.html'
+    context_object_name = 'outcome_export_list'
+
+    def get_queryset(self):
+        # get all the outcomes within the provided date range
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        outcomes = Outcome.objects.filter(date_created__range=[start_date, end_date])
+        return outcomes
+
+    def csv_export_response(self, context):
+        # generate an HTTP response with the csv file for download
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        date_format = '%d-%m-%Y'
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="outcomes_{0}_to_{1}.csv"'.format(
+            start_date.strftime(date_format), end_date.strftime(date_format)
+        )
+
+        fieldnames = ['id', 'patient_id', 'patient_last_name', 'patient_other_names', 'outcome_type',
+                      'outcome_date (dd-mm-yyyy)', 'notes', 'date_added (dd-mm-yyyy)', 'added_by']
+        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+
+        for outcome in context[self.context_object_name]:
+            patient = outcome.patient
+            writer.writerow({'id':outcome.id, 'patient_id':patient.identifier, 'patient_last_name':patient.last_name,
+                             'patient_other_names':patient.other_names, 'outcome_type':outcome.outcome_type.__str__(),
+                             'outcome_date (dd-mm-yyyy)':outcome.outcome_date.strftime(date_format),
+                             'notes':outcome.notes, 'date_added (dd-mm-yyyy)':outcome.date_created.strftime(date_format),
+                             'added_by':outcome.created_by.get_full_name()})
+
+        return response
+
+
 class OutcomeUpdateView(CommuniqueUpdateView):
     """
     A view to update a patient outcome
