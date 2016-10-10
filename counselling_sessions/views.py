@@ -138,18 +138,19 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
         response['Content-Disposition'] = 'attachment; filename="sessions_{0}_to_{1}.csv"'.format(
             start_date.strftime(date_format), end_date.strftime(date_format))
 
-        fieldnames = ['session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
+        fieldnames = ['id','session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
                       'date_added (dd-mm-yyyy)', 'notes']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
         for counselling_session in context[self.context_object_name]:
             session_type = counselling_session.counselling_session_type
             patient = counselling_session.patient
-            writer.writerow({'session_type':session_type.__str__(), 'patient_id':patient.identifier,
-                                 'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
-                                 'added_by':counselling_session.created_by.get_full_name(),
-                                 'date_added (dd-mm-yyyy)':counselling_session.date_created.strftime(date_format),
-                                 'notes':counselling_session.notes})
+            writer.writerow({'id':counselling_session.id,'session_type':session_type.__str__(),
+                             'patient_id':patient.identifier, 'patient_last_name':patient.last_name,
+                             'patient_other_names':patient.other_names,
+                             'added_by':counselling_session.created_by.get_full_name(),
+                             'date_added (dd-mm-yyyy)':counselling_session.date_created.strftime(date_format),
+                             'notes':counselling_session.notes})
         return response
 
 
