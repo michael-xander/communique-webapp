@@ -7,7 +7,8 @@ from counselling_sessions.models import CounsellingSession, CounsellingSessionTy
 from medical.models import MedicalReportType, MedicalReport
 from occasions.models import Event
 from programs.models import Program
-from patients.models import Patient, Enrollment
+from patients.models import Patient, Enrollment, OutcomeType, Outcome
+from regimens.models import Drug, Regimen
 from user.models import CommuniqueUser, Profile
 
 
@@ -20,7 +21,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Program
-        fields = ('id', 'name', 'description', 'is_open', 'created_by', 'last_modified_by',
+        fields = ('id', 'name', 'description', 'created_by', 'last_modified_by',
                   'date_created', 'date_last_modified')
         read_only_fields = ('date_created', 'date_last_modified',)
 
@@ -34,9 +35,10 @@ class PatientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Patient
-        fields = ('id', 'last_name', 'other_names',  'sex', 'birth_date', 'identifier', 'location',
-                  'contact_number', 'reference_health_centre', 'interim_outcome', 'treatment_start_date',
-                  'created_by', 'last_modified_by', 'date_created', 'date_last_modified', 'enrolled_programs')
+        fields = ('id', 'last_name', 'other_names',  'sex', 'birth_date', 'identifier', 'location', 'contact_number',
+                  'second_contact_number', 'third_contact_number', 'reference_health_centre', 'interim_outcome',
+                  'treatment_start_date', 'created_by', 'last_modified_by', 'date_created', 'date_last_modified',
+                  'enrolled_programs')
         read_only_fields = ('date_created', 'date_last_modified',)
 
 
@@ -48,8 +50,9 @@ class EnrollmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Enrollment
-        fields = ('id', 'patient', 'program', 'comment', 'is_active', 'enrolled_by', 'date_enrolled')
-        read_only_fields = ('date_enrolled',)
+        fields = ('id', 'patient', 'program', 'date_enrolled', 'comment', 'date_created', 'date_last_modified',
+                  'created_by', 'last_modified_by')
+        read_only_fields = ('date_created', 'date_last_modified',)
 
 
 class CommuniqueUserSerializer(serializers.ModelSerializer):
@@ -178,5 +181,49 @@ class AdverseEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdverseEvent
         fields = ('id', 'patient', 'adverse_event_type', 'event_date', 'notes', 'date_created', 'date_last_modified',
+                  'created_by', 'last_modified_by')
+        read_only_fields = ('date_created', 'date_last_modified')
+
+
+class DrugSerializer(serializers.ModelSerializer):
+    """"
+    A serializer for the Drug model.
+    """
+    class Meta:
+        model = Drug
+        fields = ('id', 'name', 'description', 'date_created', 'date_last_modified',
+                  'created_by', 'last_modified_by')
+        read_only_fields = ('date_created', 'date_last_modified')
+
+
+class RegimenSerializer(serializers.ModelSerializer):
+    """"
+    A serializer for the Regimen model.
+    """
+    class Meta:
+        model = Regimen
+        fields = ('id', 'patient', 'notes', 'drugs', 'date_started', 'date_ended', 'date_created', 'date_last_modified',
+                  'created_by', 'last_modified_by')
+        read_only_fields = ('date_created', 'date_last_modified')
+
+
+class OutcomeTypeSerializer(serializers.ModelSerializer):
+    """"
+    A serializer for the OutcomeType model.
+    """
+    class Meta:
+        model = OutcomeType
+        fields = ('id', 'name', 'description', 'date_created', 'date_last_modified',
+                  'created_by', 'last_modified_by')
+        read_only_fields = ('date_created', 'date_last_modified')
+
+
+class OutcomeSerializer(serializers.ModelSerializer):
+    """"
+    A serializer for the Outcome model.
+    """
+    class Meta:
+        model = Outcome
+        fields = ('id', 'patient', 'outcome_type', 'outcome_date', 'notes', 'date_created', 'date_last_modified',
                   'created_by', 'last_modified_by')
         read_only_fields = ('date_created', 'date_last_modified')
