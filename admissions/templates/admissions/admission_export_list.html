@@ -1,0 +1,173 @@
+{% extends parent_template|default:'admissions/base_admissions.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}
+    {{ block.super }} | Export Admissions
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+    <!-- bootstrap datepicker css -->
+    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
+{% endblock %}
+
+{% block page_heading %}
+    Export Admissions
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'admissions_admission_list' %}"><i class="fa fa-ambulance"></i> Admissions</a></li>
+    <li class="active"><i class="fa fa-download"></i> Export</li>
+{% endblock %}
+
+{% block page_content %}
+    {% include 'form_errors.html' with class='col-md-12' %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Date Duration For Admissions</h3>
+                </div>
+                <form role="form" action="{% url 'admissions_admission_export_form' %}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        This search looks for patient admissions that were created/added to the system on a date that
+                        lies in the range starting from the start date and ending at the end date that you'll pick below
+                        with both dates being included in the range.
+                        {% for field in form %}
+                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+                                {{ field.label_tag }}
+
+                                {% if field.label == 'Start date' or field.label == 'End date' %}
+                                    {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker'}}
+                                {% else %}
+                                    {{ field|add_class:'form-control' }}
+                                {% endif %}
+
+                                {% if field.help_text %}
+                                    <p class="help-block">{{ field.help_text }}</p>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <ul>
+                                        {% for error in field.errors %}
+                                            <li><p class="help-block">{{ error|escape }}</p></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Selected Admissions</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Patient Name</th>
+                                <th>Admission Date</th>
+                                <th>Discharge Date</th>
+                                <th>Added By</th>
+                                <th>Added On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for admission in admissions_export_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ admission.get_absolute_url }}">
+                                            {{ admission.patient.identifier }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ admission.get_absolute_url }}">
+                                            {{ admission.patient.get_full_name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ admission.get_absolute_url }}">{{ admission.admission_date }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ admission.get_absolute_url }}">
+                                            {% if admission.discharge_date %}
+                                                {{ admission.discharge_date }}
+                                            {% else %}
+                                                Unavailable
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ admission.get_absolute_url }}">
+                                            {% if admission.created_by %}
+                                                {{ admission.created_by.get_full_name }}
+                                            {% else %}
+                                                Unavailable
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ admission.get_absolute_url }}">{{ admission.date_created }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Patient Name</th>
+                                <th>Admission Date</th>
+                                <th>Discharge Date</th>
+                                <th>Added By</th>
+                                <th>Added On</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <!-- if there is a list of admissions to export, make the export button active -->
+                    {% if admissions_export_list %}
+                        <a class="btn btn-primary" target="_blank" href="{{ request.path|add:'?export=csv' }}">Download as CSV</a>
+                    {% else %}
+                        <a class="btn btn-primary disabled">Download as CSV</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- datepicker js -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#table1").DataTable();
+        });
+        $(".date-picker").datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy'
+        });
+    </script>
+{% endblock %}
