@@ -1,13 +1,16 @@
 {% extends parent_template|default:'counselling_sessions/base_counselling_sessions.html' %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 {% block title %}
-    {{ block.super }} | Sessions
+    {{ block.super }} | Export Sessions
 {% endblock %}
 
 {% block head %}
     <!-- DataTables -->
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+    <!-- bootstrap datepicker css -->
+    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
 {% endblock %}
 
 {% block session_menu %}
@@ -19,7 +22,7 @@
 {% endblock %}
 
 {% block page_heading %}
-    Sessions
+    Export Sessions
 {% endblock %}
 
 {% block page_subheading %}
@@ -28,15 +31,58 @@
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{% url 'counselling_sessions_session_list' %}"><i class="fa fa-plus-square"></i> Sessions</a></li>
-    <li class="active"><i class="fa fa-table"></i> List</li>
+    <li class="active"><i class="fa fa-download"></i> Export</li>
 {% endblock %}
 
 {% block page_content %}
+    {% include 'form_errors.html' with class='col-md-12' %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Date Duration For Sessions</h3>
+                </div>
+                <form role="form" action="{% url 'counselling_sessions_export_form' %}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        This search looks for sessions that were created/added to the system on a date that lies in the range starting
+                        from the start date and ending at the end date that you'll pick below with both dates being
+                        included in the range.
+                        {% for field in form %}
+                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+                                {{ field.label_tag }}
+
+                                {% if field.label == 'Start date' or field.label == 'End date' %}
+                                    {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker'}}
+                                {% else %}
+                                    {{ field|add_class:'form-control' }}
+                                {% endif %}
+
+                                {% if field.help_text %}
+                                    <p class="help-block">{{ field.help_text }}</p>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <ul>
+                                        {% for error in field.errors %}
+                                            <li><p class="help-block">{{ error|escape }}</p></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Existing Sessions</h3>
+                    <h3 class="box-title">Selected Sessions</h3>
                 </div>
                 <div class="box-body">
                     <table id="table1" class="table table-bordered table-striped">
@@ -50,7 +96,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for counselling_session in counselling_session_list %}
+                            {% for counselling_session in counselling_session_export_list %}
                                 <tr>
                                     <td>
                                         <a href="{{ counselling_session.get_absolute_url }}">
@@ -92,8 +138,12 @@
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a class="btn btn-primary" href="{% url 'counselling_sessions_session_create' %}">Add Session</a>
-                    <a class="btn btn-success" href="{% url 'counselling_sessions_export_form' %}">Export sessions</a>
+                    <!-- if there is a list of sessions to export, make the export button active -->
+                    {% if counselling_session_export_list %}
+                        <a class="btn btn-primary" target="_blank" href="{{ request.path|add:'?export=csv' }}">Download as CSV</a>
+                    {% else %}
+                        <a class="btn btn-primary disabled">Download as CSV</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -104,10 +154,16 @@
     <!-- DataTables -->
     <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
     <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- datepicker js -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
     <!-- page script -->
     <script>
         $(function () {
             $("#table1").DataTable();
+        });
+        $(".date-picker").datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy'
         });
     </script>
 {% endblock %}

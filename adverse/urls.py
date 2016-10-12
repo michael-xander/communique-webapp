@@ -4,7 +4,7 @@ from .views import (EmergencyContactCreateView, EmergencyContactUpdateView, Emer
                     EmergencyContactDetailView, EmergencyContactListView, AdverseEventTypeUpdateView,
                     AdverseEventTypeCreateView, AdverseEventTypeDeleteView, AdverseEventTypeDetailView,
                     AdverseEventTypeListView, AdverseEventCreateView, AdverseEventDeleteView, AdverseEventDetailView,
-                    AdverseEventListView, AdverseEventUpdateView)
+                    AdverseEventListView, AdverseEventUpdateView, AdverseEventExportFormView, AdverseEventExportListView)
 
 urlpatterns = [
     url(r'^emergency-contacts/$', EmergencyContactListView.as_view(), name='adverse_emergency_contact_list'),
@@ -25,4 +25,7 @@ urlpatterns = [
     url(r'^events/(?P<pk>[0-9]+)/$', AdverseEventDetailView.as_view(), name='adverse_event_detail'),
     url(r'^events/(?P<pk>[0-9]+)/update/$', AdverseEventUpdateView.as_view(), name='adverse_event_update'),
     url(r'^events/(?P<pk>[0-9]+)/delete/$', AdverseEventDeleteView.as_view(), name='adverse_event_delete'),
+    url(r'^events/export/$', AdverseEventExportFormView.as_view(), name='adverse_event_export_form'),
+    url(r'^events/export/(?P<start_year>[0-9]{4})-(?P<start_month>[0-9]{2})-(?P<start_day>[0-9]{2})/(?P<end_year>[0-9]{4})-(?P<end_month>[0-9]{2})-(?P<end_day>[0-9]{2})/$',
+        AdverseEventExportListView.as_view(), name='adverse_event_export_list'),
 ]

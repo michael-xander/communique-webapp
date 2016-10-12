@@ -1,8 +1,12 @@
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse
+
+import csv
 
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
-                              CommuniqueCreateView, CommuniqueFormView)
+                              CommuniqueCreateView, CommuniqueFormView, CommuniqueExportFormView,
+                              CommuniqueExportListView)
 from .models import Patient, Enrollment, Outcome, OutcomeType
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
@@ -206,6 +210,57 @@ class OutcomeCreateView(CommuniqueCreateView):
     template_name = 'patients/outcome_form.html'
 
 
+class OutcomeExportFormView(CommuniqueExportFormView):
+    """
+    A view that handles the form for picking the creation dates for patient outcomes to be exported
+    """
+    template_name = 'patients/outcome_export_list.html'
+
+    def get_success_view_name(self):
+        return 'patients_outcome_export_list'
+
+
+class OutcomeExportListView(CommuniqueExportListView):
+    """
+    A view that lists the patient outcomes to be exported depending on the provided start and end dates
+    """
+    model = Outcome
+    template_name = 'patients/outcome_export_list.html'
+    context_object_name = 'outcome_export_list'
+
+    def get_queryset(self):
+        # get all the outcomes within the provided date range
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        outcomes = Outcome.objects.filter(date_created__range=[start_date, end_date])
+        return outcomes
+
+    def csv_export_response(self, context):
+        # generate an HTTP response with the csv file for download
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        date_format = '%d-%m-%Y'
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="outcomes_{0}_to_{1}.csv"'.format(
+            start_date.strftime(date_format), end_date.strftime(date_format)
+        )
+
+        fieldnames = ['id', 'patient_id', 'patient_last_name', 'patient_other_names', 'outcome_type',
+                      'outcome_date (dd-mm-yyyy)', 'notes', 'date_added (dd-mm-yyyy)', 'added_by']
+        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+
+        for outcome in context[self.context_object_name]:
+            patient = outcome.patient
+            writer.writerow({'id':outcome.id, 'patient_id':patient.identifier, 'patient_last_name':patient.last_name,
+                             'patient_other_names':patient.other_names, 'outcome_type':outcome.outcome_type.__str__(),
+                             'outcome_date (dd-mm-yyyy)':outcome.outcome_date.strftime(date_format),
+                             'notes':outcome.notes, 'date_added (dd-mm-yyyy)':outcome.date_created.strftime(date_format),
+                             'added_by':outcome.created_by.get_full_name()})
+
+        return response
+
+
 class OutcomeUpdateView(CommuniqueUpdateView):
     """
     A view to update a patient outcome
@@ -260,6 +315,59 @@ class EnrollmentUpdateView(CommuniqueUpdateView):
     fields = ['date_enrolled', 'comment']
     template_name = 'patients/enrollment_update_form.html'
     context_object_name = 'enrollment'
+
+
+class EnrollmentExportFormView(CommuniqueExportFormView):
+    """
+    A view that displays the form to be pick the duration to be considered for selecting enrollments for exportation
+    """
+    template_name = 'patients/enrollment_export_list.html'
+
+    def get_success_view_name(self):
+        # return the name of the view to which to redirect to on successful validation
+        return 'patients_enrollment_export_list'
+
+
+class EnrollmentExportListView(CommuniqueExportListView):
+    """
+    A view that retrieves the list of enrollments to be exported
+    """
+    model = Enrollment
+    template_name = 'patients/enrollment_export_list.html'
+    context_object_name = 'enrollment_export_list'
+
+    def get_queryset(self):
+        # get all the enrollments within the provided date range
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        enrollments = Enrollment.objects.filter(date_created__range=[start_date, end_date])
+        return enrollments
+
+    def csv_export_response(self, context):
+        # generate an HTTP response with the csv file for download
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        date_format = '%d-%m-%Y'
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_to_{1}.csv"'.format(
+            start_date.strftime(date_format), end_date.strftime(date_format))
+
+        fieldnames = ['id', 'program', 'patient_id', 'patient_last_name', 'patient_other_names',
+                      'date_enrolled (dd-mm-yyyy)', 'enrolled_by', 'date_added (dd-mm-yyyy)', 'comment']
+
+        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
+        writer.writeheader()
+
+        for enrollment in context[self.context_object_name]:
+            program = enrollment.program
+            patient = enrollment.patient
+            writer.writerow({'id':enrollment.id,'program':program.__str__(), 'patient_id':patient.identifier,
+                             'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
+                             'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime(date_format),
+                             'enrolled_by':enrollment.created_by.get_full_name(),
+                             'date_added (dd-mm-yyyy)':enrollment.date_created.strftime(date_format),
+                             'comment':enrollment.comment})
+        return response
 
 
 class PatientModelCreateView(CommuniqueCreateView):

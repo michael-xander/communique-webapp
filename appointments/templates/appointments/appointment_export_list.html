@@ -1,21 +1,20 @@
 {% extends parent_template|default:'appointments/base_appointments.html' %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 {% block title %}
-    {{ block.super }} | Appointments
+    {{ block.super }} | Export Appointments
 {% endblock %}
 
 {% block head %}
     <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
-    <!-- fullCalendar 2.2.5 -->
-    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
-    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+    <!-- bootstrap datepicker css -->
+    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
 {% endblock %}
 
-
 {% block page_heading %}
-    Appointments
+    Export Appointments
 {% endblock %}
 
 {% block page_subheading %}
@@ -24,15 +23,59 @@
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{% url 'appointments_appointment_list' %}"><i class="fa fa-calendar-plus-o"></i> Appointments</a></li>
-    <li class="active"><i class="fa fa-table"></i> List</li>
+    <li class="active"><i class="fa fa-download"></i> Export</li>
 {% endblock %}
 
+
 {% block page_content %}
+    {% include 'form_errors.html' with class='col-md-12' %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Date Duration For Appointments</h3>
+                </div>
+                <form role="form" action="{% url 'appointments_appointment_export_form' %}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        This search looks for appointments that were set to take place on a date that lies in the range
+                        starting from the start date and ending at the end date that you'll pick below with both dates
+                        being included in the range.
+                        {% for field in form %}
+                            <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
+                                {{ field.label_tag }}
+
+                                {% if field.label == 'Start date' or field.label == 'End date' %}
+                                    {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker'}}
+                                {% else %}
+                                    {{ field|add_class:'form-control' }}
+                                {% endif %}
+
+                                {% if field.help_text %}
+                                    <p class="help-block">{{ field.help_text }}</p>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <ul>
+                                        {% for error in field.errors %}
+                                            <li><p class="help-block">{{ error|escape }}</p></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Scheduled Appointments</h3>
+                    <h3 class="box-title">Chosen Appointments</h3>
                 </div>
                 <div class="box-body">
                     <table id="table1" class="table table-bordered table-striped">
@@ -48,7 +91,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for appointment in appointment_list %}
+                        {% for appointment in appointment_export_list %}
                             <tr>
                                 <td><a href="{{ appointment.get_absolute_url }}">{{ appointment }}</a></td>
                                 <td>
@@ -102,76 +145,34 @@
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a class="btn btn-primary" href="{% url 'appointments_appointment_create' %}">Add Appointment</a>
-                    <a class="btn btn-success" href="{% url 'appointments_appointment_export_form' %}">
-                        Export Appointments
-                    </a>
+                    <!-- if there is a list of appointments to export, make the export button active -->
+                    {% if appointment_export_list %}
+                        <a class="btn btn-primary" target="_blank" href="{{ request.path|add:'?export=csv' }}">Download as CSV</a>
+                    {% else %}
+                        <a class="btn btn-primary disabled">Download as CSV</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-body no-padding">
-                    <!-- the calendar -->
-                    <div id="calendar"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 {% endblock %}
+
 
 {% block scripts %}
     <!-- DataTables -->
     <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
     <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
-
-    <!-- fullCalendar 2.2.5 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+    <!-- datepicker js -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
     <!-- page script -->
     <script>
         $(function () {
             $("#table1").DataTable();
-
-            // Initialise the calendar
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                buttonText: {
-                    today: 'today',
-                    month: 'month',
-                    week: 'week',
-                    day: 'day'
-                },
-                editable: false,
-                navLinks: true,
-                eventLimit:true,
-                events: [
-                    {% for appointment in appointment_list %}
-                        {
-                            title: '{{ appointment }}',
-                            start: new Date(
-                                    '{{ appointment.appointment_date.year }}',
-                                    parseInt('{{ appointment.appointment_date.month }}')-1,
-                                    '{{ appointment.appointment_date.day }}',
-                                    '{{ appointment.start_time.hour }}',
-                                    '{{ appointment.start_time.minute }}'),
-                            end: new Date(
-                                    '{{ appointment.appointment_date.year }}',
-                                    parseInt('{{ appointment.appointment_date.month }}')-1,
-                                    '{{ appointment.appointment_date.day }}',
-                                    '{{ appointment.end_time.hour }}',
-                                    '{{ appointment.end_time.minute }}'),
-                            url: '{{ appointment.get_absolute_url }}'
-                        },
-                    {% endfor %}
-                ]
-            });
+        });
+        $(".date-picker").datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy'
         });
     </script>
 {% endblock %}
