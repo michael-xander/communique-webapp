@@ -46,7 +46,6 @@ class EnrollmentSerializer(serializers.ModelSerializer):
     """
     A serializer for the Enrollment model.
     """
-    enrolled_by = serializers.ReadOnlyField(source='enrolled_by.username')
 
     class Meta:
         model = Enrollment
