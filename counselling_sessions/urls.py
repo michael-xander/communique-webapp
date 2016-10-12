@@ -21,4 +21,7 @@ urlpatterns = [
         name='counselling_sessions_session_update'),
     url(r'^sessions/(?P<pk>[0-9]+)/delete/$', CounsellingSessionDeleteView.as_view(),
         name='counselling_sessions_session_delete'),
+    url(r'^sessions/export/$', CounsellingSessionExportFormView.as_view(), name='counselling_sessions_export_form'),
+    url(r'^sessions/export/(?P<start_year>[0-9]{4})-(?P<start_month>[0-9]{2})-(?P<start_day>[0-9]{2})/(?P<end_year>[0-9]{4})-(?P<end_month>[0-9]{2})-(?P<end_day>[0-9]{2})/$',
+        CounsellingSessionExportListView.as_view(), name='counselling_sessions_export_list'),
 ]

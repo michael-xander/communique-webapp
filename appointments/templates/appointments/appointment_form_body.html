@@ -33,7 +33,7 @@
                 {% if field.label == 'Patient' or field.label == 'Appointment owner' %}
                     {{ field|add_class:'form-control select2'|append_attr:'style:width: 100%;' }}
                 {% elif field.label == 'Appointment date' %}
-                    {{ field|attr:"placeholder:DD/MM/YYYY"|add_class:"form-control" }}
+                    {{ field|attr:"placeholder:DD/MM/YYYY"|add_class:"form-control date-picker" }}
                 {% else %}
                     {{ field|add_class:'form-control' }}
                 {% endif %}
