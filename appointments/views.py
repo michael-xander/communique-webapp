@@ -105,7 +105,7 @@ class AppointmentExportListView(CommuniqueExportListView):
             start_date.strftime(date_format), end_date.strftime(date_format)
         )
         fieldnames = ['id', 'title', 'patient_id', 'owner', 'appointment_date (dd-mm-yyyy)', 'start_time', 'end_time',
-                      'notes', 'last_modified_by', 'date_last_modified (dd-mm-yyyy)']
+                      'notes', 'added_by', 'date_added (dd-mm-yyyy)', 'modified_by', 'date_last_modified (dd-mm-yyyy)']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
         for appointment in context[self.context_object_name]:
@@ -118,6 +118,8 @@ class AppointmentExportListView(CommuniqueExportListView):
                                  'appointment_date (dd-mm-yyyy)':appointment.appointment_date.strftime(date_format),
                                  'start_time':appointment.start_time, 'end_time':appointment.end_time,
                                  'notes':appointment.notes,
-                                 'last_modified_by':appointment.last_modified_by.get_full_name(),
+                                 'added_by':appointment.created_by.get_full_name(),
+                                 'date_added (dd-mm-yyyy)':appointment.date_created.strftime(date_format),
+                                 'modified_by':appointment.last_modified_by.get_full_name(),
                                  'date_last_modified (dd-mm-yyyy)':appointment.date_last_modified.strftime(date_format)})
         return response

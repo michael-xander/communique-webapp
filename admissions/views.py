@@ -91,7 +91,8 @@ class AdmissionExportListView(CommuniqueExportListView):
             start_date.strftime(date_format), end_date.strftime(date_format))
 
         fieldnames = ['id', 'patient_id', 'admission_date (dd-mm-yyyy)', 'discharge_date (dd-mm-yyyy)', 'health_centre',
-                      'notes', 'modified_by', 'date_last_modified (dd-mm-yyyy)']
+                      'notes', 'created_by', 'date_created (dd-mm-yyyy)',  'last_modified_by',
+                      'date_last_modified (dd-mm-yyyy)']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
 
@@ -106,7 +107,9 @@ class AdmissionExportListView(CommuniqueExportListView):
             writer.writerow({'id':admission.id, 'patient_id':patient.id,
                              'admission_date (dd-mm-yyyy)':admission.admission_date.strftime(date_format),
                              'discharge_date (dd-mm-yyyy)':discharge_date, 'health_centre':admission.health_centre,
-                             'notes':admission.notes, 'modified_by':admission.last_modified_by.get_full_name(),
+                             'notes':admission.notes, 'created_by':admission.created_by.get_full_name(),
+                             'date_created (dd-mm-yyyy)':admission.date_created.strftime(date_format),
+                             'last_modified_by':admission.last_modified_by.get_full_name(),
                              'date_last_modified (dd-mm-yyyy)':admission.date_last_modified.strftime(date_format)
                              })
         return response

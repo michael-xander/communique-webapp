@@ -185,8 +185,8 @@ class AdverseEventExportListView(CommuniqueExportListView):
         response['Content-Disposition'] = 'attachment; filename="adverse_events_{0}_to_{1}.csv"'.format(
             start_date.strftime(date_format), end_date.strftime(date_format))
 
-        fieldnames = ['event_type', 'patient_id', 'event_date (dd-mm-yyyy)', 'date_last_modified (dd-mm-yyyy)',
-                      'modified_by', 'notes']
+        fieldnames = ['event_type', 'patient_id', 'event_date (dd-mm-yyyy)', 'notes', 'date_created (dd-mm-yyyy)',
+                      'created_by', 'date_last_modified (dd-mm-yyyy)', 'last_modified_by']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
         for adverse_event in context[self.context_object_name]:
@@ -194,7 +194,10 @@ class AdverseEventExportListView(CommuniqueExportListView):
             patient = adverse_event.patient
             writer.writerow({'event_type':adverse_event_type.__str__(), 'patient_id':patient.identifier,
                              'event_date (dd-mm-yyyy)':adverse_event.event_date.strftime(date_format),
+                             'notes':adverse_event.notes,
+                             'date_created (dd-mm-yyyy)':adverse_event.date_created(date_format),
+                             'created_by':adverse_event.created_by.get_full_name(),
                              'date_last_modified (dd-mm-yyyy)':adverse_event.date_last_modified.strftime(date_format),
-                             'modified_by':adverse_event.last_modified_by.get_full_name(), 'notes':adverse_event.notes})
+                             'last_modified_by':adverse_event.last_modified_by.get_full_name()})
 
         return response

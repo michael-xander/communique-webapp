@@ -138,7 +138,8 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
         response['Content-Disposition'] = 'attachment; filename="sessions_{0}_to_{1}.csv"'.format(
             start_date.strftime(date_format), end_date.strftime(date_format))
 
-        fieldnames = ['id','session_type','patient_id', 'notes', 'modified_by', 'date_last_modified (dd-mm-yyyy)']
+        fieldnames = ['id','session_type','patient_id', 'notes', 'added_by', 'date_added (dd-mm-yyyy)', 'modified_by',
+                      'date_last_modified (dd-mm-yyyy)']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
         for counselling_session in context[self.context_object_name]:
@@ -146,6 +147,8 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
             patient = counselling_session.patient
             writer.writerow({'id':counselling_session.id,'session_type':session_type.__str__(),
                              'patient_id':patient.identifier, 'notes':counselling_session.notes,
+                             'added_by':counselling_session.last_modified_by.get_full_name(),
+                             'date_added (dd-mm-yyyy)':counselling_session.date_created.strftime(date_format),
                              'modified_by':counselling_session.last_modified_by.get_full_name(),
                              'date_last_modified (dd-mm-yyyy)':counselling_session.date_last_modified.strftime(
                                  date_format)})
