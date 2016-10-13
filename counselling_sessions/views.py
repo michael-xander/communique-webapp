@@ -126,7 +126,7 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
         # get all the counselling sessions within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        counselling_sessions = CounsellingSession.objects.filter(date_created__range=[start_date, end_date])
+        counselling_sessions = CounsellingSession.objects.filter(date_last_modified__range=[start_date, end_date])
         return counselling_sessions
 
     def csv_export_response(self, context):
@@ -138,19 +138,17 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
         response['Content-Disposition'] = 'attachment; filename="sessions_{0}_to_{1}.csv"'.format(
             start_date.strftime(date_format), end_date.strftime(date_format))
 
-        fieldnames = ['id','session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
-                      'date_added (dd-mm-yyyy)', 'notes']
+        fieldnames = ['id','session_type','patient_id', 'notes', 'modified_by', 'date_last_modified (dd-mm-yyyy)']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
         for counselling_session in context[self.context_object_name]:
             session_type = counselling_session.counselling_session_type
             patient = counselling_session.patient
             writer.writerow({'id':counselling_session.id,'session_type':session_type.__str__(),
-                             'patient_id':patient.identifier, 'patient_last_name':patient.last_name,
-                             'patient_other_names':patient.other_names,
-                             'added_by':counselling_session.created_by.get_full_name(),
-                             'date_added (dd-mm-yyyy)':counselling_session.date_created.strftime(date_format),
-                             'notes':counselling_session.notes})
+                             'patient_id':patient.identifier, 'notes':counselling_session.notes,
+                             'modified_by':counselling_session.last_modified_by.get_full_name(),
+                             'date_last_modified (dd-mm-yyyy)':counselling_session.date_last_modified.strftime(
+                                 date_format)})
         return response
 
 
