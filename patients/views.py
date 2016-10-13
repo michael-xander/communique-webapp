@@ -232,7 +232,7 @@ class OutcomeExportListView(CommuniqueExportListView):
         # get all the outcomes within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        outcomes = Outcome.objects.filter(date_created__range=[start_date, end_date])
+        outcomes = Outcome.objects.filter(date_last_modified__range=[start_date, end_date])
         return outcomes
 
     def csv_export_response(self, context):
@@ -245,18 +245,21 @@ class OutcomeExportListView(CommuniqueExportListView):
             start_date.strftime(date_format), end_date.strftime(date_format)
         )
 
-        fieldnames = ['id', 'patient_id', 'patient_last_name', 'patient_other_names', 'outcome_type',
-                      'outcome_date (dd-mm-yyyy)', 'notes', 'date_added (dd-mm-yyyy)', 'added_by']
+        fieldnames = ['id', 'patient_id', 'outcome_type', 'outcome_date (dd-mm-yyyy)', 'notes',
+                      'date_added (dd-mm-yyyy)', 'added_by', 'date_last_modified (dd-mm-yyyy)', 'modified_by']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
 
         for outcome in context[self.context_object_name]:
             patient = outcome.patient
-            writer.writerow({'id':outcome.id, 'patient_id':patient.identifier, 'patient_last_name':patient.last_name,
-                             'patient_other_names':patient.other_names, 'outcome_type':outcome.outcome_type.__str__(),
+            writer.writerow({'id':outcome.id, 'patient_id':patient.identifier,
+                             'outcome_type':outcome.outcome_type.__str__(),
                              'outcome_date (dd-mm-yyyy)':outcome.outcome_date.strftime(date_format),
-                             'notes':outcome.notes, 'date_added (dd-mm-yyyy)':outcome.date_created.strftime(date_format),
-                             'added_by':outcome.created_by.get_full_name()})
+                             'notes':outcome.notes,
+                             'date_added (dd-mm-yyyy)':outcome.date_created.strftime(date_format),
+                             'added_by':outcome.created_by.get_full_name(),
+                             'date_last_modified (dd-mm-yyyy)':outcome.date_last_modified.strftime(date_format),
+                             'modified_by':outcome.last_modified_by.get_full_name()})
 
         return response
 
@@ -340,7 +343,7 @@ class EnrollmentExportListView(CommuniqueExportListView):
         # get all the enrollments within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        enrollments = Enrollment.objects.filter(date_created__range=[start_date, end_date])
+        enrollments = Enrollment.objects.filter(date_last_modified__range=[start_date, end_date])
         return enrollments
 
     def csv_export_response(self, context):
@@ -352,8 +355,8 @@ class EnrollmentExportListView(CommuniqueExportListView):
         response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_to_{1}.csv"'.format(
             start_date.strftime(date_format), end_date.strftime(date_format))
 
-        fieldnames = ['id', 'program', 'patient_id', 'patient_last_name', 'patient_other_names',
-                      'date_enrolled (dd-mm-yyyy)', 'enrolled_by', 'date_added (dd-mm-yyyy)', 'comment']
+        fieldnames = ['id', 'program', 'patient_id', 'date_enrolled (dd-mm-yyyy)', 'comment', 'date_added (dd-mm-yyyy)',
+                      'added_by', 'date_last_modified (dd-mm-yyyy)', 'modified_by']
 
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
@@ -361,12 +364,13 @@ class EnrollmentExportListView(CommuniqueExportListView):
         for enrollment in context[self.context_object_name]:
             program = enrollment.program
             patient = enrollment.patient
-            writer.writerow({'id':enrollment.id,'program':program.__str__(), 'patient_id':patient.identifier,
-                             'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
+            writer.writerow({'id':enrollment.id, 'program':program.__str__(), 'patient_id':patient.identifier,
                              'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime(date_format),
-                             'enrolled_by':enrollment.created_by.get_full_name(),
+                             'comment':enrollment.comment,
                              'date_added (dd-mm-yyyy)':enrollment.date_created.strftime(date_format),
-                             'comment':enrollment.comment})
+                             'added_by':enrollment.created_by.get_full_name(),
+                             'date_last_modified (dd-mm-yyyy)':enrollment.date_last_modified.strftime(date_format),
+                             'modified_by':enrollment.last_modified_by.get_full_name()})
         return response
 
 
