@@ -78,7 +78,7 @@ class AdmissionExportListView(CommuniqueExportListView):
         # get all the admissions within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        admissions = Admission.objects.filter(date_created__range=[start_date, end_date])
+        admissions = Admission.objects.filter(date_last_modified__range=[start_date, end_date])
         return admissions
 
     def csv_export_response(self, context):
@@ -91,7 +91,7 @@ class AdmissionExportListView(CommuniqueExportListView):
             start_date.strftime(date_format), end_date.strftime(date_format))
 
         fieldnames = ['id', 'patient_id', 'admission_date (dd-mm-yyyy)', 'discharge_date (dd-mm-yyyy)', 'health_centre',
-                      'notes', 'added_by', 'date_added']
+                      'notes', 'modified_by', 'date_last_modified (dd-mm-yyyy)']
         writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
 
@@ -106,7 +106,7 @@ class AdmissionExportListView(CommuniqueExportListView):
             writer.writerow({'id':admission.id, 'patient_id':patient.id,
                              'admission_date (dd-mm-yyyy)':admission.admission_date.strftime(date_format),
                              'discharge_date (dd-mm-yyyy)':discharge_date, 'health_centre':admission.health_centre,
-                             'notes':admission.notes, 'added_by':admission.created_by.get_full_name(),
-                             'date_added':admission.date_created.strftime(date_format)
+                             'notes':admission.notes, 'modified_by':admission.last_modified_by.get_full_name(),
+                             'date_last_modified (dd-mm-yyyy)':admission.date_last_modified.strftime(date_format)
                              })
         return response
