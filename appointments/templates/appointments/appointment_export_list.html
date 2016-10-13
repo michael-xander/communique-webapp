@@ -39,9 +39,9 @@
                 <form role="form" action="{% url 'appointments_appointment_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        This search looks for appointments that were set to take place on a date that lies in the range
-                        starting from the start date and ending at the end date that you'll pick below with both dates
-                        being included in the range.
+                        This search looks for appointments that were added or modified in the system on a date that lies
+                        in the range starting from the start date and ending at the end date that you'll pick below with
+                        both dates being included in the range.
                         {% for field in form %}
                             <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
                                 {{ field.label_tag }}
