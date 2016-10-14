@@ -7,7 +7,7 @@ from .models import Drug, Regimen
 from .forms import RegimenForm, RegimenUpdateForm
 from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
                               CommuniqueDeleteView, CommuniqueListAndExportView, CommuniqueDetailAndExportView,
-                              DATE_FORMAT_STR, DATE_FORMAT)
+                              DATE_FORMAT_STR, DATE_FORMAT, CommuniqueExportFormView, CommuniqueExportListView)
 from .utils.utils_views import write_regimens_to_csv
 
 
@@ -84,6 +84,42 @@ class RegimenDetailView(CommuniqueDetailView):
     model = Regimen
     template_name = 'regimens/regimen_view.html'
     context_object_name = 'regimen'
+
+
+class RegimenExportFormView(CommuniqueExportFormView):
+    """
+    A view that handles the form for picking creation/modified dates for regimens to be exported
+    """
+    template_name = 'regimens/regimen_export_list.html'
+
+    def get_success_view_name(self):
+        return 'regimens_regimen_export_list'
+
+
+class RegimenExportListView(CommuniqueExportListView):
+    """
+    A view that lists regimens to be exported depending on the provided start and end dates
+    """
+    model = Regimen
+    template_name = 'regimens/regimen_export_list.html'
+    context_object_name = 'regimens_export_list'
+
+    def get_queryset(self):
+        # get all the regimens in the provided range
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        regimens = Regimen.objects.filter(date_last_modified__range=[start_date, end_date])
+        return regimens
+
+    def csv_export_response(self, context):
+        # generate an HTTP response with the csv file for download
+        start_date = self.get_export_start_date()
+        end_date = self.get_export_end_date()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="regimens_{0}_to_{1}.csv"'.format(
+            start_date.strftime(DATE_FORMAT), end_date.strftime(DATE_FORMAT))
+        write_regimens_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
+        return response
 
 
 class RegimenListView(CommuniqueListAndExportView):

@@ -70,7 +70,7 @@ class AdmissionDeleteView(CommuniqueDeleteView):
 
 class AdmissionExportFormView(CommuniqueExportFormView):
     """
-    A view that handles the form for picking the creation dates for admissions to be exported
+    A view that handles the form for picking the creation/modified dates for admissions to be exported
     """
     template_name = 'admissions/admission_export_list.html'
 
