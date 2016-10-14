@@ -7,7 +7,7 @@ def write_appointments_to_csv(given_file, appointment_list, date_format, date_fo
     :param given_file: The file to which the appointments will be written
     :param appointment_list: The list of appointments to write to file
     :param date_format: The format in which dates should be written to file
-    :param date_format_str: The format in which dates should be written to file
+    :param date_format_str: The string representation of the date format e.g dd-mm-yyyy
     """
 
     fieldnames = ['id', 'patient_id', 'title', 'notes', 'owner', 'appointment_date ({0})'.format(date_format_str),

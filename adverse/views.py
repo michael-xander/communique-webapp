@@ -1,12 +1,14 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 
-import csv
+import datetime
 
 from .models import EmergencyContact, AdverseEvent, AdverseEventType
 from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
-                              CommuniqueDeleteView, CommuniqueExportFormView, CommuniqueExportListView)
+                              CommuniqueDeleteView, CommuniqueExportFormView, CommuniqueExportListView,
+                              DATE_FORMAT_STR, DATE_FORMAT, CommuniqueListAndExportView)
 from .forms import AdverseEventForm
+from .utils.utils_views import write_adverse_events_to_csv
 
 
 class EmergencyContactListView(CommuniqueListView):
@@ -103,13 +105,24 @@ class AdverseEventTypeDeleteView(CommuniqueDeleteView):
     template_name = 'adverse/adverse_event_type_confirm_delete.html'
 
 
-class AdverseEventListView(CommuniqueListView):
+class AdverseEventListView(CommuniqueListAndExportView):
     """
     A view to list all the adverse events
     """
     model = AdverseEvent
     template_name = 'adverse/adverse_event_list.html'
     context_object_name = 'adverse_event_list'
+
+    def csv_export_response(self, context):
+        # generate a csv file for download
+        today = datetime.date.today()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="all_adverse_events_{0}.csv"'.format(
+            today.strftime(DATE_FORMAT))
+
+        write_adverse_events_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
+
+        return response
 
 
 class AdverseEventCreateView(CommuniqueCreateView):
@@ -180,24 +193,9 @@ class AdverseEventExportListView(CommuniqueExportListView):
         # generate an HTTP response with the csv file for download
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        date_format = '%d-%m-%Y'
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="adverse_events_{0}_to_{1}.csv"'.format(
-            start_date.strftime(date_format), end_date.strftime(date_format))
+            start_date.strftime(DATE_FORMAT), end_date.strftime(DATE_FORMAT))
 
-        fieldnames = ['event_type', 'patient_id', 'event_date (dd-mm-yyyy)', 'notes', 'date_created (dd-mm-yyyy)',
-                      'created_by', 'date_last_modified (dd-mm-yyyy)', 'last_modified_by']
-        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-        writer.writeheader()
-        for adverse_event in context[self.context_object_name]:
-            adverse_event_type = adverse_event.adverse_event_type
-            patient = adverse_event.patient
-            writer.writerow({'event_type':adverse_event_type.__str__(), 'patient_id':patient.identifier,
-                             'event_date (dd-mm-yyyy)':adverse_event.event_date.strftime(date_format),
-                             'notes':adverse_event.notes,
-                             'date_created (dd-mm-yyyy)':adverse_event.date_created(date_format),
-                             'created_by':adverse_event.created_by.get_full_name(),
-                             'date_last_modified (dd-mm-yyyy)':adverse_event.date_last_modified.strftime(date_format),
-                             'last_modified_by':adverse_event.last_modified_by.get_full_name()})
-
+        write_adverse_events_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
         return response
