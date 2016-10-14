@@ -84,6 +84,14 @@
                 </div>
                 <div class="box-footer">
                     <a class="btn btn-primary" href="{% url 'regimens_regimen_create' %}">Add Regimen</a>
+                    <!-- if there are any regimens, enable the export all button -->
+                    {% if regimen_list %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
