@@ -47,7 +47,7 @@ class ProgramDetailView(CommuniqueDetailAndExportView):
         write_enrollments_to_csv(response, program.enrollments.all(), DATE_FORMAT, DATE_FORMAT_STR)
 
         return response
-    
+
 
 class ProgramUpdateView(CommuniqueUpdateView):
     """
