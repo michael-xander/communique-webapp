@@ -76,52 +76,54 @@ def import_patients_from_file(import_file, user):
     Patient.objects.bulk_create(patient_list)
 
 
-def write_enrollments_to_csv(given_file, enrollment_list, date_format):
+def write_enrollments_to_csv(given_file, enrollment_list, date_format, date_format_str):
     """
     A function that writes a list of enrollments to a given file
     :param given_file: The file to which the enrollments are written
     :param enrollment_list: The list of enrollments to write to file
     :param date_format: The format in which dates should be written to file
+    :param date_format_str: The string representation of the date format string e.g dd-mm-yyyy
     """
-    fieldnames = ['id', 'program', 'program_id', 'patient_id', 'date_enrolled (dd-mm-yyyy)', 'comment',
-                  'date_created (dd-mm-yyyy)', 'created_by', 'date_last_modified (dd-mm-yyyy)', 'modified_by']
+    fieldnames = ['id', 'program', 'program_id', 'patient_id', 'date_enrolled ({0})'.format(date_format_str), 'comment',
+                  'date_created ({0})'.format(date_format_str), 'created_by',
+                  'date_last_modified ({0})'.format(date_format_str), 'modified_by']
     writer = csv.DictWriter(given_file, fieldnames=fieldnames, delimiter=';')
     writer.writeheader()
 
     for enrollment in enrollment_list:
         program = enrollment.program
         patient = enrollment.patient
-        writer.writerow({'id':enrollment.id, 'program':program, 'program_id':program.id,
-                         'patient_id':patient.identifier,
-                         'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime(date_format),
-                         'comment':enrollment.comment,
-                         'date_created (dd-mm-yyyy)':enrollment.date_created.strftime(date_format),
-                         'created_by':enrollment.created_by,
-                         'date_last_modified (dd-mm-yyyy)':enrollment.date_last_modified.strftime(date_format),
-                         'modified_by':enrollment.last_modified_by})
+        writer.writerow({fieldnames[0]:enrollment.id, fieldnames[1]:program, fieldnames[2]:program.id,
+                         fieldnames[3]:patient.identifier, fieldnames[4]:enrollment.date_enrolled.strftime(date_format),
+                         fieldnames[5]:enrollment.comment,
+                         fieldnames[6]:enrollment.date_created.strftime(date_format),
+                         fieldnames[7]:enrollment.created_by,
+                         fieldnames[8]:enrollment.date_last_modified.strftime(date_format),
+                         fieldnames[9]:enrollment.last_modified_by})
 
 
-def write_outcomes_to_csv(given_file, outcome_list, date_format):
+def write_outcomes_to_csv(given_file, outcome_list, date_format, date_format_str):
     """
     A function that writes a list of patient outcomes to a given file
     :param given_file: The file to which the outcomes are writtern
     :param outcome_list: The list of enrollments to write to file
     :param date_format: The format in which dates should be written to file
+    :param date_format_str: The string representation of the date format string e.g dd-mm-yyyy
     """
-    fieldnames = ['id', 'outcome_type', 'outcome_type_id', 'patient_id', 'outcome_date (dd-mm-yyyy)', 'notes',
-                  'date_created (dd-mm-yyyy)', 'created_by', 'date_last_modified (dd-mm-yyyy)', 'modified_by']
+    fieldnames = ['id', 'outcome_type', 'outcome_type_id', 'patient_id', 'outcome_date ({0})'.format(date_format_str),
+                  'notes', 'date_created ({0})'.format(date_format_str), 'created_by',
+                  'date_last_modified ({0})'.format(date_format_str), 'modified_by']
     writer = csv.DictWriter(given_file, fieldnames=fieldnames, delimiter=';')
     writer.writeheader()
 
     for outcome in outcome_list:
         patient = outcome.patient
         outcome_type = outcome.outcome_type
-        writer.writerow({'id':outcome.id, 'outcome_type':outcome_type, 'outcome_type_id':outcome_type.id,
-                         'patient_id':patient.identifier,
-                         'outcome_date (dd-mm-yyyy)':outcome.outcome_date.strftime(date_format), 'notes':outcome.notes,
-                         'date_created (dd-mm-yyyy)':outcome.date_created.strftime(date_format),
-                         'created_by':outcome.created_by,
-                         'date_last_modified (dd-mm-yyyy)':outcome.date_last_modified.strftime(date_format),
-                         'modified_by':outcome.last_modified_by})
+        writer.writerow({fieldnames[0]:outcome.id, fieldnames[1]:outcome_type, fieldnames[2]:outcome_type.id,
+                         fieldnames[3]:patient.identifier,
+                         fieldnames[4]:outcome.outcome_date.strftime(date_format), fieldnames[5]:outcome.notes,
+                         fieldnames[6]:outcome.date_created.strftime(date_format), fieldnames[7]:outcome.created_by,
+                         fieldnames[8]:outcome.date_last_modified.strftime(date_format),
+                         fieldnames[9]:outcome.last_modified_by})
 
 

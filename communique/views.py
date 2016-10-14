@@ -9,6 +9,10 @@ import datetime
 
 from .forms import DurationForm
 
+# the date format to be used in
+DATE_FORMAT = '%d-%m-%Y'
+DATE_FORMAT_STR = 'dd-mm-yyyy'
+
 
 class CommuniqueTemplateView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     """
