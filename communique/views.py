@@ -168,7 +168,7 @@ class CommuniqueListAndExportView(CommuniqueListView):
             return super(CommuniqueListAndExportView, self).render_to_response(context, **response_kwargs)
 
 
-class CommuniqueDetailAndListView(CommuniqueDetailView):
+class CommuniqueDetailAndExportView(CommuniqueDetailView):
     """
     A view that displays the details of a model and exports specified information to a csv file when provided an export
     get parameter.
@@ -187,7 +187,7 @@ class CommuniqueDetailAndListView(CommuniqueDetailView):
         if 'csv' in self.request.GET.get('export', ''):
             return self.csv_export_response(context)
         else:
-            return super(CommuniqueDetailAndListView, self).render_to_response(context, **response_kwargs)
+            return super(CommuniqueDetailAndExportView, self).render_to_response(context, **response_kwargs)
 
 
 class CommuniqueExportListView(CommuniqueListAndExportView):
