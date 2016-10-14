@@ -96,7 +96,16 @@
                 </div>
                 <div class="box-footer">
                     <a class="btn btn-primary" href="{% url 'admissions_admission_create' %}">Add Admission</a>
-                    <a class="btn btn-success" href="{% url 'admissions_admission_export_form' %}">Export Admissions</a>
+                    <a class="btn btn-success" href="{% url 'admissions_admission_export_form' %}">Filter Admissions</a>
+
+                    <!-- if there is a list of admissions, enable the export all link -->
+                    {% if admission_list %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
