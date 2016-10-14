@@ -2,8 +2,6 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 
-import csv
-
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView, CommuniqueFormView, CommuniqueExportFormView,
                               CommuniqueExportListView)
@@ -16,7 +14,7 @@ from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
 from regimens.models import Regimen
 from adverse.models import AdverseEvent
-from patients.utils.utils_views import import_patients_from_file
+from patients.utils.utils_views import import_patients_from_file, write_enrollments_to_csv, write_outcomes_to_csv
 
 
 class PatientListView(CommuniqueListView):
@@ -245,22 +243,7 @@ class OutcomeExportListView(CommuniqueExportListView):
             start_date.strftime(date_format), end_date.strftime(date_format)
         )
 
-        fieldnames = ['id', 'patient_id', 'outcome_type', 'outcome_date (dd-mm-yyyy)', 'notes',
-                      'date_added (dd-mm-yyyy)', 'added_by', 'date_last_modified (dd-mm-yyyy)', 'modified_by']
-        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-        writer.writeheader()
-
-        for outcome in context[self.context_object_name]:
-            patient = outcome.patient
-            writer.writerow({'id':outcome.id, 'patient_id':patient.identifier,
-                             'outcome_type':outcome.outcome_type.__str__(),
-                             'outcome_date (dd-mm-yyyy)':outcome.outcome_date.strftime(date_format),
-                             'notes':outcome.notes,
-                             'date_added (dd-mm-yyyy)':outcome.date_created.strftime(date_format),
-                             'added_by':outcome.created_by.get_full_name(),
-                             'date_last_modified (dd-mm-yyyy)':outcome.date_last_modified.strftime(date_format),
-                             'modified_by':outcome.last_modified_by.get_full_name()})
-
+        write_outcomes_to_csv(response, context[self.context_object_name], date_format)
         return response
 
 
@@ -355,22 +338,7 @@ class EnrollmentExportListView(CommuniqueExportListView):
         response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_to_{1}.csv"'.format(
             start_date.strftime(date_format), end_date.strftime(date_format))
 
-        fieldnames = ['id', 'program', 'patient_id', 'date_enrolled (dd-mm-yyyy)', 'comment', 'date_added (dd-mm-yyyy)',
-                      'added_by', 'date_last_modified (dd-mm-yyyy)', 'modified_by']
-
-        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-        writer.writeheader()
-
-        for enrollment in context[self.context_object_name]:
-            program = enrollment.program
-            patient = enrollment.patient
-            writer.writerow({'id':enrollment.id, 'program':program.__str__(), 'patient_id':patient.identifier,
-                             'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime(date_format),
-                             'comment':enrollment.comment,
-                             'date_added (dd-mm-yyyy)':enrollment.date_created.strftime(date_format),
-                             'added_by':enrollment.created_by.get_full_name(),
-                             'date_last_modified (dd-mm-yyyy)':enrollment.date_last_modified.strftime(date_format),
-                             'modified_by':enrollment.last_modified_by.get_full_name()})
+        write_enrollments_to_csv(response, context[self.context_object_name], date_format)
         return response
 
 
