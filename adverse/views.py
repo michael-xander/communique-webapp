@@ -6,7 +6,7 @@ import datetime
 from .models import EmergencyContact, AdverseEvent, AdverseEventType
 from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
                               CommuniqueDeleteView, CommuniqueExportFormView, CommuniqueExportListView,
-                              DATE_FORMAT_STR, DATE_FORMAT, CommuniqueListAndExportView)
+                              DATE_FORMAT_STR, DATE_FORMAT, CommuniqueListAndExportView, CommuniqueDetailAndExportView)
 from .forms import AdverseEventForm
 from .utils.utils_views import write_adverse_events_to_csv
 
@@ -76,13 +76,24 @@ class AdverseEventTypeCreateView(CommuniqueCreateView):
     template_name = 'adverse/adverse_event_type_form.html'
 
 
-class AdverseEventTypeDetailView(CommuniqueDetailView):
+class AdverseEventTypeDetailView(CommuniqueDetailAndExportView):
     """
     A view to display the details of an adverse event type
     """
     model = AdverseEventType
     template_name = 'adverse/adverse_event_type_view.html'
     context_object_name = 'adverse_event_type'
+
+    def csv_export_response(self, context):
+        # generate csv for exportation
+        today = datetime.date.today()
+        event_type = context[self.context_object_name]
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="{0}_adverse_events_{1}.csv"'.format(
+            event_type, today.strftime(DATE_FORMAT))
+        write_adverse_events_to_csv(response, event_type.adverse_events.all(), DATE_FORMAT, DATE_FORMAT_STR)
+
+        return response
 
 
 class AdverseEventTypeUpdateView(CommuniqueUpdateView):
