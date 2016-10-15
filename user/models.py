@@ -69,3 +69,6 @@ class NotificationRegistration(models.Model):
 
     def __str__(self):
         return self.get_service_display()
+
+    def get_delete_url(self):
+        return reverse('user_notification_registration_delete', kwargs={'pk':self.pk})

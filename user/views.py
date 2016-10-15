@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from notifications.models import Notification
 
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
-                              CommuniqueTemplateView)
+                              CommuniqueTemplateView, CommuniqueDeleteView)
 from .forms import CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm
-from .models import CommuniqueUser, Profile
+from .models import CommuniqueUser, Profile, NotificationRegistration
 from occasions.models import Event
 
 
@@ -151,3 +152,20 @@ class CalendarView(CommuniqueTemplateView):
         user = User.objects.get(pk=int(self.request.user.pk))
         context['appointment_list'] = user.owned_appointments.all()
         return context
+
+
+class NotificationRegistrationDeleteView(CommuniqueDeleteView):
+    """
+    A view to delete a notification registration for a user
+    """
+    model = NotificationRegistration
+    context_object_name = 'notification_registration'
+    template_name = 'user/notification_registration_confirm_delete.html'
+
+    def get_success_url(self):
+        # return to the profile view
+        return reverse('user_profile_detail', kwargs={'pk':self.request.user.pk})
+
+    def test_func(self):
+        # check that the user is active
+        return self.request.user.is_active

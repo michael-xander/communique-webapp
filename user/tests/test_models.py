@@ -58,3 +58,10 @@ class NotificationRegistrationTestCase(TestCase):
         Test the __str__ method of the model
         """
         self.assertEqual(self.registration.__str__(), self.registration.get_service_display())
+
+    def test_get_delete_url(self):
+        """
+        Tests the get_delete_url method of the model
+        """
+        self.assertEqual(self.registration.get_delete_url(), reverse('user_notification_registration_delete',
+                                                                     kwargs={'pk':self.registration.pk}))
