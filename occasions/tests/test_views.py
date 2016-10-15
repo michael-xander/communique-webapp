@@ -75,6 +75,6 @@ class EventDeleteViewTestCase(ExistingEventViewTestCase):
     """
     view_template_name = 'occasions/event_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         event = Event.objects.get(id=1)
-        self.only_active_user_access_test(event.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(event.get_delete_url(), self.view_template_name)

@@ -103,8 +103,8 @@ class AppointmentDeleteViewTestCase(ExistingAppointmentViewTestCase):
     """
     view_template_name = 'appointments/appointment_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         appointment = Appointment.objects.get(id=1)
-        self.only_active_user_access_test(appointment.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(appointment.get_delete_url(), self.view_template_name)
 
 

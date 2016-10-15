@@ -69,9 +69,9 @@ class DrugDeleteViewTestCase(ExistingDrugViewsTestCase):
     """
     view_template_name = 'regimens/drug_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         drug = Drug.objects.get(id=1)
-        self.only_active_user_access_test(drug.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(drug.get_delete_url(), self.view_template_name)
 
 
 class RegimenListViewTestCase(ViewsTestCase):
@@ -150,9 +150,9 @@ class RegimenDeleteViewTestCase(ExistingRegimenViewsTestCase):
     """
     view_template_name = 'regimens/regimen_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         regimen = Regimen.objects.get(id=1)
-        self.only_active_user_access_test(regimen.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(regimen.get_delete_url(), self.view_template_name)
 
 
 class RegimenUpdateViewTestCase(ExistingRegimenViewsTestCase):

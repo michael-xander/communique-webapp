@@ -71,9 +71,9 @@ class MedicalReportTypeDeleteViewTestCase(ExistingMedicalReportTypeViewTestCase)
     """
     view_template_name = 'medical/medical_report_type_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         report_type = MedicalReportType.objects.get(id=1)
-        self.only_active_user_access_test(report_type.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(report_type.get_delete_url(), self.view_template_name)
 
 
 class MedicalReportCreateViewTestCase(ViewsTestCase):
@@ -143,6 +143,6 @@ class MedicalReportDeleteViewTestCase(ExistingMedicalReportViewTestCase):
     """
     view_template_name = 'medical/medical_report_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         report = MedicalReport.objects.get(id=1)
-        self.only_active_user_access_test(report.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(report.get_delete_url(), self.view_template_name)
