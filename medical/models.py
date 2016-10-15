@@ -49,12 +49,14 @@ class MedicalReport(models.Model):
     patient = models.ForeignKey(Patient, verbose_name='Patient', on_delete=models.CASCADE,
                                 related_name='medical_reports', related_query_name='medical_report',
                                 help_text='The patient whom this medical report is for')
-    notes = models.TextField(verbose_name='Notes', help_text='Information on the medical report')
+    notes = models.TextField(verbose_name='Notes', blank=True, null=True,
+                             help_text='Information on the medical report. This field is optional')
 
     date_created = models.DateField(verbose_name='Date created', auto_now_add=True,
                                     help_text='The date on which this medical report was created')
     date_last_modified = models.DateField(verbose_name='Date last modified', auto_now=True,
-                                          help_text='The date on which the details of this medical report were last modified')
+                                          help_text='The date on which the details of this medical report were last '
+                                                    'modified')
 
     created_by = models.ForeignKey(User, verbose_name='Created by', on_delete=models.SET_NULL, blank=True, null=True,
                                    related_name='created_medical_reports', related_query_name='created_medical_report',
