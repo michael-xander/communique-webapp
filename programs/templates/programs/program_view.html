@@ -47,7 +47,9 @@
                         </li>
                     </ul>
                     <a href="{{ program.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ program.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% if user.is_superuser %}
+                        <a href="{{ program.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% endif %}
                 </div>
             </div>
 
