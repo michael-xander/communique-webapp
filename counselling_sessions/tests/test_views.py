@@ -67,9 +67,9 @@ class CounsellingSessionTypeDeleteViewTestCase(ExistingCounsellingSessionTypeVie
     """
     view_template_name = 'counselling_sessions/counselling_session_type_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         session_type = CounsellingSessionType.objects.get(id=1)
-        self.only_active_user_access_test(session_type.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(session_type.get_delete_url(), self.view_template_name)
 
 
 class CounsellingSessionListViewTestCase(ViewsTestCase):
@@ -160,6 +160,6 @@ class CounsellingSessionDeleteViewTestCase(ExistingCounsellingSessionViewsTestCa
     """
     view_template_name = 'counselling_sessions/counselling_session_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         counselling_session = CounsellingSession.objects.get(id=1)
-        self.only_active_user_access_test(counselling_session.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(counselling_session.get_delete_url(), self.view_template_name)

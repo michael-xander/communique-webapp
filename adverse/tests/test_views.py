@@ -69,9 +69,9 @@ class EmergencyContactDeleteViewTestCase(ExistingEmergencyContactViewsTestCase):
     """
     view_template_name = 'adverse/emergency_contact_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         emergency_contact = EmergencyContact.objects.get(id=1)
-        self.only_active_user_access_test(emergency_contact.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(emergency_contact.get_delete_url(), self.view_template_name)
 
 
 class AdverseEventTypeCreateViewTestCase(ViewsTestCase):
@@ -135,9 +135,9 @@ class AdverseEventTypeDeleteViewTestCase(ExistingAdverseEventTypeViewsTestCase):
     """
     view_template_name = 'adverse/adverse_event_type_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         adverse_event_type = AdverseEventType.objects.get(id=1)
-        self.only_active_user_access_test(adverse_event_type.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(adverse_event_type.get_delete_url(), self.view_template_name)
 
 
 class AdverseEventCreateViewTestCase(ViewsTestCase):
@@ -229,6 +229,6 @@ class AdverseEventDeleteViewTestCase(ExistingAdverseEventViewsTestCase):
     """
     view_template_name = 'adverse/adverse_event_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         adverse_event = AdverseEvent.objects.get(id=1)
-        self.only_active_user_access_test(adverse_event.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(adverse_event.get_delete_url(), self.view_template_name)

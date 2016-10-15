@@ -57,7 +57,9 @@
                         </li>
                     </ul>
                     <a href="{{ outcome_type.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ outcome_type.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% if user.is_superuser %}
+                        <a href="{{ outcome_type.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% endif %}
                 </div>
             </div>
             <div class="box box-primary">

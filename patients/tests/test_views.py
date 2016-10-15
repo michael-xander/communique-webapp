@@ -126,9 +126,9 @@ class PatientDeleteViewTestCase(ExistingPatientViewsTestCase):
     """
     view_template_name = 'patients/patient_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         patient = Patient.objects.get(id=1)
-        self.only_active_user_access_test(patient.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(patient.get_delete_url(), self.view_template_name)
 
 
 class OutcomeTypeListViewTestCase(ViewsTestCase):
@@ -190,8 +190,8 @@ class OutcomeTypeDeleteViewTestCase(ExistingOutcomeTypeViewsTestCase):
     """
     view_template_name = 'patients/outcome_type_confirm_delete.html'
 
-    def test_active_user_access(self):
-        self.only_active_user_access_test(self.outcome_type.get_delete_url(), self.view_template_name)
+    def test_active_super_user_access(self):
+        self.only_active_super_user_access_test(self.outcome_type.get_delete_url(), self.view_template_name)
 
 
 class OutcomeListViewTestCase(ViewsTestCase):

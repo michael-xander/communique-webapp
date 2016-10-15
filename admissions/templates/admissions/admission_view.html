@@ -71,7 +71,11 @@
                         </li>
                     </ul>
                     <a href="{{ admission.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ admission.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+
+                    <!-- if the user is a super user, make the deletion functionality available -->
+                    {% if user.is_superuser %}
+                        <a href="{{ admission.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% endif %}
                 </div>
             </div>
         </div>

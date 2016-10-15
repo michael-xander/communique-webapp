@@ -237,7 +237,8 @@ class CommuniqueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     def test_func(self):
         """
-        Checks whether the user is marked active.
+        Checks whether the user is marked active and is a superuser.
         :return: True if user is active, false otherwise.
         """
-        return self.request.user.is_active
+        current_user = self.request.user
+        return current_user.is_superuser and current_user.is_active

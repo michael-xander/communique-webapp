@@ -52,3 +52,7 @@ class EventDeleteView(CommuniqueDeleteView):
     context_object_name = 'event'
     template_name = 'occasions/event_confirm_delete.html'
 
+    def test_func(self):
+        # check that the user is an active user
+        return self.request.user.is_active
+
