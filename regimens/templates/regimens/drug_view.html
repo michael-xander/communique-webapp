@@ -63,7 +63,13 @@
                 <div class="box-body">
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
 
-                    <p>{{ drug.description }}</p>
+                    <p>
+                        {% if drug.description %}
+                            {{ drug.description }}
+                        {% else %}
+                            This drug currently doesn't have a description
+                        {% endif %}
+                    </p>
                 </div>
             </div>
         </div>

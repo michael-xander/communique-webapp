@@ -67,7 +67,13 @@
                 <div class="box-body">
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
 
-                    <p>{{ outcome_type.description }}</p>
+                    <p>
+                        {% if outcome_type.description %}
+                            {{ outcome_type.description }}
+                        {% else %}
+                            This outcome type currently doesn't have a description
+                        {% endif %}
+                    </p>
                 </div>
             </div>
         </div>

@@ -62,7 +62,13 @@
             <div class="box box-primary">
                 <div class="box-body">
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
-                    <p>{{ adverse_event_type.description }}</p>
+                    <p>
+                        {% if adverse_event_type.description %}
+                            {{ adverse_event_type.description }}
+                        {% else %}
+                            This category of adverse events currently doesn't have a description
+                        {% endif %}
+                    </p>
 
                     <hr>
 
