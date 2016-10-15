@@ -1,7 +1,8 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from communique.utils.utils_signals import send_notification
+from communique.utils.utils_signals import send_notification, get_users_to_notify
+from user.models import NotificationRegistration
 from .models import Patient, Enrollment
 
 
@@ -22,8 +23,10 @@ def post_patient_save_callback(sender, **kwargs):
             temp_str = 'updated'
 
         verb = "{0} the patient:".format(temp_str)
+        user_list = get_users_to_notify(NotificationRegistration.PATIENTS)
 
-        send_notification(actor=patient.last_modified_by, action_object=patient, verb=verb, entity_name='patient')
+        send_notification(actor=patient.last_modified_by, action_object=patient, verb=verb, entity_name='patient',
+                          all_users=False, user_list=user_list)
 
 
 @receiver(post_save, sender=Enrollment)
@@ -33,7 +36,7 @@ def post_enrollment_save_callback(sender, **kwargs):
     """
     enrollment = kwargs['instance']
 
-    # check whether the user responsible for saving the object is available the object is being created
+    # check whether the user responsible for saving the object is available
     if enrollment.last_modified_by and kwargs['created']:
         verb = "added the enrollment:"
 
