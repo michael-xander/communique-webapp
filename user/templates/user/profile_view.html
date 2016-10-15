@@ -85,10 +85,12 @@
                                         <i class="fa fa-ellipsis-v"></i>
                                     </span>
 
-                                    <span class="text">Design a nice theme</span>
+                                    <span class="text">{{ registration }}</span>
 
                                     <div class="tools">
-                                        <i class="fa fa-trash-o"></i>
+                                        <a href="{{ registration.get_delete_url }}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
                                     </div>
                                 </li>
                             {% empty %}
