@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from user.models import NotificationRegistration
 
 from notifications.signals import notify
 
@@ -25,3 +26,20 @@ def send_notification(actor, action_object, verb, entity_name, description=None,
         if notified_user.is_active:
             notify.send(actor, recipient=notified_user, verb=verb, action_object=action_object, description=description,
                         entity_name=entity_name)
+
+
+def get_users_to_notify(service):
+    """
+    A function to obtain the users to notify for a given service
+    :param service: The service to notify users for
+    :return: The list of users to notify
+    """
+    # get all the registrations for that service
+    registrations = NotificationRegistration.objects.filter(service=service)
+
+    user_list = []
+    for registration in registrations:
+        user_list.append(registration.user)
+
+    return user_list
+
