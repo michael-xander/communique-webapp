@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from notifications.models import Notification
 
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
-                              CommuniqueTemplateView)
-from .forms import CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm
-from .models import CommuniqueUser, Profile
+                              CommuniqueTemplateView, CommuniqueDeleteView, CommuniqueFormView)
+from .forms import CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm, NotificationRegistrationForm
+from .models import CommuniqueUser, Profile, NotificationRegistration
 from occasions.models import Event
 
 
@@ -151,3 +152,41 @@ class CalendarView(CommuniqueTemplateView):
         user = User.objects.get(pk=int(self.request.user.pk))
         context['appointment_list'] = user.owned_appointments.all()
         return context
+
+
+class NotificationRegistrationCreateView(CommuniqueFormView):
+    """
+    A view to register a user for certain notifications
+    """
+    form_class = NotificationRegistrationForm
+    template_name = 'user/notification_registration_form.html'
+
+    def get_success_url(self):
+        # return to the profile view
+        return reverse('user_profile_detail', kwargs={'pk':self.request.user.pk})
+
+    def form_valid(self, form):
+        # create the notification registration if the user doesn't already have a registration for the chosen service
+        chosen_service = form.cleaned_data['service']
+        existing_registration = NotificationRegistration.objects.filter(service=chosen_service, user=self.request.user)
+        # if there isn't an existing registration for the user then create one
+        if not existing_registration:
+            NotificationRegistration.objects.create(service=chosen_service, user=self.request.user)
+        return super(NotificationRegistrationCreateView, self).form_valid(form)
+
+
+class NotificationRegistrationDeleteView(CommuniqueDeleteView):
+    """
+    A view to delete a notification registration for a user
+    """
+    model = NotificationRegistration
+    context_object_name = 'notification_registration'
+    template_name = 'user/notification_registration_confirm_delete.html'
+
+    def get_success_url(self):
+        # return to the profile view
+        return reverse('user_profile_detail', kwargs={'pk':self.request.user.pk})
+
+    def test_func(self):
+        # check that the user is active
+        return self.request.user.is_active

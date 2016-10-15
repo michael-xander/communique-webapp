@@ -35,20 +35,30 @@
                     {% for notification in notification_list %}
                         <li>
                             {% with entity_name=notification.data.entity_name %}
-                                {% if entity_name == 'program' %}
-                                    <i class="fa fa-tag bg-yellow"></i>
-                                {% elif entity_name == 'admission' %}
+                                {% if entity_name == 'admission' %}
                                     <i class="fa fa-ambulance bg-yellow"></i>
+                                {% elif entity_name == 'adverse event' %}
+                                    <i class="fa fa-wheelchair bg-aqua"></i>
                                 {% elif entity_name == 'appointment' %}
-                                    <i class="fa fa-calendar-plus-o bg-yellow"></i>
+                                    <i class="fa fa-calendar-plus-o bg-red"></i>
+                                {% elif entity_name == 'counselling session' %}
+                                    <i class="fa fa-plus-square bg-purple"></i>
+                                {% elif entity_name == 'medical report' %}
+                                    <i class="fa fa-medkit bg-orange"></i>
                                 {% elif entity_name == 'event' %}
-                                    <i class="fa fa-calendar-o bg-yellow"></i>
-                                {% elif entity_name == 'enrollment' %}
-                                    <i class="fa fa-support bg-yellow"></i>
+                                    <i class="fa fa-calendar-o bg-green"></i>
                                 {% elif entity_name == 'patient' %}
-                                    <i class="fa fa-heartbeat bg-yellow"></i>
+                                    <i class="fa fa-heartbeat bg-blue"></i>
+                                {% elif entity_name == 'patient outcome' %}
+                                    <i class="fa fa-heartbeat bg-blue"></i>
+                                {% elif entity_name == 'enrollment' %}
+                                    <i class="fa fa-support bg-aqua"></i>
+                                {% elif entity_name == 'program' %}
+                                    <i class="fa fa-tags bg-red"></i>
+                                {% elif entity_name == 'regimen' %}
+                                    <i class="fa fa-stethoscope bg-purple"></i>
                                 {% else %}
-                                    <i class="fa fa-bell-o bg-yellow"></i>
+                                    <i class="fa fa-bell-o bg-green"></i>
                                 {% endif %}
 
                                 <div class="timeline-item">

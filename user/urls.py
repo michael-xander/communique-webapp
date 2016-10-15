@@ -4,7 +4,8 @@ from django.views.generic import RedirectView
 
 
 from .views import (CommuniqueUserListView, CommuniqueUserCreateView, CommuniqueUserDetailView, CommuniqueUserUpdateView,
-                    ProfileDetailView, ProfileUpdateView, CalendarView, ProfileNotificationListView)
+                    ProfileDetailView, ProfileUpdateView, CalendarView, ProfileNotificationListView,
+                    NotificationRegistrationDeleteView, NotificationRegistrationCreateView)
 
 urlpatterns = [
     # urls for logging in and out
@@ -42,4 +43,8 @@ urlpatterns = [
     url(r'^profile/calendar/$', CalendarView.as_view(), name='user_profile_calendar_view'),
     # urls for a profile's notifications
     url(r'^profile/notifications/$', ProfileNotificationListView.as_view(), name='user_profile_notification_list'),
+    url(r'^profile/notifications/register/$', NotificationRegistrationCreateView.as_view(),
+        name='user_notification_registration_create'),
+    url(r'^profile/notifications/registrations/(?P<pk>[0-9]+)/delete/$', NotificationRegistrationDeleteView.as_view(),
+        name='user_notification_registration_delete'),
 ]
