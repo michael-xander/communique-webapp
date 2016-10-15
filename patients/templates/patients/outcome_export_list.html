@@ -48,9 +48,9 @@
                 <form role="form" action="{% url 'patients_outcome_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        This search looks for patient outcomes that were created/added to the system on a date that lies
-                        in the range starting from the start date and ending at the end date that you'll pick below with
-                        both dates being included in the range.
+                        This search looks for patient outcomes that were added/modified in the system on a date that
+                        lies in the range starting from the start date and ending at the end date that you'll pick below
+                        with both dates being included in the range.
                         {% for field in form %}
                             <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
                                 {{ field.label_tag }}
@@ -95,7 +95,7 @@
                                 <th>Patient ID</th>
                                 <th>Patient</th>
                                 <th>Outcome Date</th>
-                                <th>Date Added</th>
+                                <th>Last Modified Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,7 +112,7 @@
                                         <a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_date }}</a>
                                     </td>
                                     <td>
-                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.date_created }}</a>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.date_last_modified }}</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -123,7 +123,7 @@
                                 <th>Patient ID</th>
                                 <th>Patient</th>
                                 <th>Outcome Date</th>
-                                <th>Date Added</th>
+                                <th>Last Modified Date</th>
                             </tr>
                         </tfoot>
                     </table>

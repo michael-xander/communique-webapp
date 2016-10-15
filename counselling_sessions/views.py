@@ -1,12 +1,14 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 
-import csv
+import datetime
 
 from .models import CounsellingSession, CounsellingSessionType
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
-                              CommuniqueCreateView, CommuniqueExportFormView, CommuniqueExportListView)
+                              CommuniqueCreateView, CommuniqueExportFormView, CommuniqueExportListView,
+                              CommuniqueListAndExportView, DATE_FORMAT_STR, DATE_FORMAT, CommuniqueDetailAndExportView)
 from .forms import CounsellingSessionForm
+from .utils.utils_views import write_sessions_to_csv
 
 
 class CounsellingSessionTypeListView(CommuniqueListView):
@@ -27,13 +29,23 @@ class CounsellingSessionTypeCreateView(CommuniqueCreateView):
     fields = ['name', 'description']
 
 
-class CounsellingSessionTypeDetailView(CommuniqueDetailView):
+class CounsellingSessionTypeDetailView(CommuniqueDetailAndExportView):
     """
     A view that handles displaying details of a session type.
     """
     model = CounsellingSessionType
     template_name = 'counselling_sessions/counselling_session_type_view.html'
     context_object_name = 'counselling_session_type'
+
+    def csv_export_response(self, context):
+        # generate csv for exportation
+        today = datetime.date.today()
+        session_type = context[self.context_object_name]
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="{0}_counselling_sessions_{1}.csv"'.format(
+            session_type, today.strftime(DATE_FORMAT))
+        write_sessions_to_csv(response, session_type.counselling_sessions.all(), DATE_FORMAT, DATE_FORMAT_STR)
+        return response
 
 
 class CounsellingSessionTypeUpdateView(CommuniqueUpdateView):
@@ -56,13 +68,22 @@ class CounsellingSessionTypeDeleteView(CommuniqueDeleteView):
     template_name = 'counselling_sessions/counselling_session_type_confirm_delete.html'
 
 
-class CounsellingSessionListView(CommuniqueListView):
+class CounsellingSessionListView(CommuniqueListAndExportView):
     """
     A view that retrieves all available sessions.
     """
     model = CounsellingSession
     template_name = 'counselling_sessions/counselling_session_list.html'
     context_object_name = 'counselling_session_list'
+
+    def csv_export_response(self, context):
+        # generate csv for download
+        today = datetime.date.today()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="all_counselling_sessions_{0}.csv"'.format(
+            today.strftime(DATE_FORMAT))
+        write_sessions_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
+        return response
 
 
 class CounsellingSessionCreateView(CommuniqueCreateView):
@@ -126,31 +147,18 @@ class CounsellingSessionExportListView(CommuniqueExportListView):
         # get all the counselling sessions within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        counselling_sessions = CounsellingSession.objects.filter(date_created__range=[start_date, end_date])
+        counselling_sessions = CounsellingSession.objects.filter(date_last_modified__range=[start_date, end_date])
         return counselling_sessions
 
     def csv_export_response(self, context):
         # generate an HTTP response with the csv file for download
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        date_format = '%d-%m-%Y'
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="sessions_{0}_to_{1}.csv"'.format(
-            start_date.strftime(date_format), end_date.strftime(date_format))
+            start_date.strftime(DATE_FORMAT), end_date.strftime(DATE_FORMAT))
+        write_sessions_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
 
-        fieldnames = ['id','session_type','patient_id', 'patient_last_name', 'patient_other_names', 'added_by',
-                      'date_added (dd-mm-yyyy)', 'notes']
-        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-        writer.writeheader()
-        for counselling_session in context[self.context_object_name]:
-            session_type = counselling_session.counselling_session_type
-            patient = counselling_session.patient
-            writer.writerow({'id':counselling_session.id,'session_type':session_type.__str__(),
-                             'patient_id':patient.identifier, 'patient_last_name':patient.last_name,
-                             'patient_other_names':patient.other_names,
-                             'added_by':counselling_session.created_by.get_full_name(),
-                             'date_added (dd-mm-yyyy)':counselling_session.date_created.strftime(date_format),
-                             'notes':counselling_session.notes})
         return response
 
 

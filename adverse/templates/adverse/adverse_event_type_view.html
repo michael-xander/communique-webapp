@@ -118,6 +118,16 @@
                         </tfoot>
                     </table>
                 </div>
+                <div class="box-footer">
+                    <!-- if there are adverse events of this type, enable the export all button -->
+                    {% if adverse_event_type.adverse_events.all %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

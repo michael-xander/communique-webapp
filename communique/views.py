@@ -9,6 +9,10 @@ import datetime
 
 from .forms import DurationForm
 
+# the date format to be used in
+DATE_FORMAT = '%d-%m-%Y'
+DATE_FORMAT_STR = 'dd-mm-yyyy'
+
 
 class CommuniqueTemplateView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     """
@@ -146,7 +150,51 @@ class CommuniqueListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return self.request.user.is_active
 
 
-class CommuniqueExportListView(CommuniqueListView):
+class CommuniqueListAndExportView(CommuniqueListView):
+    """
+    A view that lists instances of a model and exports them to csv file when provided an export get parameter
+    """
+
+    def csv_export_response(self, context):
+        """
+        A method that returns the HTTP response to download a csv file with the items in the export list
+        :param context: The context data for the view
+        :return: The HTTP response
+        """
+        return None
+
+    def render_to_response(self, context, **response_kwargs):
+        # if there is a get parameter named export with the value csv and there are objects in the list then respond
+        # with a csv file of the data
+        if ('csv' in self.request.GET.get('export', '')) and context[self.context_object_name]:
+            return self.csv_export_response(context)
+        else:
+            return super(CommuniqueListAndExportView, self).render_to_response(context, **response_kwargs)
+
+
+class CommuniqueDetailAndExportView(CommuniqueDetailView):
+    """
+    A view that displays the details of a model and exports specified information to a csv file when provided an export
+    get parameter.
+    """
+
+    def csv_export_response(self, context):
+        """
+        A method that returns the HTTP response to download a csv file
+        :param context: The context data for the view
+        :return: The HTTP response
+        """
+        return None
+
+    def render_to_response(self, context, **response_kwargs):
+        # if there is a get parameter named export with the value csv, then call for the csv export response
+        if 'csv' in self.request.GET.get('export', ''):
+            return self.csv_export_response(context)
+        else:
+            return super(CommuniqueDetailAndExportView, self).render_to_response(context, **response_kwargs)
+
+
+class CommuniqueExportListView(CommuniqueListAndExportView):
     """
     A view that provides a list of the items that are to be exported
     """
@@ -179,22 +227,6 @@ class CommuniqueExportListView(CommuniqueListView):
 
         context['form'] = DurationForm(data)
         return context
-
-    def csv_export_response(self, context):
-        """
-        A method that returns the HTTP response to download a csv file with the items in the export list
-        :param context: The context data for the view
-        :return: The HTTP response
-        """
-        return None
-
-    def render_to_response(self, context, **response_kwargs):
-        # if there is a get parameter, export, with the value csv and there are objects in the list then respond with a
-        # csv file of the data
-        if ('csv' in self.request.GET.get('export', '')) and context[self.context_object_name]:
-            return self.csv_export_response(context)
-        else:
-            return super(CommuniqueExportListView, self).render_to_response(context, **response_kwargs)
 
 
 class CommuniqueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

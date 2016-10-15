@@ -33,7 +33,7 @@ class AdmissionListViewTestCase(ViewsTestCase):
 
 class AdmissionsExportFormViewTestCase(ViewsTestCase):
     """
-    Test cases for the view that displats the export form
+    Test cases for the view that displays the export form
     """
     view_name = 'admissions_admission_export_form'
     view_template_name = 'admissions/admission_export_list.html'

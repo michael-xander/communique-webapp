@@ -112,6 +112,16 @@
                         </tfoot>
                     </table>
                 </div>
+                <div class="box-footer">
+                    <!-- if there are any enrollments for this program, enable the export all button -->
+                    {% if program.enrolled_patients %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

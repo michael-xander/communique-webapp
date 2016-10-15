@@ -124,6 +124,16 @@
                         </tfoot>
                     </table>
                 </div>
+                <div class="box-footer">
+                    <!-- if the session type has any sessions, enable the export all button -->
+                    {% if counselling_session_type.counselling_sessions.all %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

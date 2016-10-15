@@ -1,9 +1,9 @@
-{% extends parent_template|default:'adverse/base_adverse.html' %}
+{% extends parent_template|default:'regimens/base_regimens.html' %}
 {% load staticfiles %}
 {% load widget_tweaks %}
 
 {% block title %}
-    {{ block.super }} | Export Adverse Events
+    {{ block.super }} | Export Regimens
 {% endblock %}
 
 {% block head %}
@@ -13,16 +13,16 @@
     <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
 {% endblock %}
 
-{% block event_menu %}
+{% block regimens_menu %}
     <li class="active">
-        <a href="{% url 'adverse_event_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Adverse Events
+        <a href="{% url 'regimens_regimen_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Regimens
         </a>
     </li>
 {% endblock %}
 
 {% block page_heading %}
-    Export Adverse Events
+    Export Regimens
 {% endblock %}
 
 {% block page_subheading %}
@@ -30,7 +30,7 @@
 
 {% block page_breadcrumb %}
     <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{% url 'adverse_event_list' %}"><i class="fa fa-wheelchair"></i> Adverse Events</a></li>
+    <li><a href="{% url 'regimens_regimen_list' %}"><i class="fa fa-stethoscope"></i> Regimens</a></li>
     <li class="active"><i class="fa fa-download"></i> Export</li>
 {% endblock %}
 
@@ -41,20 +41,20 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Date Duration For Adverse Events</h3>
+                    <h3 class="box-title">Date Duration For Regimens</h3>
                 </div>
-                <form role="form" action="{% url 'adverse_event_export_form' %}" method="post">
+                <form role="form" action="{% url 'regimens_regimen_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        This search looks for adverse events that were added/modified in the system on a date that lies
-                        in the range starting from the start date and ending at the end date that you'll pick below with
-                        both dates being included in the range.
+                        This search looks for patient regimens that were added or modified in the system on a date
+                        that lies in the range starting from the start date and ending at the end date that you'll pick
+                        below with both dates being included in the range.
                         {% for field in form %}
                             <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
                                 {{ field.label_tag }}
 
                                 {% if field.label == 'Start date' or field.label == 'End date' %}
-                                    {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker' }}
+                                    {{ field|attr:'placeholder:DD/MM/YYYY'|add_class:'form-control date-picker'}}
                                 {% else %}
                                     {{ field|add_class:'form-control' }}
                                 {% endif %}
@@ -78,56 +78,60 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Selected Adverse Events</h3>
+                    <h3 class="box-title">Existing Regimens</h3>
                 </div>
                 <div class="box-body">
                     <table id="table1" class="table table-bordered table-striped">
                         <thead>
-                            <tr>
-                                <th>Event Type</th>
-                                <th>Patient ID</th>
-                                <th>Patient</th>
-                                <th>Event Date</th>
-                                <th>Last Modified Date</th>
-                            </tr>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Patient</th>
+                            <th>Date Started</th>
+                            <th>Date Ended</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for event in adverse_event_export_list %}
-                                <tr>
-                                    <td><a href="{{ event.get_absolute_url }}">{{ event.adverse_event_type }}</a></td>
-                                    <td>
-                                        <a href="{{ event.get_absolute_url }}">{{ event.patient.identifier }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ event.get_absolute_url }}">{{ event.patient.get_full_name }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ event.get_absolute_url }}">{{ event.event_date }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ event.get_absolute_url }}">{{ event.date_last_modified }}</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                        {% for regimen in regimens_export_list %}
+                            <tr>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">{{ regimen.patient.identifier }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">{{ regimen.patient.get_full_name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">{{ regimen.date_started }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ regimen.get_absolute_url }}">
+                                        {% if regimen.date_ended %}
+                                            {{ regimen.date_ended }}
+                                        {% else %}
+                                            Unavailable
+                                        {% endif %}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <th>Event Type</th>
-                                <th>Patient ID</th>
-                                <th>Patient</th>
-                                <th>Event Date</th>
-                                <th>Last Modified Date</th>
-                            </tr>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Patient</th>
+                            <th>Date Started</th>
+                            <th>Date Ended</th>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>
                 <div class="box-footer">
-                    <!-- if there is a list of adverse events to export, make the export button active -->
-                    {% if adverse_event_export_list %}
+                    <!-- if there is a list of regimens, make the export button active -->
+                    {% if regimens_export_list %}
                         <a class="btn btn-primary" target="_blank" href="{{ request.path|add:'?export=csv' }}">
                             Download as CSV
                         </a>
@@ -138,7 +142,9 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
+
 
 {% block scripts %}
     <!-- DataTables -->

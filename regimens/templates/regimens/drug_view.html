@@ -5,6 +5,14 @@
     {{ block.super }} | Drug
 {% endblock %}
 
+{% block drugs_menu %}
+    <li class="active">
+        <a href="{% url 'regimens_drug_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Drugs
+        </a>
+    </li>
+{% endblock %}
+
 {% block head %}
     <!-- DataTables -->
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
@@ -109,6 +117,16 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div class="box-footer">
+                    <!-- if there are regimens to export, enable the export all button -->
+                    {% if drug.regimens.all %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
