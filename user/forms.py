@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import ModelForm
 
-from .models import CommuniqueUser, Profile
+from .models import CommuniqueUser, Profile, NotificationRegistration
 
 
 class CommuniqueUserCreationForm(UserCreationForm):
@@ -39,6 +39,15 @@ class CommuniqueUserUpdateForm(ModelForm):
     class Meta:
         model = CommuniqueUser
         fields = ['is_active', 'is_superuser']
+
+
+class NotificationRegistrationForm(ModelForm):
+    """
+    A form used to create a notification registration
+    """
+    class Meta:
+        model = NotificationRegistration
+        fields = ['service']
 
 
 class ProfileUpdateForm(ModelForm):

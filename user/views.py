@@ -5,8 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from notifications.models import Notification
 
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
-                              CommuniqueTemplateView, CommuniqueDeleteView)
-from .forms import CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm
+                              CommuniqueTemplateView, CommuniqueDeleteView, CommuniqueFormView)
+from .forms import CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm, NotificationRegistrationForm
 from .models import CommuniqueUser, Profile, NotificationRegistration
 from occasions.models import Event
 
@@ -152,6 +152,23 @@ class CalendarView(CommuniqueTemplateView):
         user = User.objects.get(pk=int(self.request.user.pk))
         context['appointment_list'] = user.owned_appointments.all()
         return context
+
+
+class NotificationRegistrationCreateView(CommuniqueFormView):
+    """
+    A view to register a user for certain notifications
+    """
+    form_class = NotificationRegistrationForm
+    template_name = 'user/notification_registration_form.html'
+
+    def get_success_url(self):
+        # return to the profile view
+        return reverse('user_profile_detail', kwargs={'pk':self.request.user.pk})
+
+    def form_valid(self, form):
+        # create the notification registration if the user doesn't already have a registration for the chosen service
+        print(form.cleaned_data['service'])
+        return super(NotificationRegistrationCreateView, self).form_valid(form)
 
 
 class NotificationRegistrationDeleteView(CommuniqueDeleteView):
