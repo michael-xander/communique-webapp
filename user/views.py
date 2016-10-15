@@ -167,7 +167,11 @@ class NotificationRegistrationCreateView(CommuniqueFormView):
 
     def form_valid(self, form):
         # create the notification registration if the user doesn't already have a registration for the chosen service
-        print(form.cleaned_data['service'])
+        chosen_service = form.cleaned_data['service']
+        existing_registration = NotificationRegistration.objects.filter(service=chosen_service, user=self.request.user)
+        # if there isn't an existing registration for the user then create one
+        if not existing_registration:
+            NotificationRegistration.objects.create(service=chosen_service, user=self.request.user)
         return super(NotificationRegistrationCreateView, self).form_valid(form)
 
 
