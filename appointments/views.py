@@ -81,6 +81,10 @@ class AppointmentDeleteView(CommuniqueDeleteView):
     context_object_name = 'appointment'
     template_name = 'appointments/appointment_confirm_delete.html'
 
+    def test_func(self):
+        # check that user is an active user
+        return self.request.user.is_active
+
 
 class AppointmentExportFormView(CommuniqueExportFormView):
     """
