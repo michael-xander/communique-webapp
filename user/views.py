@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -45,12 +46,13 @@ class CommuniqueUserCreateView(CommuniqueCreateView):
         return current_user.is_superuser and current_user.is_active
 
 
-class CommuniqueUserSetPasswordView(CommuniqueFormView):
+class CommuniqueUserSetPasswordView(SuccessMessageMixin, CommuniqueFormView):
     """
     A view to set the password of a user.
     """
     form_class = SetPasswordForm
     template_name = 'user/communique_user_set_password_form.html'
+    success_message = "The user's password has been successfully reset"
 
     def get_communique_user(self):
         user = User.objects.get(pk=int(self.kwargs['pk']))
