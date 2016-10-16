@@ -27,6 +27,7 @@ router.register(r'outcomeType', OutcomeTypeViewSet)
 router.register(r'outcome', OutcomeViewSet)
 router.register(r'notifications', NotificationViewSet)
 router.register(r'devices', FCMDeviceAuthorizedViewSet)
+router.register(r'notificationRegistration', NotificationRegistrationViewSet)
 
 
 urlpatterns = [

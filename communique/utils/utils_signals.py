@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from user.models import NotificationRegistration
-
+from fcm_django.models import FCMDevice
 from notifications.signals import notify
 
 
@@ -86,6 +86,11 @@ def send_notification(actor, action_object, verb, entity_name, description=None,
     for notified_user in notified_users:
         # only notify active users
         if notified_user.is_active:
+            try:
+                device = FCMDevice.objects.get(name=notified_user)
+                device.send_message(data={"data": str(actor)+" "+str(verb) + " "+str(action_object)})
+            except:
+                print("Oops, this is embarassing!")
             notify.send(actor, recipient=notified_user, verb=verb, action_object=action_object, description=description,
                         entity_name=entity_name)
 

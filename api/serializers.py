@@ -9,7 +9,7 @@ from occasions.models import Event
 from programs.models import Program
 from patients.models import Patient, Enrollment, OutcomeType, Outcome
 from regimens.models import Drug, Regimen
-from user.models import CommuniqueUser, Profile
+from user.models import CommuniqueUser, Profile, NotificationRegistration
 from notifications.models import Notification
 
 
@@ -235,4 +235,13 @@ class NotificationSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Notification
-        fields = ('id', 'unread','action_object_object_id', 'verb', 'description', 'timestamp' )
+        fields = ('id', 'recipient', 'unread','action_object_object_id', 'verb', 'description', 'timestamp' )
+        
+        
+class NotificationRegistrationSerializer(serializers.ModelSerializer):
+    """
+    A serializer for the NotificationRegistration model.
+    """
+    class Meta:
+        model = NotificationRegistration
+        fields = ('id', 'service', 'user')
