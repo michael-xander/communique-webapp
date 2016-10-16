@@ -1,4 +1,5 @@
 {% extends parent_template|default:"base.html" %}
+{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Dashboard
@@ -10,6 +11,11 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
     </li>
+{% endblock %}
+
+{% block head %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
 {% block page_heading %}
@@ -26,49 +32,218 @@
 
 {% block page_content %}
     <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"><i class="fa fa-calendar-plus-o"></i>&zwnj;</span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">Appointments This Week</span>
-                    <span class="info-box-number">20</span>
+                    <span class="info-box-number">{{ appointment_list|length }}</span>
                     <a href="{% url 'user_profile_calendar_view' %}" class="info-box-more">View Appointments</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-green"><i class="fa fa-calendar-o"></i>&zwnj;</span>
 
                 <div class="info-box-content">
                     <span class="info-box-text">Events This Week</span>
-                    <span class="info-box-number">20</span>
+                    <span class="info-box-number">{{ event_list|length }}</span>
                     <a href="{% url 'occasions_event_list' %}" class="info-box-more">View Events</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-plus-square"></i>&zwnj;</span>
+                <span class="info-box-icon bg-yellow"><i class="fa fa-bell-o"></i>&zwnj;</span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">Counselling Sessions This Week</span>
-                    <span class="info-box-number">20</span>
-                    <a href="{% url 'counselling_sessions_session_list' %}" class="info-box-more">View Counselling Sessions</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-support"></i>&zwnj;</span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Enrollments This Week</span>
-                    <span class="info-box-number">20</span>
-                    <a href="{% url 'patients_enrollment_list' %}" class="info-box-more">View Enrollments</a>
+                    <span class="info-box-text">Unread Notifications</span>
+                    <span class="info-box-number notification-count"></span>
+                    <a href="{% url 'user_profile_notification_list' %}" class="info-box-more">View Notifications</a>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Recently Added Counselling Sessions</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <table class="list-table table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Patient ID</th>
+                                <th>Session Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for counselling_session in counselling_session_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ counselling_session.get_absolute_url }}">
+                                            {{ counselling_session.counselling_session_type }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ counselling_session.get_absolute_url }}">
+                                            {{ counselling_session.patient.identifier }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ counselling_session.get_absolute_url }}">
+                                            {{ counselling_session.date_created }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Type</th>
+                                <th>Patient ID</th>
+                                <th>Session Date</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+
+                <div class="box-footer text-center">
+                    <a href="{% url 'counselling_sessions_session_list' %}" class="uppercase">
+                        View All Counselling Sessions
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Recently Added Enrollments</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <table class="list-table table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Program</th>
+                                <th>Patient ID</th>
+                                <th>Date Enrolled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for enrollment in enrollment_list %}
+                                <tr>
+                                    <td><a href="{{ enrollment.get_absolute_url }}">{{ enrollment.program }}</a></td>
+                                    <td>
+                                        <a href="{{ enrollment.get_absolute_url }}">
+                                            {{ enrollment.patient.identifier }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ enrollment.get_absolute_url }}">{{ enrollment.date_enrolled }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Program</th>
+                                <th>Patient ID</th>
+                                <th>Date Enrolled</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+                <div class="box-footer text-center">
+                    <a href="{% url 'patients_enrollment_list' %}" class="uppercase">View All Enrollments</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Recently Added Patient Outcomes</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <table class="list-table table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Patient ID</th>
+                                <th>Outcome Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for outcome in patient_outcome_list %}
+                                <tr>
+                                    <td><a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_type }}</a></td>
+                                    <td>
+                                        <a href="{{ outcome.get_absolute_url }}">{{ outcome.patient.identifier }}</a>
+                                    </td>
+                                    <td><a href="{{ outcome.get_absolute_url }}">{{ outcome.outcome_date }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Category</th>
+                                <th>Patient ID</th>
+                                <th>Outcome Date</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+                <div class="box-footer text-center">
+                    <a href="{% url 'patients_outcome_list' %}" class="uppercase">View All Patient Outcomes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- DataTables -->
+    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $(".list-table").DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false
+            });
+        });
+    </script>
 {% endblock %}

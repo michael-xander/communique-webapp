@@ -4,13 +4,40 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+import datetime
+
 from notifications.models import Notification
 
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
                               CommuniqueTemplateView, CommuniqueDeleteView, CommuniqueFormView)
 from .forms import (CommuniqueUserCreationForm, ProfileUpdateForm, NotificationRegistrationForm)
 from .models import CommuniqueUser, Profile, NotificationRegistration
+from counselling_sessions.models import CounsellingSession
+from patients.models import Enrollment, Outcome
 from occasions.models import Event
+from appointments.models import Appointment
+
+
+class DashboardView(CommuniqueTemplateView):
+    """
+    A view that displays the dashboard
+    """
+    template_name = 'dashboard_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        context['counselling_session_list'] = CounsellingSession.objects.order_by('date_created')[:5]
+        context['enrollment_list'] = Enrollment.objects.order_by('date_created')[:5]
+        context['patient_outcome_list'] = Outcome.objects.order_by('date_created')[:5]
+
+        # the first and last date of the week
+        today = datetime.date.today()
+        start_date = today - datetime.timedelta(days=today.weekday())
+        end_date = start_date + datetime.timedelta(days=6)
+
+        context['appointment_list'] = Appointment.objects.filter(appointment_date__range=[start_date, end_date])
+        context['event_list'] = Event.objects.filter(event_date__range=[start_date, end_date])
+        return context
 
 
 class CommuniqueUserListView(CommuniqueListView):
