@@ -235,7 +235,7 @@ class NotificationSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Notification
-        fields = ('id', 'recipient', 'unread','action_object_object_id', 'verb', 'description', 'timestamp' )
+        fields = ('id', 'recipient','actor_object_id', 'unread','action_object_object_id', 'verb', 'description', 'timestamp' )
         
         
 class NotificationRegistrationSerializer(serializers.ModelSerializer):
