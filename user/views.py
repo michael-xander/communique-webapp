@@ -56,12 +56,19 @@ class CommuniqueUserSetPasswordView(CommuniqueFormView):
         user = User.objects.get(pk=int(self.kwargs['pk']))
         return user
 
-    def get_form(self, form_class=None):
-        return SetPasswordForm(self.get_communique_user())
+    def get_form_kwargs(self):
+        kwargs = super(CommuniqueUserSetPasswordView, self).get_form_kwargs()
+        kwargs['user'] = self.get_communique_user()
+        return kwargs
 
     def get_success_url(self):
         # return the user view
         return reverse('user_communique_user_detail', kwargs={'pk':self.get_communique_user().pk})
+
+    def get_context_data(self, **kwargs):
+        context = super(CommuniqueUserSetPasswordView, self).get_context_data(**kwargs)
+        context['communique_user'] = self.get_communique_user()
+        return context
 
     def form_valid(self, form):
         # save the user's new password if the form is valid
