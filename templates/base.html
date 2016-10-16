@@ -483,6 +483,8 @@
                 $("#notification-counter").text("You have " + data.unread_list.length + " notifications");
             }
 
+            $(".notification-count").text(data.unread_list.length);
+
             $("#notification-list").empty();
             for (var i=0; i < data.unread_list.length; i++) {
                 var unread_ntf = data.unread_list[i];
