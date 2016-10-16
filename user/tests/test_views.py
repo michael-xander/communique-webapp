@@ -112,25 +112,6 @@ class CommuniqueUserDetailViewTestCase(CommuniqueUserViewsTestCase):
         self.context_object_test(self.view_url, self.view_context_object_name)
 
 
-class CommuniqueUserUpdateViewTestCase(CommuniqueUserViewsTestCase):
-    """
-    Test cases for the view to update user active and superuser status.
-    """
-    view_name = 'user_communique_user_update'
-    view_template_name = 'user/communique_user_update_form.html'
-    view_context_object_name = 'communique_user'
-    view_url = reverse(view_name, kwargs={'pk':1})
-
-    def test_template(self):
-        self.template_test(self.view_url, self.view_template_name)
-
-    def test_context_object(self):
-        self.context_object_test(self.view_url, self.view_context_object_name)
-
-    def test_only_superuser_access(self):
-        self.only_superuser_access_test(self.view_url, self.view_template_name)
-
-
 """
 Test cases for the views handling the Profile model.
 """

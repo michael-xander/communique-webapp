@@ -3,10 +3,10 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 
 
-from .views import (CommuniqueUserListView, CommuniqueUserCreateView, CommuniqueUserDetailView, CommuniqueUserUpdateView,
-                    ProfileDetailView, ProfileUpdateView, CalendarView, ProfileNotificationListView,
-                    NotificationRegistrationDeleteView, NotificationRegistrationCreateView,
-                    CommuniqueUserSetPasswordView)
+from .views import (CommuniqueUserListView, CommuniqueUserCreateView, CommuniqueUserDetailView, ProfileDetailView,
+                    ProfileUpdateView, CalendarView, ProfileNotificationListView, NotificationRegistrationDeleteView,
+                    NotificationRegistrationCreateView, CommuniqueUserSetPasswordView,
+                    CommuniqueUserEditActiveUserStatusView, CommuniqueUserEditSuperUserStatusView)
 
 urlpatterns = [
     # urls for logging in and out
@@ -20,8 +20,10 @@ urlpatterns = [
     url(r'^communique-users/(?P<pk>[0-9]+)/$', CommuniqueUserDetailView.as_view(), name='user_communique_user_detail'),
     url(r'^communique-users/(?P<pk>[0-9]+)/set-password/$', CommuniqueUserSetPasswordView.as_view(),
         name='user_communique_user_set_password'),
-    url(r'^communique-users/(?P<pk>[0-9]+)/update/$', CommuniqueUserUpdateView.as_view(),
-        name='user_communique_user_update'),
+    url(r'^communique-users/(?P<pk>[0-9]+)/edit-active-status/$', CommuniqueUserEditActiveUserStatusView.as_view(),
+        name='user_communique_user_update_active_status'),
+    url(r'^communique-users/(?P<pk>[0-9]+)/edit-superuser-status/$', CommuniqueUserEditSuperUserStatusView.as_view(),
+        name='user_communique_user_update_superuser_status'),
     # urls to view and update user profile
     url(r'^profile/(?P<pk>[0-9]+)/$', ProfileDetailView.as_view(), name='user_profile_detail'),
     url(r'^profile/(?P<pk>[0-9]+)/update/$', ProfileUpdateView.as_view(), name='user_profile_update'),
