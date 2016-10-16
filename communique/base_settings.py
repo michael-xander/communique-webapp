@@ -36,7 +36,12 @@ INSTALLED_APPS = [
     'regimens',
     'adverse',
     'notifications',
+    'fcm_django',
 ]
+
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "AIzaSyBI2HmSj0ir_h4XFzOQlW99M1YRVdOU41s"
+}
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',

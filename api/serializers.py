@@ -10,6 +10,7 @@ from programs.models import Program
 from patients.models import Patient, Enrollment, OutcomeType, Outcome
 from regimens.models import Drug, Regimen
 from user.models import CommuniqueUser, Profile
+from notifications.models import Notification
 
 
 class ProgramSerializer(serializers.ModelSerializer):
@@ -226,3 +227,12 @@ class OutcomeSerializer(serializers.ModelSerializer):
         fields = ('id', 'patient', 'outcome_type', 'outcome_date', 'notes', 'date_created', 'date_last_modified',
                   'created_by', 'last_modified_by')
         read_only_fields = ('date_created', 'date_last_modified')
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    """
+    A serializer for the Outcome model.
+    """
+    class Meta:
+        model = Notification
+        fields = ('id', 'unread','action_object_object_id', 'verb', 'description', 'timestamp' )
