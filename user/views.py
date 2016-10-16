@@ -6,7 +6,8 @@ from notifications.models import Notification
 
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
                               CommuniqueTemplateView, CommuniqueDeleteView, CommuniqueFormView)
-from .forms import CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm, NotificationRegistrationForm
+from .forms import (CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm,
+                    NotificationRegistrationForm, CommuniqueUserSetPasswordForm)
 from .models import CommuniqueUser, Profile, NotificationRegistration
 from occasions.models import Event
 
@@ -41,6 +42,38 @@ class CommuniqueUserCreateView(CommuniqueCreateView):
         """
         current_user = self.request.user
         return current_user.is_superuser and current_user.is_active
+
+
+class CommuniqueUserSetPasswordView(CommuniqueFormView):
+    """
+    A view to set the password of a user.
+    """
+    form_class = CommuniqueUserSetPasswordForm
+    template_name = 'user/communique_user_set_password_form.html'
+
+    def get_communique_user(self):
+        user = CommuniqueUser.objects.get(pk=int(self.kwargs['pk']))
+        return user
+
+    def get_form(self, form_class=None):
+        return CommuniqueUserSetPasswordForm(self.get_communique_user())
+
+    def get_success_url(self):
+        # return the user view
+        return reverse('user_communique_user_detail', kwargs={'pk':self.get_communique_user().pk})
+
+    def form_valid(self, form):
+        # save the user's new password if the form is valid
+        form.save()
+        return super(CommuniqueUserSetPasswordView, self).form_valid(form)
+
+    def test_func(self):
+        """
+        Checks whether the user making the request is a superuser and is active
+        :return: false if checks fail, true otherwise
+        """
+        current_user = self.request.user
+        return current_user.is_active and current_user.is_superuser
 
 
 class CommuniqueUserDetailView(CommuniqueDetailView):

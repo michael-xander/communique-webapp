@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django import forms
 from django.forms import ModelForm
 
@@ -30,6 +30,15 @@ class CommuniqueUserCreationForm(UserCreationForm):
             raise forms.ValidationError('The user must have a last name', code='invalid')
 
         return last_name
+
+
+class CommuniqueUserSetPasswordForm(SetPasswordForm):
+    """
+    A form used to update the password of a user without requesting for the current password
+    """
+    class Meta (SetPasswordForm.Meta):
+        model = CommuniqueUser
+        fields = SetPasswordForm.Meta.fields
 
 
 class CommuniqueUserUpdateForm(ModelForm):
