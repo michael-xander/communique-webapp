@@ -5,7 +5,8 @@ from django.views.generic import RedirectView
 
 from .views import (CommuniqueUserListView, CommuniqueUserCreateView, CommuniqueUserDetailView, CommuniqueUserUpdateView,
                     ProfileDetailView, ProfileUpdateView, CalendarView, ProfileNotificationListView,
-                    NotificationRegistrationDeleteView, NotificationRegistrationCreateView)
+                    NotificationRegistrationDeleteView, NotificationRegistrationCreateView,
+                    CommuniqueUserSetPasswordView)
 
 urlpatterns = [
     # urls for logging in and out
@@ -13,22 +14,12 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'template_name':'user/login.html'}, name='user_login'),
     url(r'^logout/$', auth_views.logout, {'template_name':'user/logout.html', 'next_page':'/user/login/'},
         name='user_logout'),
-    # urls for resetting a user's password
-    url(r'^password-reset/$', auth_views.password_reset, {'template_name':'user/password_reset_form.html',
-                                                          'email_template_name':'user/password_reset_email.html',
-                                                          'post_reset_redirect':'/user/password-reset/done/'},
-        name='password_reset'),
-    url(r'^password-reset/done/$', auth_views.password_reset_done, {'template_name':'user/password_reset_done.html'},
-        name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        auth_views.password_reset_confirm, {'template_name':'user/password_reset_confirm.html',
-                                            'post_reset_redirect':'/user/reset/done/'}, name='password_reset_confirm'),
-    url(r'^reset/done/$', auth_views.password_reset_complete, {'template_name':'user/password_reset_complete.html'},
-        name='password_reset_complete'),
     # urls to CRUD Communique users
     url(r'^communique-users/$', CommuniqueUserListView.as_view(), name='user_communique_user_list'),
     url(r'^communique-users/create/$', CommuniqueUserCreateView.as_view(), name='user_communique_user_create'),
     url(r'^communique-users/(?P<pk>[0-9]+)/$', CommuniqueUserDetailView.as_view(), name='user_communique_user_detail'),
+    url(r'^communique-users/(?P<pk>[0-9]+)/set-password/$', CommuniqueUserSetPasswordView.as_view(),
+        name='user_communique_user_set_password'),
     url(r'^communique-users/(?P<pk>[0-9]+)/update/$', CommuniqueUserUpdateView.as_view(),
         name='user_communique_user_update'),
     # urls to view and update user profile
