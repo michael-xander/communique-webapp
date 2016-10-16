@@ -69,7 +69,7 @@ class ProgramDeleteViewTestCase(ExistingProgramViewsTestCase):
     """
     view_template_name = 'programs/program_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         program = Program.objects.get(id=1)
-        self.only_active_user_access_test(program.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(program.get_delete_url(), self.view_template_name)
 

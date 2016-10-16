@@ -1,12 +1,14 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 
-import csv
+import datetime
 
 from .models import EmergencyContact, AdverseEvent, AdverseEventType
 from communique.views import (CommuniqueCreateView, CommuniqueDetailView, CommuniqueListView, CommuniqueUpdateView,
-                              CommuniqueDeleteView, CommuniqueExportFormView, CommuniqueExportListView)
+                              CommuniqueDeleteView, CommuniqueExportFormView, CommuniqueExportListView,
+                              DATE_FORMAT_STR, DATE_FORMAT, CommuniqueListAndExportView, CommuniqueDetailAndExportView)
 from .forms import AdverseEventForm
+from .utils.utils_views import write_adverse_events_to_csv
 
 
 class EmergencyContactListView(CommuniqueListView):
@@ -74,13 +76,24 @@ class AdverseEventTypeCreateView(CommuniqueCreateView):
     template_name = 'adverse/adverse_event_type_form.html'
 
 
-class AdverseEventTypeDetailView(CommuniqueDetailView):
+class AdverseEventTypeDetailView(CommuniqueDetailAndExportView):
     """
     A view to display the details of an adverse event type
     """
     model = AdverseEventType
     template_name = 'adverse/adverse_event_type_view.html'
     context_object_name = 'adverse_event_type'
+
+    def csv_export_response(self, context):
+        # generate csv for exportation
+        today = datetime.date.today()
+        event_type = context[self.context_object_name]
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="{0}_adverse_events_{1}.csv"'.format(
+            event_type, today.strftime(DATE_FORMAT))
+        write_adverse_events_to_csv(response, event_type.adverse_events.all(), DATE_FORMAT, DATE_FORMAT_STR)
+
+        return response
 
 
 class AdverseEventTypeUpdateView(CommuniqueUpdateView):
@@ -103,13 +116,24 @@ class AdverseEventTypeDeleteView(CommuniqueDeleteView):
     template_name = 'adverse/adverse_event_type_confirm_delete.html'
 
 
-class AdverseEventListView(CommuniqueListView):
+class AdverseEventListView(CommuniqueListAndExportView):
     """
     A view to list all the adverse events
     """
     model = AdverseEvent
     template_name = 'adverse/adverse_event_list.html'
     context_object_name = 'adverse_event_list'
+
+    def csv_export_response(self, context):
+        # generate a csv file for download
+        today = datetime.date.today()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="all_adverse_events_{0}.csv"'.format(
+            today.strftime(DATE_FORMAT))
+
+        write_adverse_events_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
+
+        return response
 
 
 class AdverseEventCreateView(CommuniqueCreateView):
@@ -173,29 +197,16 @@ class AdverseEventExportListView(CommuniqueExportListView):
         # get all the adverse events created during the provided range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        adverse_events = AdverseEvent.objects.filter(date_created__range=[start_date, end_date])
+        adverse_events = AdverseEvent.objects.filter(date_last_modified__range=[start_date, end_date])
         return adverse_events
 
     def csv_export_response(self, context):
         # generate an HTTP response with the csv file for download
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        date_format = '%d-%m-%Y'
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="adverse_events_{0}_to_{1}.csv"'.format(
-            start_date.strftime(date_format), end_date.strftime(date_format))
+            start_date.strftime(DATE_FORMAT), end_date.strftime(DATE_FORMAT))
 
-        fieldnames = ['event_type', 'patient_id', 'patient_last_name', 'patient_other_names', 'event_date (dd/mm/yyyy)',
-                     'date_added (dd/mm/yyyy)', 'added_by', 'notes']
-        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-        writer.writeheader()
-        for adverse_event in context[self.context_object_name]:
-            adverse_event_type = adverse_event.adverse_event_type
-            patient = adverse_event.patient
-            writer.writerow({'event_type':adverse_event_type.__str__(), 'patient_id':patient.identifier,
-                             'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
-                             'event_date (dd/mm/yyyy)':adverse_event.event_date.strftime(date_format),
-                             'date_added (dd/mm/yyyy)':adverse_event.date_created.strftime(date_format),
-                             'added_by':adverse_event.created_by.get_full_name(), 'notes':adverse_event.notes})
-
+        write_adverse_events_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
         return response

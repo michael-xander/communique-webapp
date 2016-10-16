@@ -21,16 +21,29 @@
     {% if not communique_user.is_active %}
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-info alert-dismissible">
+                <div class="alert alert-warning alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h4><i class="icon fa fa-info"></i> Alert!</h4>
-                    This user's account has been deactivated and therefore cannot access the system.
+                    This user's account has been deactivated and therefore he/she cannot access the system.
                 </div>
             </div>
         </div>
     {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h4><i class="icon fa fa-info"></i> Info</h4>
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="box box-primary">
                 <div class="box-body box-profile">
 
@@ -72,18 +85,57 @@
                             {% endif %}
                         </li>
                     </ul>
-                    <a href="{{ communique_user.get_update_url }}" class="btn btn-primary btn-block"><b>Edit</b></a>
+                    {% if communique_user.is_active %}
+                        <a class="btn btn-success">Deactivate</a>
+                    {% else %}
+                        <a class="btn btn-success">Activate</a>
+                    {% endif %}
+
+                    {% if communique_user.is_superuser %}
+                        <a class="btn btn-warning">Remove Superuser Status</a>
+                    {% else %}
+                        <a class="btn btn-warning">Add Superuser Status</a>
+                    {% endif %}
+
+                    <a href="{% url 'user_communique_user_set_password' pk=communique_user.pk %}" class="btn btn-danger">
+                        Reset Password
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-7">
             <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">User Activities</h3>
+                <div class="box-header">
+                    <i class="ion ion-clipboard"></i>
+
+                    <h3 class="box-title">Notification Registrations</h3>
                 </div>
 
                 <div class="box-body">
+                    <p>Services for which this user has registered to receive notifications:</p>
+                    <ul class="todo-list">
+                        {% with registrations=communique_user.notification_registrations.all %}
+                            {% for registration in registrations %}
+                                <li>
+                                    <span class="handle">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
+
+                                    <span class="text">{{ registration }}</span>
+                                </li>
+                            {% empty %}
+                                <p class="text-red">
+                                    <b>
+                                        This user is currently not registered to receive notifications for any services.
+                                        To register for notifications, the user should go to his/her profile page for
+                                        details.
+                                    </b>
+                                </p>
+                            {% endfor %}
+                        {% endwith %}
+                    </ul>
                 </div>
             </div>
         </div>

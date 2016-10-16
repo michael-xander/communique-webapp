@@ -49,9 +49,11 @@
                    <a href="{{ counselling_session_type.get_update_url }}" class="btn btn-primary">
                        <b>Edit</b>
                    </a>
-                   <a href="{{ counselling_session_type.get_delete_url }}" class="btn btn-danger">
-                       <b>Delete</b>
-                   </a>
+                   {% if user.is_superuser %}
+                       <a href="{{ counselling_session_type.get_delete_url }}" class="btn btn-danger">
+                           <b>Delete</b>
+                       </a>
+                   {% endif %}
                </div>
            </div>
             <div class="box box-primary">
@@ -123,6 +125,16 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div class="box-footer">
+                    <!-- if the session type has any sessions, enable the export all button -->
+                    {% if counselling_session_type.counselling_sessions.all %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

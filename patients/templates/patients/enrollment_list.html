@@ -68,7 +68,15 @@
                 </div>
                 <div class="box-footer">
                     <a class="btn btn-primary" href="{% url 'patients_enrollment_create' %}">Add Enrollment</a>
-                    <a class="btn btn-success" href="{% url 'patients_enrollment_export_form' %}">Export Enrollments</a>
+                    <a class="btn btn-success" href="{% url 'patients_enrollment_export_form' %}">Filter Exports</a>
+                    <!-- if there is a list of enrollments, make the export all button active -->
+                    {% if enrollment_list %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

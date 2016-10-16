@@ -46,9 +46,9 @@
                 <form role="form" action="{% url 'counselling_sessions_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        This search looks for sessions that were created/added to the system on a date that lies in the range starting
-                        from the start date and ending at the end date that you'll pick below with both dates being
-                        included in the range.
+                        This search looks for sessions that were added/modified in the system on a date that lies in the
+                        range starting from the start date and ending at the end date that you'll pick below with both
+                        dates being included in the range.
                         {% for field in form %}
                             <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
                                 {{ field.label_tag }}
@@ -91,8 +91,8 @@
                                 <th>Patient ID</th>
                                 <th>Patient Names</th>
                                 <th>Session Type</th>
-                                <th>Created By</th>
-                                <th>Date Created</th>
+                                <th>Modified By</th>
+                                <th>Last Modified Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -115,12 +115,12 @@
                                     </td>
                                     <td>
                                         <a href="{{ counselling_session.get_absolute_url }}">
-                                            {{ counselling_session.created_by.get_full_name }}
+                                            {{ counselling_session.last_modified_by.get_full_name }}
                                         </a>
                                     </td>
                                     <td>
                                         <a href="{{ counselling_session.get_absolute_url }}">
-                                            {{ counselling_session.date_created }}
+                                            {{ counselling_session.date_last_modified }}
                                         </a>
                                     </td>
                                 </tr>
@@ -131,8 +131,8 @@
                                 <th>Patient ID</th>
                                 <th>Patient Names</th>
                                 <th>Session Type</th>
-                                <th>Created By</th>
-                                <th>Date Created</th>
+                                <th>Modified By</th>
+                                <th>Last Modified Date</th>
                             </tr>
                         </tfoot>
                     </table>

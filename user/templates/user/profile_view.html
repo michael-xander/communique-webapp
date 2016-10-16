@@ -1,14 +1,9 @@
 {% extends parent_template|default:"base.html" %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | User Profile
 {% endblock %}
 
-{% block head %}
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
-{% endblock %}
 
 {% block page_heading %}
     User Profile
@@ -67,41 +62,56 @@
                         </li>
                     </ul>
                     <a href="{{ user_profile.get_update_url }}" class="btn btn-primary"><b>Edit Details</b></a>
-                    <a href="{% url 'password_change' %}" class="btn btn-warning pull-right"><b>Update Password</b></a>
+                    <a href="{% url 'password_change' %}" class="btn btn-warning"><b>Update Password</b></a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-7">
             <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Recent Activity</h3>
-                </div>
+                <div class="box-header">
+                    <i class="ion ion-clipboard"></i>
 
+                    <h3 class="box-title">Notification Registrations</h3>
+                </div>
                 <div class="box-body">
-                </div>
+                    <p>Services for which you have registered to receive notifications</p>
+                    <ul class="todo-list">
+                        {% with registrations=user_profile.notification_registrations.all %}
+                            {% for registration in registrations %}
+                                <li>
+                                    <span class="handle">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
 
+                                    <span class="text">{{ registration }}</span>
+
+                                    <div class="tools">
+                                        <a href="{{ registration.get_delete_url }}" class="text-red">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            {% empty %}
+                                <p class="text-red">
+                                    <b>
+                                        You currently haven't registered to receive notifications for any services.
+                                        Click the register button below to select services for which you would like to
+                                        receive notifications.
+                                    </b>
+                                </p>
+                            {% endfor %}
+                        {% endwith %}
+                    </ul>
+                </div>
+                <div class="box-footer clearfix no-border">
+                    <a href="{% url 'user_notification_registration_create' %}" class="btn btn-default pull-right">
+                        <i class="fa fa-plus"></i> Register
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 
-{% block scripts %}
-    <!-- DataTables -->
-    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
-    <!-- page script -->
-    <script>
-        $(function () {
-            $("#example1").DataTable();
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
-        });
-    </script>
-{% endblock %}

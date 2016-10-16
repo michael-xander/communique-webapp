@@ -33,7 +33,7 @@ class AdmissionListViewTestCase(ViewsTestCase):
 
 class AdmissionsExportFormViewTestCase(ViewsTestCase):
     """
-    Test cases for the view that displats the export form
+    Test cases for the view that displays the export form
     """
     view_name = 'admissions_admission_export_form'
     view_template_name = 'admissions/admission_export_list.html'
@@ -98,6 +98,6 @@ class AdmissionDeleteViewTestCase(ExistingAdmissionViewTestCase):
     """
     view_template_name = 'admissions/admission_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         admission = Admission.objects.get(id=1)
-        self.only_active_user_access_test(admission.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(admission.get_delete_url(), self.view_template_name)

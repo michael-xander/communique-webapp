@@ -11,19 +11,21 @@ class Drug(models.Model):
     """
     name = models.CharField(verbose_name='Drug name', unique=True, max_length=100,
                             help_text='The unique name of the drug')
-    description = models.TextField(verbose_name='Description', help_text='Information about the drug')
+    description = models.TextField(verbose_name='Description', blank=True, null=True,
+                                   help_text='Information about the drug. This field is optional')
 
     date_created = models.DateField(auto_now_add=True, help_text='The date the drug was added to the system')
-    date_last_modified = models.DateField(auto_now=True, help_text='The most recent date any of the information of this'
-                                                                   ' drug was last modified')
+    date_last_modified = models.DateField(auto_now=True,
+                                          help_text='The most recent date any of the information of this drug was last '
+                                                    'modified')
 
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='created_drugs',
-                                  related_query_name='created_drug', help_text='The user that added this drug to the '
-                                                                               'system')
+                                  related_query_name='created_drug',
+                                   help_text='The user that added this drug to the system')
     last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
                                          related_name='modified_drugs', related_query_name='modified_drug',
-                                         help_text='The user that made the most recent modification to any of the fields'
-                                                   ' of this drug')
+                                         help_text='The user that made the most recent modification to any of the '
+                                                   'fields of this drug')
 
     def save(self, *args, **kwargs):
         # store the name of the drug in lower case
@@ -49,17 +51,16 @@ class Regimen(models.Model):
     """
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='regimens', related_query_name='regimen'
                                 , help_text='The patient undertaking this regimen')
-    notes = models.TextField(verbose_name='Notes', help_text='Any notes to be made on this regimen')
+    notes = models.TextField(verbose_name='Notes', blank=True, null=True,
+                             help_text='Any notes to be made on this regimen. This field is optional')
     drugs = models.ManyToManyField(Drug, related_name='regimens', related_query_name='regimen')
-    date_started = models.DateField(verbose_name='Regimen start date', help_text='The date the patient started this '
-                                                                                 'regimen')
-    date_ended = models.DateField(verbose_name='Regimen end date', blank=True, null=True, help_text='The date the '
-                                                                                                    'patient stopped '
-                                                                                                    'this regimen. This '
-                                                                                                    'field is optional')
+    date_started = models.DateField(verbose_name='Regimen start date',
+                                    help_text='The date the patient started this regimen')
+    date_ended = models.DateField(verbose_name='Regimen end date', blank=True, null=True,
+                                  help_text='The date the patient stopped this regimen. This field is optional')
     date_created = models.DateField(auto_now_add=True, help_text='The date the regimen was added to the system')
-    date_last_modified = models.DateField(auto_now=True, help_text='The date details of this regimen were most recently '
-                                                                   'updated')
+    date_last_modified = models.DateField(auto_now=True,
+                                          help_text='The date details of this regimen were most recently updated')
 
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
                                    related_name='created_regimens', related_query_name='created_regimen',

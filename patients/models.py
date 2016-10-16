@@ -101,7 +101,7 @@ class Enrollment(models.Model):
     date_enrolled = models.DateField(verbose_name='Enrollment date',
                                      help_text='The date the patient was enrolled into the program.')
     comment = models.TextField(verbose_name='comment', blank=True, null=True,
-                               help_text='A comment on the enrollment')
+                               help_text='A comment on the enrollment. This field is optional')
 
     date_created = models.DateField(auto_now_add=True, help_text='The date that this enrollment was added to the system')
     date_last_modified = models.DateField(auto_now=True,
@@ -131,7 +131,8 @@ class OutcomeType(models.Model):
     """
     name = models.CharField(verbose_name='Patient outcome name', unique=True, max_length=100,
                             help_text='The unique name for the patient outcome category')
-    description = models.TextField(verbose_name='Description', help_text='Definition of this patient outcome')
+    description = models.TextField(verbose_name='Description', blank=True, null=True,
+                                   help_text='Definition of this patient outcome. This patient is optional')
 
     date_created = models.DateField(auto_now_add=True,
                                     help_text='The date this patient outcome type was added to the system')

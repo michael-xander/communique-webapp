@@ -38,9 +38,9 @@
                 <form role="form" action="{% url 'admissions_admission_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        This search looks for patient admissions that were created/added to the system on a date that
-                        lies in the range starting from the start date and ending at the end date that you'll pick below
-                        with both dates being included in the range.
+                        This search looks for patient admissions that were added or modified in the system on a date
+                        that lies in the range starting from the start date and ending at the end date that you'll pick
+                        below with both dates being included in the range.
                         {% for field in form %}
                             <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
                                 {{ field.label_tag }}
@@ -85,8 +85,8 @@
                                 <th>Patient Name</th>
                                 <th>Admission Date</th>
                                 <th>Discharge Date</th>
-                                <th>Added By</th>
-                                <th>Added On</th>
+                                <th>Last Modified By</th>
+                                <th>Last Modified On</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -116,15 +116,17 @@
                                     </td>
                                     <td>
                                         <a href="{{ admission.get_absolute_url }}">
-                                            {% if admission.created_by %}
-                                                {{ admission.created_by.get_full_name }}
+                                            {% if admission.last_modified_by %}
+                                                {{ admission.last_modified_by.get_full_name }}
                                             {% else %}
                                                 Unavailable
                                             {% endif %}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ admission.get_absolute_url }}">{{ admission.date_created }}</a>
+                                        <a href="{{ admission.get_absolute_url }}">
+                                            {{ admission.date_last_modified }}
+                                        </a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -135,8 +137,8 @@
                                 <th>Patient Name</th>
                                 <th>Admission Date</th>
                                 <th>Discharge Date</th>
-                                <th>Added By</th>
-                                <th>Added On</th>
+                                <th>Last Modified By</th>
+                                <th>Last Modified On</th>
                             </tr>
                         </tfoot>
                     </table>

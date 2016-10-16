@@ -1,0 +1,41 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} | Deregister Service Notifications
+{% endblock %}
+
+{% block page_heading %}
+    Deregister Service Notifications
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active"><i class="fa fa-edit"></i> Deregister Service Notifications</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-danger box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Service Notifications Deregistration Confirmation</h3>
+                </div>
+                <form role="form" action="{{ notification_registration.get_delete_url }}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        Are you sure that you want to deregister from receiving notifications on the
+                        {{ notification_registration.get_service_display }} services? You'll no longer receive
+                        notifications for any changes within the service
+                    </div>
+                    <div class="box-footer">
+                        <a href="{% url 'user_profile_detail' pk=user.pk %}" class="btn btn-warning">Cancel</a>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

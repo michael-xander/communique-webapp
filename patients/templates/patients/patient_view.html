@@ -108,7 +108,9 @@
 
                     {% if patient.archived %}
                         <a href="{{ patient.get_unarchive_url }}" class="btn btn-warning"><b>Unarchive</b></a>
-                        <a href="{{ patient.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                        {% if user.is_superuser %}
+                            <a href="{{ patient.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                        {% endif %}
                     {% else %}
                         <a href="{{ patient.get_archive_url }}" class="btn btn-warning"><b>Archive</b></a>
                     {% endif %}
