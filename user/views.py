@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import SetPasswordForm
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -7,7 +8,7 @@ from notifications.models import Notification
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
                               CommuniqueTemplateView, CommuniqueDeleteView, CommuniqueFormView)
 from .forms import (CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm,
-                    NotificationRegistrationForm, CommuniqueUserSetPasswordForm)
+                    NotificationRegistrationForm)
 from .models import CommuniqueUser, Profile, NotificationRegistration
 from occasions.models import Event
 
@@ -48,15 +49,15 @@ class CommuniqueUserSetPasswordView(CommuniqueFormView):
     """
     A view to set the password of a user.
     """
-    form_class = CommuniqueUserSetPasswordForm
+    form_class = SetPasswordForm
     template_name = 'user/communique_user_set_password_form.html'
 
     def get_communique_user(self):
-        user = CommuniqueUser.objects.get(pk=int(self.kwargs['pk']))
+        user = User.objects.get(pk=int(self.kwargs['pk']))
         return user
 
     def get_form(self, form_class=None):
-        return CommuniqueUserSetPasswordForm(self.get_communique_user())
+        return SetPasswordForm(self.get_communique_user())
 
     def get_success_url(self):
         # return the user view
