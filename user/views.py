@@ -4,14 +4,40 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+import datetime
+
 from notifications.models import Notification
 
 from communique.views import (CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView, CommuniqueCreateView,
                               CommuniqueTemplateView, CommuniqueDeleteView, CommuniqueFormView)
-from .forms import (CommuniqueUserCreationForm, CommuniqueUserUpdateForm, ProfileUpdateForm,
-                    NotificationRegistrationForm)
+from .forms import (CommuniqueUserCreationForm, ProfileUpdateForm, NotificationRegistrationForm)
 from .models import CommuniqueUser, Profile, NotificationRegistration
+from counselling_sessions.models import CounsellingSession
+from patients.models import Enrollment, Outcome
 from occasions.models import Event
+from appointments.models import Appointment
+
+
+class DashboardView(CommuniqueTemplateView):
+    """
+    A view that displays the dashboard
+    """
+    template_name = 'dashboard_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        context['counselling_session_list'] = CounsellingSession.objects.order_by('date_created')[:5]
+        context['enrollment_list'] = Enrollment.objects.order_by('date_created')[:5]
+        context['patient_outcome_list'] = Outcome.objects.order_by('date_created')[:5]
+
+        # the first and last date of the week
+        today = datetime.date.today()
+        start_date = today - datetime.timedelta(days=today.weekday())
+        end_date = start_date + datetime.timedelta(days=6)
+
+        context['appointment_list'] = Appointment.objects.filter(appointment_date__range=[start_date, end_date])
+        context['event_list'] = Event.objects.filter(event_date__range=[start_date, end_date])
+        return context
 
 
 class CommuniqueUserListView(CommuniqueListView):
@@ -102,18 +128,59 @@ class CommuniqueUserDetailView(CommuniqueDetailView):
         return current_user.is_active and current_user.is_superuser
 
 
-class CommuniqueUserUpdateView(CommuniqueUpdateView):
+class CommuniqueUserEditSuperUserStatusView(CommuniqueUpdateView):
     """
-    A view to update the information for a user.
+    A view to edit the superuser status of a user
     """
-    form_class = CommuniqueUserUpdateForm
     model = CommuniqueUser
-    template_name = 'user/communique_user_update_form.html'
+    fields = []
     context_object_name = 'communique_user'
+    template_name = 'user/communique_user_confirm_edit_superuser_status.html'
+
+    def form_valid(self, form):
+        # if the user is a superuser then demote to staff otherwise make the user into a superuser
+
+        communique_user = self.get_object()
+
+        if communique_user.is_superuser:
+            form.instance.is_superuser = False
+        else:
+            form.instance.is_superuser = True
+
+        return super(CommuniqueUserEditSuperUserStatusView, self).form_valid(form)
 
     def test_func(self):
         """
-        Returns whether the user making the request is a superuser.
+        Checks whether the user making the request is a superuser
+        :return: True if user is superuser, false otherwise
+        """
+        return self.request.user.is_superuser
+
+
+class CommuniqueUserEditActiveUserStatusView(CommuniqueUpdateView):
+    """
+    A view to edit the active status of a user
+    """
+    model = CommuniqueUser
+    fields = []
+    context_object_name = 'communique_user'
+    template_name = 'user/communique_user_confirm_edit_active_status.html'
+
+    def form_valid(self, form):
+        # if the user is active then mark them as inactive otherwise mark them active
+        communique_user = self.get_object()
+
+        if communique_user.is_active:
+            form.instance.is_active = False
+        else:
+            form.instance.is_active = True
+
+        return super(CommuniqueUserEditActiveUserStatusView, self).form_valid(form)
+
+    def test_func(self):
+        """
+        Checks whether the user making the request is a superuser
+        :return: True if user is superuser, false otherwise
         """
         return self.request.user.is_superuser
 

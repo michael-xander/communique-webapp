@@ -85,17 +85,21 @@
                             {% endif %}
                         </li>
                     </ul>
-                    {% if communique_user.is_active %}
-                        <a class="btn btn-success">Deactivate</a>
-                    {% else %}
-                        <a class="btn btn-success">Activate</a>
-                    {% endif %}
+                    <a class="btn btn-success" href="{% url 'user_communique_user_update_active_status' pk=communique_user.pk %}">
+                        {% if communique_user.is_active %}
+                            Deactivate
+                        {% else %}
+                            Activate
+                        {% endif %}
+                    </a>
 
-                    {% if communique_user.is_superuser %}
-                        <a class="btn btn-warning">Remove Superuser Status</a>
-                    {% else %}
-                        <a class="btn btn-warning">Add Superuser Status</a>
-                    {% endif %}
+                    <a class="btn btn-warning" href="{% url 'user_communique_user_update_superuser_status' pk=communique_user.pk %}">
+                        {% if communique_user.is_superuser %}
+                            Remove Superuser Status
+                        {% else %}
+                            Add Superuser Status
+                        {% endif %}
+                    </a>
 
                     <a href="{% url 'user_communique_user_set_password' pk=communique_user.pk %}" class="btn btn-danger">
                         Reset Password

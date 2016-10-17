@@ -1,0 +1,56 @@
+{% extends parent_template|default:"user/base_user.html" %}
+
+{% block title %}
+  {{ block.super }} | Superuser Status
+{% endblock %}
+
+{% block page_heading %}
+  Superuser status for {{ communique_user.get_full_name }}
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+  <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+  <li><a href="{% url 'user_communique_user_list' %}"><i class="fa fa-users"></i> Communiqué Users</a></li>
+  <li class="active"><i class="fa fa-edit"></i> Edit Superuser Status</li>
+{% endblock %}
+
+{% block page_content %}
+    {% include 'form_errors.html' with class='col-md-12' %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-danger box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        {% if communique_user.is_superuser %}
+                            Remove Superuser Status
+                        {% else %}
+                            Add Superuser Status
+                        {% endif %}
+                    </h3>
+                </div>
+                <form role="form" action="{% url 'user_communique_user_update_superuser_status' pk=communique_user.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        {% if communique_user.is_superuser %}
+                            Are you sure that you want to remove the superuser status from {{ communique_user.get_full_name }}?
+                            If removed, {{ communique_user.get_full_name }} will not be able to add or modify the details
+                            of any other users.
+                        {% else %}
+                            Are you sure that you want to add superuser status to {{ communique_user.get_full_name }}?
+                            If added, {{ communique_user.get_full_name }} will be able to add or modify the details of
+                            any other users.
+                        {% endif %}
+                    </div>
+                    <div class="box-footer">
+                        <a href="{{ communique_user.get_absolute_url }}" class="btn btn-success">Cancel</a>
+                        <button type="submit" class="btn btn-warning">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
