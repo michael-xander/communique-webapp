@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from rest_framework.routers import DefaultRouter
-
+from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 from .views import *
 
 # Create a router and register our viewSets with it.
@@ -25,6 +25,9 @@ router.register(r'drug', DrugViewSet)
 router.register(r'regimen', RegimenViewSet)
 router.register(r'outcomeType', OutcomeTypeViewSet)
 router.register(r'outcome', OutcomeViewSet)
+router.register(r'notifications', NotificationViewSet)
+router.register(r'devices', FCMDeviceAuthorizedViewSet)
+router.register(r'notificationRegistration', NotificationRegistrationViewSet)
 
 
 urlpatterns = [

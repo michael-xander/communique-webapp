@@ -9,7 +9,8 @@ class Program(models.Model):
     """
     name = models.CharField(verbose_name="Program name", unique=True, max_length=100,
                             help_text='The unique title for the program')
-    description = models.TextField(verbose_name="Description", help_text='The purpose of the program')
+    description = models.TextField(verbose_name="Description", blank=True, null=True,
+                                   help_text='The purpose of the program. This field is optional')
     date_created = models.DateField(auto_now_add=True, help_text='The date the program was first saved into the system')
     date_last_modified = models.DateField(auto_now=True,
                                           help_text='The most recent date any of the fields of the program was updated')

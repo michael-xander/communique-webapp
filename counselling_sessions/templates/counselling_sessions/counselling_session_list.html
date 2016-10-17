@@ -93,7 +93,15 @@
                 </div>
                 <div class="box-footer">
                     <a class="btn btn-primary" href="{% url 'counselling_sessions_session_create' %}">Add Session</a>
-                    <a class="btn btn-success" href="{% url 'counselling_sessions_export_form' %}">Export sessions</a>
+                    <a class="btn btn-success" href="{% url 'counselling_sessions_export_form' %}">Filter Exports</a>
+                    <!-- if there are counselling sessions, make the export all button active -->
+                    {% if counselling_session_list %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -483,31 +483,48 @@
                 $("#notification-counter").text("You have " + data.unread_list.length + " notifications");
             }
 
+            $(".notification-count").text(data.unread_list.length);
+
             $("#notification-list").empty();
             for (var i=0; i < data.unread_list.length; i++) {
                 var unread_ntf = data.unread_list[i];
                 var msg = unread_ntf.actor + ' ' + unread_ntf.verb + ' ' + unread_ntf.action_object;
 
                 var t = '<i class="fa fa-bell-o text-green"></i>';
-                var obj = JSON.parse(unread_ntf.data)
+                var obj = JSON.parse(unread_ntf.data);
                 switch (obj.entity_name) {
-                    case 'program':
-                        t = '<i class="fa fa-tag text-aqua"></i>';
-                        break;
                     case 'admission':
-                        t = '<i class="fa fa-ambulance text-yellow"></i>';
+                        t = '<i class="fa fa-wheelchair text-yellow"></i>';
+                        break;
+                    case 'adverse event':
+                        t = '<i class="fa fa-ambulance text-aqua"></i>';
                         break;
                     case 'appointment':
                         t = '<i class="fa fa-calendar-plus-o text-red"></i>';
                         break;
-                    case 'event':
-                        t = '<i class="fa fa-calendar-o text-purple"></i>';
+                    case 'counselling session':
+                        t = '<i class="fa fa-plus-square text-purple"></i>';
                         break;
-                    case 'enrollment':
-                        t = '<i class="fa fa-support text-orange"></i>';
+                    case 'medical report':
+                        t = '<i class="fa fa-medkit text-orange"></i>';
+                        break;
+                    case 'event':
+                        t = '<i class="fa fa-calendar-o text-green"></i>';
                         break;
                     case 'patient':
-                        t = '<i class="fa fa-heartbeat text-green"></i>';
+                        t = '<i class="fa fa-heartbeat text-blue"></i>';
+                        break;
+                    case 'patient outcome':
+                        t = '<i class="fa fa-heartbeat text-blue"></i>';
+                        break;
+                    case 'enrollment':
+                        t = '<i class="fa fa-support text-aqua"></i>';
+                        break;
+                    case 'program':
+                        t = '<i class="fa fa-tags text-red"></i>';
+                        break;
+                    case 'regimen':
+                        t = '<i class="fa fa-stethoscope text-purple"></i>';
                         break;
                     default:
                         t = '<i class="fa fa-bell-o text-green"></i>';

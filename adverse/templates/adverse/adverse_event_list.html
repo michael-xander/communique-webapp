@@ -81,7 +81,13 @@
                 </div>
                 <div class="box-footer">
                     <a class="btn btn-primary" href="{% url 'adverse_event_create' %}">Report Adverse Event</a>
-                    <a class="btn btn-success" href="{% url 'adverse_event_export_form' %}">Export Adverse Events</a>
+                    <a class="btn btn-success" href="{% url 'adverse_event_export_form' %}">Filter Exports</a>
+                    <!-- if there are any adverse events, make the export all button available -->
+                    {% if adverse_event_list %}
+                        <a class="btn btn-warning" href="{{ request.path|add:'?export=csv' }}">Export All</a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

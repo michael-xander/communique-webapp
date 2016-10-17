@@ -2,11 +2,11 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 
-import csv
+import datetime
 
 from communique.views import (CommuniqueDeleteView, CommuniqueListView, CommuniqueDetailView, CommuniqueUpdateView,
                               CommuniqueCreateView, CommuniqueFormView, CommuniqueExportFormView,
-                              CommuniqueExportListView)
+                              CommuniqueExportListView, CommuniqueListAndExportView, DATE_FORMAT, DATE_FORMAT_STR)
 from .models import Patient, Enrollment, Outcome, OutcomeType
 from counselling_sessions.models import CounsellingSession
 from appointments.models import Appointment
@@ -16,7 +16,7 @@ from admissions.models import Admission
 from admissions.forms import AdmissionUpdateForm
 from regimens.models import Regimen
 from adverse.models import AdverseEvent
-from patients.utils.utils_views import import_patients_from_file
+from patients.utils.utils_views import import_patients_from_file, write_enrollments_to_csv, write_outcomes_to_csv
 
 
 class PatientListView(CommuniqueListView):
@@ -192,13 +192,23 @@ class OutcomeTypeDeleteView(CommuniqueDeleteView):
     template_name = 'patients/outcome_type_confirm_delete.html'
 
 
-class OutcomeListView(CommuniqueListView):
+class OutcomeListView(CommuniqueListAndExportView):
     """
     A view to list the outcomes of patients
     """
     model = Outcome
     template_name = 'patients/outcome_list.html'
     context_object_name = 'outcome_list'
+
+    def csv_export_response(self, context):
+        # generate csv for download
+        today = datetime.date.today()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="all_patient_outcomes_{0}.csv"'.format(
+            today.strftime(DATE_FORMAT))
+
+        write_outcomes_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
+        return response
 
 
 class OutcomeCreateView(CommuniqueCreateView):
@@ -232,32 +242,19 @@ class OutcomeExportListView(CommuniqueExportListView):
         # get all the outcomes within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        outcomes = Outcome.objects.filter(date_created__range=[start_date, end_date])
+        outcomes = Outcome.objects.filter(date_last_modified__range=[start_date, end_date])
         return outcomes
 
     def csv_export_response(self, context):
         # generate an HTTP response with the csv file for download
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        date_format = '%d-%m-%Y'
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="outcomes_{0}_to_{1}.csv"'.format(
-            start_date.strftime(date_format), end_date.strftime(date_format)
+        response['Content-Disposition'] = 'attachment; filename="patient_outcomes_{0}_to_{1}.csv"'.format(
+            start_date.strftime(DATE_FORMAT), end_date.strftime(DATE_FORMAT)
         )
 
-        fieldnames = ['id', 'patient_id', 'patient_last_name', 'patient_other_names', 'outcome_type',
-                      'outcome_date (dd-mm-yyyy)', 'notes', 'date_added (dd-mm-yyyy)', 'added_by']
-        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-        writer.writeheader()
-
-        for outcome in context[self.context_object_name]:
-            patient = outcome.patient
-            writer.writerow({'id':outcome.id, 'patient_id':patient.identifier, 'patient_last_name':patient.last_name,
-                             'patient_other_names':patient.other_names, 'outcome_type':outcome.outcome_type.__str__(),
-                             'outcome_date (dd-mm-yyyy)':outcome.outcome_date.strftime(date_format),
-                             'notes':outcome.notes, 'date_added (dd-mm-yyyy)':outcome.date_created.strftime(date_format),
-                             'added_by':outcome.created_by.get_full_name()})
-
+        write_outcomes_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
         return response
 
 
@@ -280,13 +277,23 @@ class OutcomeDetailView(CommuniqueDetailView):
     context_object_name = 'outcome'
 
 
-class EnrollmentListView(CommuniqueListView):
+class EnrollmentListView(CommuniqueListAndExportView):
     """
     A view to list all the enrollments that currently exist in the system.
     """
     model = Enrollment
     template_name = 'patients/enrollment_list.html'
     context_object_name = 'enrollment_list'
+
+    def csv_export_response(self, context):
+        # generate a csv response containing all enrollments
+        today = datetime.date.today()
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="all_enrollments_{0}.csv"'.format(
+            today.strftime(DATE_FORMAT))
+
+        write_enrollments_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
+        return response
 
 
 class EnrollmentCreateView(CommuniqueCreateView):
@@ -340,33 +347,18 @@ class EnrollmentExportListView(CommuniqueExportListView):
         # get all the enrollments within the provided date range
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        enrollments = Enrollment.objects.filter(date_created__range=[start_date, end_date])
+        enrollments = Enrollment.objects.filter(date_last_modified__range=[start_date, end_date])
         return enrollments
 
     def csv_export_response(self, context):
         # generate an HTTP response with the csv file for download
         start_date = self.get_export_start_date()
         end_date = self.get_export_end_date()
-        date_format = '%d-%m-%Y'
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="enrollments_{0}_to_{1}.csv"'.format(
-            start_date.strftime(date_format), end_date.strftime(date_format))
+            start_date.strftime(DATE_FORMAT), end_date.strftime(DATE_FORMAT))
 
-        fieldnames = ['id', 'program', 'patient_id', 'patient_last_name', 'patient_other_names',
-                      'date_enrolled (dd-mm-yyyy)', 'enrolled_by', 'date_added (dd-mm-yyyy)', 'comment']
-
-        writer = csv.DictWriter(response, fieldnames=fieldnames, delimiter=';')
-        writer.writeheader()
-
-        for enrollment in context[self.context_object_name]:
-            program = enrollment.program
-            patient = enrollment.patient
-            writer.writerow({'id':enrollment.id,'program':program.__str__(), 'patient_id':patient.identifier,
-                             'patient_last_name':patient.last_name, 'patient_other_names':patient.other_names,
-                             'date_enrolled (dd-mm-yyyy)':enrollment.date_enrolled.strftime(date_format),
-                             'enrolled_by':enrollment.created_by.get_full_name(),
-                             'date_added (dd-mm-yyyy)':enrollment.date_created.strftime(date_format),
-                             'comment':enrollment.comment})
+        write_enrollments_to_csv(response, context[self.context_object_name], DATE_FORMAT, DATE_FORMAT_STR)
         return response
 
 

@@ -47,7 +47,9 @@
                         </li>
                     </ul>
                     <a href="{{ program.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ program.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% if user.is_superuser %}
+                        <a href="{{ program.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% endif %}
                 </div>
             </div>
 
@@ -111,6 +113,16 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div class="box-footer">
+                    <!-- if there are any enrollments for this program, enable the export all button -->
+                    {% if program.enrolled_patients %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

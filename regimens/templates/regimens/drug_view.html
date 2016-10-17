@@ -5,6 +5,14 @@
     {{ block.super }} | Drug
 {% endblock %}
 
+{% block drugs_menu %}
+    <li class="active">
+        <a href="{% url 'regimens_drug_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Drugs
+        </a>
+    </li>
+{% endblock %}
+
 {% block head %}
     <!-- DataTables -->
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
@@ -44,7 +52,9 @@
                         </li>
                     </ul>
                     <a href="{{ drug.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ drug.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% if user.is_superuser %}
+                        <a href="{{ drug.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% endif %}
                 </div>
             </div>
 
@@ -55,7 +65,13 @@
                 <div class="box-body">
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
 
-                    <p>{{ drug.description }}</p>
+                    <p>
+                        {% if drug.description %}
+                            {{ drug.description }}
+                        {% else %}
+                            This drug currently doesn't have a description
+                        {% endif %}
+                    </p>
                 </div>
             </div>
         </div>
@@ -109,6 +125,16 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div class="box-footer">
+                    <!-- if there are regimens to export, enable the export all button -->
+                    {% if drug.regimens.all %}
+                        <a class="btn btn-warning" target="_blank" href="{{ request.path|add:'?export=csv' }}">
+                            Export All
+                        </a>
+                    {% else %}
+                        <a class="btn btn-warning disabled">Export All</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

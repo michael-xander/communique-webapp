@@ -38,9 +38,9 @@
                 <form role="form" action="{% url 'patients_enrollment_export_form' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
-                        This search looks for enrollments that were added to the system at a date that lies within the
-                        range starting from the start date and ending at the end date you'll pick below with both being
-                        included in the range.
+                        This search looks for enrollments that were added/modified in the system on a date that lies
+                        within the range starting from the start date and ending at the end date you'll pick below with
+                        both being included in the range.
                         {% for field in form %}
                             <div class="{% if field.errors %}form-group has-error{% else %}form-group{% endif %}">
                                 {{ field.label_tag }}

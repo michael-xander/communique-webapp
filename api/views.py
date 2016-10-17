@@ -11,7 +11,8 @@ from appointments.models import Appointment
 from counselling_sessions.models import CounsellingSession
 from programs.models import Program
 from patients.models import Patient, Enrollment, Outcome, OutcomeType
-from user.models import CommuniqueUser, Profile
+from user.models import CommuniqueUser, Profile, NotificationRegistration
+from notifications.models import Notification
 
 
 class ProgramViewSet(viewsets.ModelViewSet):
@@ -56,13 +57,7 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     serializer_class = EnrollmentSerializer
     permission_classes = (permissions.IsAuthenticated, IsActiveUser,)
 
-    def perform_create(self, serializer):
-        # save the user that is enrolling the patient
-        serializer.save(enrolled_by=self.request.user)
 
-    def perform_update(self, serializer):
-        # save the user that has made the modification
-        serializer.save(last_modified_by=self.request.user)
 
 
 class CommuniqueUserViewSet(viewsets.ModelViewSet):
@@ -332,3 +327,22 @@ class OutcomeTypeViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         # save the user that has made the modification
         serializer.save(last_modified_by=self.request.user)
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    """
+    This endpoint provides calls to CRUD Notification models.
+    """
+    queryset = Notification.objects.unread()
+    serializer_class = NotificationSerializer
+    permission_classes = (permissions.IsAuthenticated, IsActiveUser,)
+    
+
+class NotificationRegistrationViewSet(viewsets.ModelViewSet):
+    """
+    This endpoint provides calls to CRUD NotificationRegistration models.
+    """
+    queryset = NotificationRegistration.objects.all()
+    serializer_class = NotificationRegistrationSerializer
+    permission_classes = (permissions.IsAuthenticated, IsActiveUser,)
+  
+    

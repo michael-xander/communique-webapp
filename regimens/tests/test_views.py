@@ -69,9 +69,9 @@ class DrugDeleteViewTestCase(ExistingDrugViewsTestCase):
     """
     view_template_name = 'regimens/drug_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         drug = Drug.objects.get(id=1)
-        self.only_active_user_access_test(drug.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(drug.get_delete_url(), self.view_template_name)
 
 
 class RegimenListViewTestCase(ViewsTestCase):
@@ -81,6 +81,31 @@ class RegimenListViewTestCase(ViewsTestCase):
     view_name = 'regimens_regimen_list'
     view_template_name = 'regimens/regimen_list.html'
     view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class RegimenExportFormViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view that displays the export form
+    """
+    view_name = 'regimens_regimen_export_form'
+    view_template_name = 'regimens/regimen_export_list.html'
+    view_url = reverse(view_name)
+
+    def test_active_user_access(self):
+        self.only_active_user_access_test(self.view_url, self.view_template_name)
+
+
+class RegimenExportListViewTestCase(ViewsTestCase):
+    """
+    Test cases for the view to list regimens for exportation
+    """
+    view_name = 'regimens_regimen_export_list'
+    view_template_name = 'regimens/regimen_export_list.html'
+    view_url = reverse(view_name, kwargs={'start_year':'2000', 'start_month':'01', 'start_day':'01',
+                                          'end_year':'2001', 'end_month':'01', 'end_day':'01'})
 
     def test_active_user_access(self):
         self.only_active_user_access_test(self.view_url, self.view_template_name)
@@ -125,9 +150,9 @@ class RegimenDeleteViewTestCase(ExistingRegimenViewsTestCase):
     """
     view_template_name = 'regimens/regimen_confirm_delete.html'
 
-    def test_active_user_access(self):
+    def test_active_super_user_access(self):
         regimen = Regimen.objects.get(id=1)
-        self.only_active_user_access_test(regimen.get_delete_url(), self.view_template_name)
+        self.only_active_super_user_access_test(regimen.get_delete_url(), self.view_template_name)
 
 
 class RegimenUpdateViewTestCase(ExistingRegimenViewsTestCase):

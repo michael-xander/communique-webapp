@@ -4,6 +4,14 @@
     {{ block.super }} | Delete Regimen
 {% endblock %}
 
+{% block regimens_menu %}
+    <li class="active">
+        <a href="{% url 'regimens_regimen_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Regimens
+        </a>
+    </li>
+{% endblock %}
+
 {% block page_heading %}
     Delete {{ regimen }}
 {% endblock %}

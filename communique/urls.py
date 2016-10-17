@@ -16,11 +16,11 @@ from regimens import urls as regimen_urls
 from patients.urls import patient_urls as patients_urls
 from patients.urls import enrollment_urls as enrollment_urls
 
-from .views import CommuniqueTemplateView
+from user.views import DashboardView
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='user_login', permanent=False)),
-    url(r'^dashboard/$', CommuniqueTemplateView.as_view(template_name='dashboard_view.html'), name='dashboard_home'),
+    url(r'^dashboard/$', DashboardView.as_view(), name='dashboard_home'),
     url(r'^user/', include(user_urls)),
     url(r'^programs/', include(programs_urls)),
     url(r'^patients/', include(patients_urls)),

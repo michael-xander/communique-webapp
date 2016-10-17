@@ -57,7 +57,9 @@
                         </li>
                     </ul>
                     <a href="{{ outcome_type.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
-                    <a href="{{ outcome_type.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% if user.is_superuser %}
+                        <a href="{{ outcome_type.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
+                    {% endif %}
                 </div>
             </div>
             <div class="box box-primary">
@@ -67,7 +69,13 @@
                 <div class="box-body">
                     <strong><i class="fa fa-file-text-o margin-r-5"></i> Description</strong>
 
-                    <p>{{ outcome_type.description }}</p>
+                    <p>
+                        {% if outcome_type.description %}
+                            {{ outcome_type.description }}
+                        {% else %}
+                            This outcome type currently doesn't have a description
+                        {% endif %}
+                    </p>
                 </div>
             </div>
         </div>
