@@ -150,7 +150,7 @@ class OutcomeType(models.Model):
                                          help_text='The user that last modified details on this outcome type')
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('patients_outcome_type_detail', kwargs={'pk':self.pk})

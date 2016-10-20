@@ -110,13 +110,13 @@ class OutcomeTypeTestCase(TestCase):
     Test cases for the outcome type model
     """
     def setUp(self):
-        self.outcome_type = OutcomeType.objects.create(name='Outcome type', description='Sample description')
+        self.outcome_type = OutcomeType.objects.create(name='Outcome Type', description='Sample description')
 
     def test_str(self):
         """
         Test the __str__ method of the model
         """
-        self.assertEqual(self.outcome_type.__str__(), self.outcome_type.name.title())
+        self.assertEqual(self.outcome_type.__str__(), self.outcome_type.name)
 
     def test_get_absolute_url(self):
         """
