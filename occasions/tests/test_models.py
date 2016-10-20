@@ -14,7 +14,7 @@ class EventTestCase(TestCase):
         event_date = datetime.date.today()
         start_time = datetime.time(1)
         end_time = datetime.time(2)
-        Event.objects.create(name='a dummy event', event_date=event_date, start_time=start_time, end_time=end_time)
+        Event.objects.create(name='A dummy event', event_date=event_date, start_time=start_time, end_time=end_time)
 
     def test_str(self):
         """

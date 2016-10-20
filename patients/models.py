@@ -124,6 +124,9 @@ class Enrollment(models.Model):
     def get_update_url(self):
         return reverse('patients_enrollment_update', kwargs={'pk':self.pk})
 
+    def get_delete_url(self):
+        return reverse('patients_enrollment_delete', kwargs={'pk':self.pk})
+
 
 class OutcomeType(models.Model):
     """
@@ -150,7 +153,7 @@ class OutcomeType(models.Model):
                                          help_text='The user that last modified details on this outcome type')
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('patients_outcome_type_detail', kwargs={'pk':self.pk})
@@ -197,4 +200,7 @@ class Outcome(models.Model):
 
     def get_update_url(self):
         return reverse('patients_outcome_update', kwargs={'pk':self.pk})
+
+    def get_delete_url(self):
+        return reverse('patients_outcome_delete', kwargs={'pk':self.pk})
 

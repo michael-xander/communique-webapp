@@ -28,7 +28,7 @@ class MedicalReportType(models.Model):
                                                      'modified')
 
     def __str__(self):
-        return self.name.capitalize()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('medical_report_type_detail', kwargs={'pk':self.pk})
@@ -69,7 +69,7 @@ class MedicalReport(models.Model):
                                          help_text='The user that last modified this medical report')
 
     def __str__(self):
-        temp_str = "{0} report: {1}".format(self.report_type, self.title.capitalize())
+        temp_str = "{0} report: {1}".format(self.report_type, self.title)
         return temp_str
 
     def get_absolute_url(self):

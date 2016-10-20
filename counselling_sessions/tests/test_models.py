@@ -12,7 +12,7 @@ class CounsellingSessionTypeTestCase(TestCase):
     """
 
     def setUp(self):
-        CounsellingSessionType.objects.create(name='dummy type')
+        CounsellingSessionType.objects.create(name='Dummy Type')
 
     def test_counselling_session_type_str(self):
         """
@@ -51,7 +51,7 @@ class CounsellingSessionTestCase(TestCase):
     Test cases for the CounsellingSession model.
     """
     def setUp(self):
-        session_type = CounsellingSessionType.objects.create(name='dummy type')
+        session_type = CounsellingSessionType.objects.create(name='Dummy Type')
         patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         CounsellingSession.objects.create(patient=patient, counselling_session_type=session_type)
 

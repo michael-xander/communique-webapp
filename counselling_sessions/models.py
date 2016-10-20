@@ -27,7 +27,7 @@ class CounsellingSessionType(models.Model):
                                          help_text='The user to last modify the counselling session type')
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('counselling_sessions_type_detail', kwargs={'pk':self.pk})
