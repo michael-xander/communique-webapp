@@ -28,7 +28,7 @@ class EmergencyContact(models.Model):
                                                    ' of this emergency contact')
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('adverse_emergency_contact_detail', kwargs={'pk':self.pk})
@@ -68,7 +68,7 @@ class AdverseEventType(models.Model):
                                          help_text='The user to last modify information on this adverse event type')
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('adverse_event_type_detail', kwargs={'pk':self.pk})
