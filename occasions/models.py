@@ -26,7 +26,7 @@ class Event(models.Model):
                                           help_text='The date on which the event was last modified')
 
     def __str__(self):
-        return self.name.capitalize()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('occasions_event_detail', kwargs={'pk':self.pk})
