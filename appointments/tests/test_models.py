@@ -17,7 +17,7 @@ class AppointmentTestCase(TestCase):
         appointment_date = datetime.date.today()
         start_time = datetime.time(1)
         end_time = datetime.time(start_time.hour + 1)
-        Appointment.objects.create(title='a dummy appointment', owner=owner, appointment_date=appointment_date,
+        Appointment.objects.create(title='A dummy appointment', owner=owner, appointment_date=appointment_date,
                                    start_time=start_time, end_time=end_time)
 
     def test_str(self):

@@ -104,19 +104,26 @@ class EnrollmentTestCase(TestCase):
         self.assertEqual(self.enrollment.get_update_url(), reverse('patients_enrollment_update',
                                                               kwargs={'pk':self.enrollment.pk}))
 
+    def test_get_delete_url(self):
+        """
+        Tests the get_delete_url method of the model
+        """
+        self.assertEqual(self.enrollment.get_delete_url(), reverse('patients_enrollment_delete',
+                                                                   kwargs={'pk':self.enrollment.pk}))
+
 
 class OutcomeTypeTestCase(TestCase):
     """
     Test cases for the outcome type model
     """
     def setUp(self):
-        self.outcome_type = OutcomeType.objects.create(name='Outcome type', description='Sample description')
+        self.outcome_type = OutcomeType.objects.create(name='Outcome Type', description='Sample description')
 
     def test_str(self):
         """
         Test the __str__ method of the model
         """
-        self.assertEqual(self.outcome_type.__str__(), self.outcome_type.name.title())
+        self.assertEqual(self.outcome_type.__str__(), self.outcome_type.name)
 
     def test_get_absolute_url(self):
         """
@@ -170,4 +177,11 @@ class OutcomeTestCase(TestCase):
         Test the get_update_url method of the model
         """
         self.assertEqual(self.outcome.get_update_url(), reverse('patients_outcome_update',
+                                                                kwargs={'pk':self.outcome.pk}))
+
+    def test_get_delete_url(self):
+        """
+        Test the get_delete_url method of the model
+        """
+        self.assertEqual(self.outcome.get_delete_url(), reverse('patients_outcome_delete',
                                                                 kwargs={'pk':self.outcome.pk}))

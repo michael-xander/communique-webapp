@@ -7,7 +7,7 @@ from patients.views import (PatientListView, PatientCreateView, PatientDetailVie
                             PatientArchiveView, PatientUnarchiveView, PatientArchiveListView, PatientOutcomeCreateView,
                             OutcomeTypeListView, OutcomeTypeCreateView, OutcomeTypeUpdateView, OutcomeTypeDetailView,
                             OutcomeTypeDeleteView, OutcomeListView, OutcomeCreateView, OutcomeDetailView,
-                            OutcomeUpdateView, OutcomeExportFormView, OutcomeExportListView)
+                            OutcomeUpdateView, OutcomeExportFormView, OutcomeExportListView, OutcomeDeleteView)
 
 urlpatterns = [
     url(r'^$', PatientListView.as_view(), name='patients_patient_list'),
@@ -33,6 +33,7 @@ urlpatterns = [
         OutcomeExportListView.as_view(), name='patients_outcome_export_list'),
     url(r'^outcomes/(?P<pk>[0-9]+)/$', OutcomeDetailView.as_view(), name='patients_outcome_detail'),
     url(r'^outcomes/(?P<pk>[0-9]+)/update/$', OutcomeUpdateView.as_view(), name='patients_outcome_update'),
+    url(r'^outcomes/(?P<pk>[0-9]+)/delete/$', OutcomeDeleteView.as_view(), name='patients_outcome_delete'),
     url(r'^(?P<patient_pk>[0-9]+)/enroll/$', PatientEnrollmentCreateView.as_view(),
         name='patients_patient_enroll_create'),
     url(r'^(?P<patient_pk>[0-9]+)/add-session/$', PatientSessionCreateView.as_view(),

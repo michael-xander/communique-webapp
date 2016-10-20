@@ -23,7 +23,7 @@ class Program(models.Model):
                                                    'fields')
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('programs_program_detail', kwargs={'pk':self.pk})

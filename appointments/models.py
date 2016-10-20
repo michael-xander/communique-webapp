@@ -38,7 +38,7 @@ class Appointment(models.Model):
                                           help_text='The date on which the appointment was last modified')
 
     def __str__(self):
-        return self.title.capitalize()
+        return self.title
 
     def get_absolute_url(self):
         return reverse('appointments_appointment_detail', kwargs={'pk':self.pk})

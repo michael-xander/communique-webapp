@@ -12,7 +12,7 @@ class EmergencyContactTestCase(TestCase):
     Test cases for the emergency contact model
     """
     def setUp(self):
-        EmergencyContact.objects.create(name='jon Snow', email='jon_snow@gmail.com')
+        EmergencyContact.objects.create(name='Jon Snow', email='jon_snow@gmail.com')
 
     def test_str(self):
         """
@@ -51,7 +51,7 @@ class AdverseEventTypeTestCase(TestCase):
     Test cases for the adverse event type model
     """
     def setUp(self):
-        AdverseEventType.objects.create(name='Sample type', description='Sample description')
+        AdverseEventType.objects.create(name='Sample Type', description='Sample description')
 
     def test_str(self):
         """

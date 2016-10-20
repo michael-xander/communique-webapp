@@ -10,14 +10,14 @@ class MedicalReportTypeTestCase(TestCase):
     Test cases for the medical report type model.
     """
     def setUp(self):
-        MedicalReportType.objects.create(name='dummy type')
+        MedicalReportType.objects.create(name='Dummy Type')
 
     def test_str(self):
         """
         Tests the __str__ method of the model
         """
         report_type = MedicalReportType.objects.get(id=1)
-        self.assertEqual(report_type.__str__(), 'Dummy type')
+        self.assertEqual(report_type.__str__(), 'Dummy Type')
 
     def test_get_absolute_url(self):
         """
@@ -49,9 +49,9 @@ class MedicalReportTestCase(TestCase):
     Test cases for the medical report model.
     """
     def setUp(self):
-        report_type = MedicalReportType.objects.create(name='dummy type')
+        report_type = MedicalReportType.objects.create(name='Dummy Type')
         patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
-        MedicalReport.objects.create(title='dummy report', report_type=report_type, patient=patient,
+        MedicalReport.objects.create(title='Dummy report', report_type=report_type, patient=patient,
                                      notes='Sample notes')
 
     def test_str(self):
@@ -59,7 +59,7 @@ class MedicalReportTestCase(TestCase):
         Tests the __str__ method of the model
         """
         medical_report = MedicalReport.objects.get(id=1)
-        self.assertEqual(medical_report.__str__(), 'Dummy type report: Dummy report')
+        self.assertEqual(medical_report.__str__(), 'Dummy Type report: Dummy report')
 
     def test_get_absolute_url(self):
         """
