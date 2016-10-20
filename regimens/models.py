@@ -27,13 +27,8 @@ class Drug(models.Model):
                                          help_text='The user that made the most recent modification to any of the '
                                                    'fields of this drug')
 
-    def save(self, *args, **kwargs):
-        # store the name of the drug in lower case
-        self.name = self.name.lower()
-        super(Drug, self).save(*args, **kwargs)
-
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     def get_absolute_url(self):
         return reverse('regimens_drug_detail', kwargs={'pk':self.pk})
