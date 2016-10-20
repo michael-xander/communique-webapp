@@ -275,6 +275,17 @@ class OutcomeUpdateViewTestCase(ExistingOutcomeViewsTestCase):
         self.only_active_user_access_test(self.outcome.get_update_url(), self.view_template_name)
 
 
+class OutcomeDeleteViewTestCase(ExistingOutcomeViewsTestCase):
+    """
+    Test cases for the outcome delete view
+    """
+
+    view_template_name = 'patients/outcome_confirm_delete.html'
+
+    def test_active_superuser_access(self):
+        self.only_active_super_user_access_test(self.outcome.get_delete_url(), self.view_template_name)
+
+
 class EnrollmentListViewTestCase(ViewsTestCase):
     """
     Test cases for the enrollment list view.

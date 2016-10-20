@@ -268,6 +268,16 @@ class OutcomeUpdateView(CommuniqueUpdateView):
     template_name = 'patients/outcome_update_form.html'
 
 
+class OutcomeDeleteView(CommuniqueDeleteView):
+    """
+    A view that handles deletion of a patient outcome
+    """
+    model = Outcome
+    success_url = reverse_lazy('patients_outcome_list')
+    context_object_name = 'outcome'
+    template_name = 'patients/outcome_confirm_delete.html'
+
+
 class OutcomeDetailView(CommuniqueDetailView):
     """
     A view to view the details of an outcome

@@ -178,3 +178,10 @@ class OutcomeTestCase(TestCase):
         """
         self.assertEqual(self.outcome.get_update_url(), reverse('patients_outcome_update',
                                                                 kwargs={'pk':self.outcome.pk}))
+
+    def test_get_delete_url(self):
+        """
+        Test the get_delete_url method of the model
+        """
+        self.assertEqual(self.outcome.get_delete_url(), reverse('patients_outcome_delete',
+                                                                kwargs={'pk':self.outcome.pk}))
