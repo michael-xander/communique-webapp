@@ -332,7 +332,7 @@ class ExistingEnrollmentViewsTestCase(ViewsTestCase):
         super(ExistingEnrollmentViewsTestCase, self).setUp()
         patient = Patient.objects.create(other_names='Jon', last_name='Snow', sex=Patient.MALE, identifier='A001')
         program = Program.objects.create(name='Sample', description='sample text')
-        Enrollment.objects.create(patient=patient, program=program, comment='No comment',
+        self.enrollment = Enrollment.objects.create(patient=patient, program=program, comment='No comment',
                                   date_enrolled=datetime.date.today())
 
 
@@ -343,8 +343,7 @@ class EnrollmentDetailViewTestCase(ExistingEnrollmentViewsTestCase):
     view_template_name = 'patients/enrollment_view.html'
 
     def test_active_user_access(self):
-        enrollment = Enrollment.objects.get(id=1)
-        self.only_active_user_access_test(enrollment.get_absolute_url(), self.view_template_name)
+        self.only_active_user_access_test(self.enrollment.get_absolute_url(), self.view_template_name)
 
 
 class EnrollmentUpdateViewTestCase(ExistingEnrollmentViewsTestCase):
@@ -354,8 +353,17 @@ class EnrollmentUpdateViewTestCase(ExistingEnrollmentViewsTestCase):
     view_template_name = 'patients/enrollment_update_form.html'
 
     def test_active_user_access(self):
-        enrollment = Enrollment.objects.get(id=1)
-        self.only_active_user_access_test(enrollment.get_update_url(), self.view_template_name)
+        self.only_active_user_access_test(self.enrollment.get_update_url(), self.view_template_name)
+
+
+class EnrollmentDeleteViewTestCase(ExistingEnrollmentViewsTestCase):
+    """
+    Test cases for the enrollment delete view
+    """
+    view_template_name = 'patients/enrollment_confirm_delete.html'
+
+    def test_active_super_user_access(self):
+        self.only_active_super_user_access_test(self.enrollment.get_delete_url(), self.view_template_name)
 
 
 class PatientEnrollmentCreateViewTestCase(ExistingPatientViewsTestCase):

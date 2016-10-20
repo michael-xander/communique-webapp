@@ -104,6 +104,13 @@ class EnrollmentTestCase(TestCase):
         self.assertEqual(self.enrollment.get_update_url(), reverse('patients_enrollment_update',
                                                               kwargs={'pk':self.enrollment.pk}))
 
+    def test_get_delete_url(self):
+        """
+        Tests the get_delete_url method of the model
+        """
+        self.assertEqual(self.enrollment.get_delete_url(), reverse('patients_enrollment_delete',
+                                                                   kwargs={'pk':self.enrollment.pk}))
+
 
 class OutcomeTypeTestCase(TestCase):
     """

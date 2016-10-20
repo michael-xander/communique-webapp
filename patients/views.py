@@ -324,6 +324,16 @@ class EnrollmentUpdateView(CommuniqueUpdateView):
     context_object_name = 'enrollment'
 
 
+class EnrollmentDeleteView(CommuniqueDeleteView):
+    """
+    A view that handles the deletion of an enrollment
+    """
+    model = Enrollment
+    success_url = reverse_lazy('patients_enrollment_list')
+    context_object_name = 'enrollment'
+    template_name = 'patients/enrollment_confirm_delete.html'
+
+
 class EnrollmentExportFormView(CommuniqueExportFormView):
     """
     A view that displays the form to be pick the duration to be considered for selecting enrollments for exportation
