@@ -1,0 +1,41 @@
+{% extends parent_template|default:"patients/base_enrollments.html" %}
+
+{% block title %}
+    {{ block.super }} | Delete Enrollment
+{% endblock %}
+
+{% block page_heading %}
+    Update Patient Enrollment
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    <li><a href="{% url 'dashboard_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="{% url 'patients_enrollment_list' %}"><i class="fa fa-support"></i> Enrollments</a></li>
+    <li class="active"><i class="fa fa-edit"></i> Update Enrollment</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-danger box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Delete Patient Enrollment</h3>
+                </div>
+                <form role="form" action="{{ enrollment.get_delete_url }}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        Are you sure that you want to delete the enrollment of {{ enrollment.patient.get_full_name }} in
+                        {{ enrollment.program }}?
+                    </div>
+                    <div class="box-footer">
+                        <a href="{{ enrollment.get_absolute_url }}" class="btn btn-success">Cancel</a>
+                        <button type="submit" class="btn btn-danger">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
