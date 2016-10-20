@@ -1,0 +1,51 @@
+{% extends parent_template|default:"patients/base_patients.html" %}
+
+{% block title %}
+    {{ block.super }} | Delete Patient Outcome
+{% endblock %}
+
+{% block outcome_menu %}
+    <li class="active">
+        <a href="{% url 'patients_outcome_list' %}">
+            <i class="fa fa-circle-o text-red"></i> Patient Outcomes
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_heading %}
+    Delete {{ outcome }}
+{% endblock %}
+
+{% block page_subheading %}
+{% endblock %}
+
+{% block page_breadcrumb %}
+    {{ block.super }}
+    <li>
+        <a href="{% url 'patients_outcome_list' %}"><i class="fa fa-heartbeat"></i> Patient Outcomes</a>
+    </li>
+    <li class="active"><i class="fa fa-edit"></i> Delete Patient Outcome</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-danger box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Delete Patient Outcome</h3>
+                </div>
+                <form role="form" action="{{ outcome.get_delete_url }}" method="post">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        Are you sure that you want to delete the {{ outcome.outcome_type }} category outcome for
+                        {{ outcome.patient.get_full_name }}?
+                    </div>
+                    <div class="box-footer">
+                        <a href="{{ outcome.get_absolute_url }}" class="btn btn-success">Cancel</a>
+                        <button type="submit" class="btn btn-danger">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
