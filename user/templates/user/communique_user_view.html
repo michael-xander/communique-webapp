@@ -94,11 +94,7 @@
                     </a>
 
                     <a class="btn btn-warning" href="{% url 'user_communique_user_update_superuser_status' pk=communique_user.pk %}">
-                        {% if communique_user.is_superuser %}
-                            Remove Superuser Status
-                        {% else %}
-                            Add Superuser Status
-                        {% endif %}
+                        Edit Superuser Status
                     </a>
 
                     <a href="{% url 'user_communique_user_set_password' pk=communique_user.pk %}" class="btn btn-danger">

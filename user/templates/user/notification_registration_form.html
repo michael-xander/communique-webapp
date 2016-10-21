@@ -6,6 +6,14 @@
     {{ block.super }} | Notification Registration
 {% endblock %}
 
+{% block profile_menu %}
+    <li class="active">
+        <a href="{% url 'user_profile_detail' pk=user.pk %}">
+            <i class="fa fa-user"></i> <span>My Profile</span>
+        </a>
+    </li>
+{% endblock %}
+
 {% block head %}
     <!-- select2 css -->
     <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">

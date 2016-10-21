@@ -165,10 +165,17 @@
                                 </a>
                             </li>
                         {% endblock %}
+                        {% block profile_menu %}
+                            <li>
+                                <a href="{% url 'user_profile_detail' pk=user.pk %}">
+                                    <i class="fa fa-user"></i> <span>My Profile</span>
+                                </a>
+                            </li>
+                        {% endblock %}
                         {% block calendar_menu %}
                             <li>
                                 <a href="{% url 'user_profile_calendar_view' %}">
-                                    <i class="fa fa-calendar"></i> <span>Calendar</span>
+                                    <i class="fa fa-calendar"></i> <span>My Calendar</span>
                                 </a>
                             </li>
                         {% endblock %}
@@ -341,9 +348,6 @@
                                 </ul>
                             </li>
                         {% endblock %}
-                        <li>
-                            <a href="#"><i class="fa fa-book"></i> <span>Manual</span></a>
-                        </li>
                     </ul>
                 </section>
             </aside>
