@@ -51,7 +51,7 @@
                     </p>
                 </div>
                 <div class="box-footer">
-                    <a href="{{ enrollment.get_update_url }}" class="btn btn-warning"><b>Edit</b></a>
+                    <a href="{{ enrollment.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
                     {% if user.is_superuser %}
                         <a href="{{ enrollment.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
                     {% endif %}
@@ -124,7 +124,13 @@
                         </li>
                     </ul>
                     <strong><i class="fa fa-book margin-r-5"></i> Description</strong>
-                    <p>{{ enrollment.program.description }}</p>
+                    <p>
+                        {% if enrollment.program.description %}
+                            {{ enrollment.program.description }}
+                        {% else %}
+                            This program currently does not have a description.
+                        {% endif %}
+                    </p>
                 </div>
                 <div class="box-footer">
                     <a href="{{ enrollment.program.get_absolute_url }}" class="btn btn-primary btn-block">
