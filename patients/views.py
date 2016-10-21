@@ -187,7 +187,7 @@ class OutcomeTypeDeleteView(CommuniqueDeleteView):
     A view to delete an outcome type
     """
     model = OutcomeType
-    success_url = reverse_lazy('patient_outcome_type_list')
+    success_url = reverse_lazy('patients_outcome_type_list')
     context_object_name = 'outcome_type'
     template_name = 'patients/outcome_type_confirm_delete.html'
 

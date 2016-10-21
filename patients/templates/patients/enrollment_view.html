@@ -51,7 +51,7 @@
                     </p>
                 </div>
                 <div class="box-footer">
-                    <a href="{{ enrollment.get_update_url }}" class="btn btn-warning"><b>Edit</b></a>
+                    <a href="{{ enrollment.get_update_url }}" class="btn btn-primary"><b>Edit</b></a>
                     {% if user.is_superuser %}
                         <a href="{{ enrollment.get_delete_url }}" class="btn btn-danger"><b>Delete</b></a>
                     {% endif %}
