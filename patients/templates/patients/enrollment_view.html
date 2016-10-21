@@ -124,7 +124,13 @@
                         </li>
                     </ul>
                     <strong><i class="fa fa-book margin-r-5"></i> Description</strong>
-                    <p>{{ enrollment.program.description }}</p>
+                    <p>
+                        {% if enrollment.program.description %}
+                            {{ enrollment.program.description }}
+                        {% else %}
+                            This program currently does not have a description.
+                        {% endif %}
+                    </p>
                 </div>
                 <div class="box-footer">
                     <a href="{{ enrollment.program.get_absolute_url }}" class="btn btn-primary btn-block">
