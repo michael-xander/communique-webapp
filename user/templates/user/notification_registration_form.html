@@ -1,17 +1,9 @@
-{% extends parent_template|default:"base.html" %}
+{% extends parent_template|default:"user/base_profile.html" %}
 {% load staticfiles %}
 {% load widget_tweaks %}
 
 {% block title %}
     {{ block.super }} | Notification Registration
-{% endblock %}
-
-{% block profile_menu %}
-    <li class="active">
-        <a href="{% url 'user_profile_detail' pk=user.pk %}">
-            <i class="fa fa-user"></i> <span>My Profile</span>
-        </a>
-    </li>
 {% endblock %}
 
 {% block head %}
