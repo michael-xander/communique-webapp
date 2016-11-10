@@ -1,7 +1,7 @@
 {% extends parent_template|default:'base.html' %}
 
 {% block medical_menu %}
-    <li class="treeview active">
+    <li class="active treeview">
         <a href="#">
             <i class="fa fa-medkit"></i> <span>Medical Reports</span>
             <span class="pull-right-container">
@@ -9,20 +9,26 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            {% block report_type_menu %}
-                <li>
-                    <a href="{% url 'medical_report_type_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Report Types
-                    </a>
-                </li>
-            {% endblock %}
-            {% block report_menu %}
-                <li>
-                    <a href="{% url 'medical_report_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Reports
-                    </a>
-                </li>
-            {% endblock %}
+            <li>
+                <a href="{% url 'medical_report_type_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Add Report Type
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'medical_report_type_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Report Types
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'medical_report_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Add Report
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'medical_report_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Reports
+                </a>
+            </li>
         </ul>
     </li>
 {% endblock %}

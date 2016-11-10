@@ -9,14 +9,6 @@
     <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
 {% endblock %}
 
-{% block session_menu %}
-    <li class="active">
-        <a href="{% url 'counselling_sessions_session_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Sessions
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Add Session
 {% endblock %}

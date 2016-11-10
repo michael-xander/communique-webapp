@@ -1,9 +1,24 @@
 {% extends parent_template|default:'base.html' %}
 
 {% block events_menu %}
-    <li class="active">
-        <a href="{% url 'occasions_event_list' %}">
+    <li class="active treeview">
+        <a href="#">
             <i class="fa fa-calendar-o"></i> <span>Events</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="{% url 'occasions_event_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Add Event
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'occasions_event_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Events
+                </a>
+            </li>
+        </ul>
     </li>
 {% endblock %}

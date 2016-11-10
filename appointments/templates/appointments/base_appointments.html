@@ -1,9 +1,24 @@
 {% extends parent_template|default:'base.html' %}
 
 {% block appointments_menu %}
-    <li class="active">
-        <a href="{% url 'appointments_appointment_list' %}">
+    <li class="treeview active">
+        <a href="#">
             <i class="fa fa-calendar-plus-o"></i> <span>Appointments</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="{% url 'appointments_appointment_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Add Appointment
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'appointments_appointment_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Appointments
+                </a>
+            </li>
+        </ul>
     </li>
 {% endblock %}

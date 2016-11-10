@@ -4,14 +4,6 @@
     {{ block.super }} | Add Session Type
 {% endblock %}
 
-{% block session_type_menu %}
-    <li class="active">
-        <a href="{% url 'counselling_sessions_type_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Session Types
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Add Session Type
 {% endblock %}

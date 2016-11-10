@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block patients_menu %}
-    <li class="treeview active">
+    <li class="active treeview">
         <a href="#">
             <i class="fa fa-heartbeat"></i> <span>Patients</span>
             <span class="pull-right-container">
@@ -13,34 +13,42 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            {% block current_patients_menu %}
-                <li>
-                    <a href="{% url 'patients_patient_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Current Patients
-                    </a>
-                </li>
-            {% endblock %}
-            {% block archived_patients_menu %}
-                <li>
-                    <a href="{% url 'patients_patient_archived_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Archived Patients
-                    </a>
-                </li>
-            {% endblock %}
-            {% block outcome_type_menu %}
-                <li>
-                    <a href="{% url 'patients_outcome_type_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Patient Outcome Categories
-                    </a>
-                </li>
-            {% endblock %}
-            {% block outcome_menu %}
-                <li>
-                    <a href="{% url 'patients_outcome_list' %}">
-                        <i class="fa fa-circle-o text-aqua"></i> Patient Outcomes
-                    </a>
-                </li>
-            {% endblock %}
+            <li>
+                <a href="{% url 'patients_patient_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Add Patient
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'patients_patient_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Current Patients
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'patients_patient_archived_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Archived Patients
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'patients_outcome_type_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Add Outcome Categories
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'patients_outcome_type_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Outcome Categories
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'patients_outcome_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Add Outcome
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'patients_outcome_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Outcomes
+                </a>
+            </li>
         </ul>
     </li>
+
 {% endblock %}

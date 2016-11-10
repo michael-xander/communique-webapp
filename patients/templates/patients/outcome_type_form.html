@@ -4,14 +4,6 @@
     {{ block.super }} | Add Patient Outcome Category
 {% endblock %}
 
-{% block outcome_type_menu %}
-    <li class="active">
-        <a href="{% url 'patients_outcome_type_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Patient Outcome Categories
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Add Patient Outcome Category
 {% endblock %}

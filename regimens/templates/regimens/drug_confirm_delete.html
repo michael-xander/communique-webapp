@@ -4,14 +4,6 @@
     {{ block.super }} | Delete Drug
 {% endblock %}
 
-{% block drugs_menu %}
-    <li class="active">
-        <a href="{% url 'regimens_drug_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Drugs
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Delete {{ drug }}
 {% endblock %}

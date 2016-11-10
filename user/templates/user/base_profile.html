@@ -1,0 +1,44 @@
+{% extends parent_template|default:'base.html' %}
+
+{% block profile_menu %}
+    <li class="active treeview">
+        <a href="#">
+            <i class="fa fa-user"></i> <span>My Profile</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li>
+                <a href="{% url 'user_profile_notification_list' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Notifications
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'user_profile_detail' pk=user.pk %}">
+                    <i class="fa fa-circle-o text-aqua"></i> View Profile
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'user_profile_update' pk=user.pk %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Update Profile
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'password_change' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Update Password
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'user_notification_registration_create' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Notification Registration
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'user_logout' %}">
+                    <i class="fa fa-circle-o text-aqua"></i> Log out
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
