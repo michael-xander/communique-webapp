@@ -10,14 +10,6 @@
     <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
 {% endblock %}
 
-{% block emergency_contact_menu %}
-    <li class="active">
-        <a href="{% url 'adverse_emergency_contact_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Emergency Contacts
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Emergency Contact
 {% endblock %}

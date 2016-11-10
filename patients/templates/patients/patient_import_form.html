@@ -1,14 +1,6 @@
 {% extends parent_template|default:"patients/base_patients.html" %}
 {% load widget_tweaks %}
 
-{% block current_patients_menu %}
-    <li class="active">
-        <a href="{% url 'patients_patient_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Current Patients
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Import Patients
 {% endblock %}

@@ -4,14 +4,6 @@
     {{ block.super }} | Add Medical Report Type
 {% endblock %}
 
-{% block report_type_menu %}
-    <li class="active">
-        <a href="{% url 'medical_report_type_list' %}">
-            <i class="fa fa-circle-o text-red"></i> Report Types
-        </a>
-    </li>
-{% endblock %}
-
 {% block page_heading %}
     Add Medical Report Type
 {% endblock %}
