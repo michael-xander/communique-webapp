@@ -18,6 +18,7 @@
 {% endblock %}
 
 {% block page_content %}
+    {{ block.super }}
     {% if not communique_user.is_active %}
         <div class="row">
             <div class="col-md-12">

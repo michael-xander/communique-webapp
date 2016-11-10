@@ -28,6 +28,7 @@
 
 
 {% block page_content %}
+    {{ block.super }}
     {% include 'form_errors.html' with class='col-md-12' %}
 
     <div class="row">
