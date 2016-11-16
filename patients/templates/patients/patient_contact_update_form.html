@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block page_heading %}
-    Update {{ patient.get_full_name }} Contact Details
+    Update Patient Contact Details
 {% endblock %}
 
 {% block page_subheading %}
@@ -31,6 +31,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Patient Contact Details</h3>
                 </div>
+                <p>Contact details for {{ patient.get_full_name }}</p>
                 <form role="form" action="{{ patient.get_contact_update_url }}" method="post">
                     {% csrf_token %}
                     {% include 'patients/patient_body_form.html' %}

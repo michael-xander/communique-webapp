@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block page_heading %}
-    User Profile
+    User Details
 {% endblock %}
 
 {% block page_subheading %}
@@ -29,19 +29,6 @@
                 </div>
             </div>
         </div>
-    {% endif %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="alert alert-info alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <h4><i class="icon fa fa-info"></i> Info</h4>
-                        {{ message }}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
     {% endif %}
     <div class="row">
         <div class="col-md-5">
