@@ -55,6 +55,7 @@ class PatientCreateView(CommuniqueCreateView):
     fields = ['last_name', 'other_names', 'identifier', 'reference_health_centre', 'birth_date', 'sex', 'location',
               'treatment_start_date', 'interim_outcome', 'contact_number', 'second_contact_number',
               'third_contact_number']
+    success_message = 'The patient was successfully added to the system'
     template_name = 'patients/patient_form.html'
 
 
@@ -73,6 +74,7 @@ class PatientUpdateView(CommuniqueUpdateView):
     """
     model = Patient
     fields = ['last_name', 'other_names', 'identifier', 'birth_date', 'sex', 'treatment_start_date', 'interim_outcome']
+    success_message = "The patient's details were successfully updated"
     template_name = 'patients/patient_update_form.html'
     context_object_name = 'patient'
 
@@ -83,6 +85,7 @@ class PatientContactUpdateView(CommuniqueUpdateView):
     """
     model = Patient
     fields = ['location', 'reference_health_centre', 'contact_number', 'second_contact_number', 'third_contact_number']
+    success_message = "The patient's contact details were successfully updated"
     template_name = 'patients/patient_contact_update_form.html'
     context_object_name = 'patient'
 
@@ -94,6 +97,7 @@ class PatientArchiveView(CommuniqueUpdateView):
     model = Patient
     fields = []
     template_name = 'patients/patient_confirm_archive.html'
+    success_message = 'The patient has successfully been archived'
     context_object_name = 'patient'
 
     def form_valid(self, form):
@@ -110,6 +114,7 @@ class PatientUnarchiveView(CommuniqueUpdateView):
     model = Patient
     fields = []
     template_name = 'patients/patient_confirm_unarchive.html'
+    success_message = 'The patient has successfully been unarchived'
     context_object_name = 'patient'
 
     def form_valid(self, form):
@@ -125,6 +130,7 @@ class PatientDeleteView(CommuniqueDeleteView):
     """
     model = Patient
     success_url = reverse_lazy('patients_patient_list')
+    success_message = 'The patient was successfully deleted'
     context_object_name = 'patient'
     template_name = 'patients/patient_confirm_delete.html'
 
@@ -136,7 +142,7 @@ class PatientImportView(SuccessMessageMixin, CommuniqueFormView):
     template_name = 'patients/patient_import_form.html'
     form_class = PatientUploadFileForm
     success_url = reverse_lazy('patients_patient_list')
-    success_message = 'The patients have successfully been added to the system.'
+    success_message = 'The patients have successfully been imported to the system'
 
     def form_valid(self, form):
         # import the patients in the uploaded file
@@ -159,6 +165,7 @@ class OutcomeTypeCreateView(CommuniqueCreateView):
     A view to create an outcome type
     """
     model = OutcomeType
+    success_message = 'The patient outcome category was successfully created'
     template_name = 'patients/outcome_type_form.html'
     fields = ['name', 'description']
 
@@ -168,6 +175,7 @@ class OutcomeTypeUpdateView(CommuniqueUpdateView):
     A view to update an outcome type
     """
     model = OutcomeType
+    success_message = 'The patient outcome category was successfully updated'
     template_name = 'patients/outcome_type_update_form.html'
     fields = ['name', 'description']
     context_object_name = 'outcome_type'
@@ -188,6 +196,7 @@ class OutcomeTypeDeleteView(CommuniqueDeleteView):
     """
     model = OutcomeType
     success_url = reverse_lazy('patients_outcome_type_list')
+    success_message = 'The patient outcome category was successfully deleted'
     context_object_name = 'outcome_type'
     template_name = 'patients/outcome_type_confirm_delete.html'
 
@@ -217,6 +226,7 @@ class OutcomeCreateView(CommuniqueCreateView):
     """
     model = Outcome
     form_class = OutcomeForm
+    success_message = 'The patient outcome was successfully added to the system'
     template_name = 'patients/outcome_form.html'
 
 
@@ -264,6 +274,7 @@ class OutcomeUpdateView(CommuniqueUpdateView):
     """
     model = Outcome
     fields = ['outcome_date', 'notes']
+    success_message = 'The details of the patient outcome were successfully updated'
     context_object_name = 'outcome'
     template_name = 'patients/outcome_update_form.html'
 
@@ -274,6 +285,7 @@ class OutcomeDeleteView(CommuniqueDeleteView):
     """
     model = Outcome
     success_url = reverse_lazy('patients_outcome_list')
+    success_message = 'The patient outcome was successfully deleted from the system'
     context_object_name = 'outcome'
     template_name = 'patients/outcome_confirm_delete.html'
 
@@ -311,6 +323,7 @@ class EnrollmentCreateView(CommuniqueCreateView):
     A view to handle creation of an enrollment.
     """
     model = Enrollment
+    success_message = 'The enrollment was successfully added to the system'
     form_class = EnrollmentForm
     template_name = 'patients/enrollment_form.html'
 
@@ -329,6 +342,7 @@ class EnrollmentUpdateView(CommuniqueUpdateView):
     A view to handle updating an enrollment.
     """
     model = Enrollment
+    success_message = 'The details of the enrollment were successfully updated'
     fields = ['date_enrolled', 'comment']
     template_name = 'patients/enrollment_update_form.html'
     context_object_name = 'enrollment'
@@ -339,6 +353,7 @@ class EnrollmentDeleteView(CommuniqueDeleteView):
     A view that handles the deletion of an enrollment
     """
     model = Enrollment
+    success_message = 'The enrollment was successfully deleted'
     success_url = reverse_lazy('patients_enrollment_list')
     context_object_name = 'enrollment'
     template_name = 'patients/enrollment_confirm_delete.html'
@@ -410,6 +425,7 @@ class PatientEnrollmentCreateView(PatientModelCreateView):
     A view to create an enrollment for a defined patient.
     """
     model = Enrollment
+    success_message = 'The enrollment was successfully created for the patient'
     fields = ['program', 'date_enrolled','comment']
     template_name = 'patients/patient_enrollment_form.html'
 
@@ -419,6 +435,7 @@ class PatientSessionCreateView(PatientModelCreateView):
     A view that handles creation of a session for a specific patient.
     """
     model = CounsellingSession
+    success_message = 'The counselling session was successfully created for the patient'
     fields = ['counselling_session_type', 'notes']
     template_name = 'patients/patient_session_form.html'
 
@@ -428,6 +445,7 @@ class PatientOutcomeCreateView(PatientModelCreateView):
     A view that handles creation of an outcome for a patient
     """
     model = Outcome
+    success_message = 'The patient outcome was successfully added'
     fields = ['outcome_type', 'outcome_date', 'notes']
     template_name = 'patients/patient_outcome_form.html'
 
@@ -437,6 +455,7 @@ class PatientMedicalReportCreateView(PatientModelCreateView):
     A view that handles creation of a medical report for a specific patient.
     """
     model = MedicalReport
+    success_message = 'The medical report was successfully added for the patient'
     fields = ['title', 'report_type', 'notes']
     template_name = 'patients/patient_medical_report_form.html'
 
@@ -446,6 +465,7 @@ class PatientAppointmentCreateView(PatientModelCreateView):
     A view that handles creation of an appointment for a specific patient.
     """
     model = Appointment
+    success_message = 'The appointment was successfully added for the patient'
     form_class = PatientAppointmentForm
     template_name = 'patients/patient_appointment_form.html'
 
@@ -461,6 +481,7 @@ class PatientAdmissionCreateView(PatientModelCreateView):
     A view that handles admission for a specific patient.
     """
     model = Admission
+    success_message = 'The patient admission was successfully added'
     form_class = AdmissionUpdateForm
     template_name = 'patients/patient_admission_form.html'
 
@@ -470,6 +491,7 @@ class PatientRegimenCreateView(PatientModelCreateView):
     A view that handles adding a regimen for a specific patient.
     """
     model = Regimen
+    success_message = 'The regimen was successfully added for the patient'
     form_class = PatientRegimenForm
     template_name = 'patients/patient_regimen_form.html'
 
@@ -479,6 +501,7 @@ class PatientAdverseEventCreateView(PatientModelCreateView):
     A view that handles adding an adverse event for a specific patient.
     """
     model = AdverseEvent
+    success_message = 'The adverse event was successfully added'
     fields = ['adverse_event_type', 'event_date', 'notes']
     template_name = 'patients/patient_adverse_event_form.html'
 

@@ -24,6 +24,7 @@ class ProgramCreateView(CommuniqueCreateView):
     A view to handle creation of a Program by displaying the form and handling the post request.
     """
     model = Program
+    success_message = 'The pilot program was successfully added'
     fields = ['name', 'description']
     template_name = 'programs/program_form.html'
 
@@ -54,6 +55,7 @@ class ProgramUpdateView(CommuniqueUpdateView):
     A view to update the details of a Program.
     """
     model = Program
+    success_message = 'The details of the pilot program were successfully updated'
     fields = ['name', 'description']
     template_name = 'programs/program_update_form.html'
     context_object_name = 'program'
@@ -64,6 +66,7 @@ class ProgramDeleteView(CommuniqueDeleteView):
     A view to handle deletion of a program.
     """
     model = Program
+    success_message = 'The pilot program was successfully deleted'
     success_url = reverse_lazy('programs_program_list')
     context_object_name = 'program'
     template_name = 'programs/program_confirm_delete.html'

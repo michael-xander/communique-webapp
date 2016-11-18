@@ -61,6 +61,7 @@ class CommuniqueUserCreateView(CommuniqueCreateView):
     A view to create a Communique user.
     """
     form_class = CommuniqueUserCreationForm
+    success_message = 'The user was successfully added'
     model = CommuniqueUser
     template_name = 'user/communique_user_form.html'
 
@@ -133,6 +134,7 @@ class CommuniqueUserEditSuperUserStatusView(CommuniqueUpdateView):
     A view to edit the superuser status of a user
     """
     model = CommuniqueUser
+    success_message = 'The superuser status of the user was successfully updated'
     fields = []
     context_object_name = 'communique_user'
     template_name = 'user/communique_user_confirm_edit_superuser_status.html'
@@ -162,6 +164,7 @@ class CommuniqueUserEditActiveUserStatusView(CommuniqueUpdateView):
     A view to edit the active status of a user
     """
     model = CommuniqueUser
+    success_message = 'The active status of the user was successfully updated'
     fields = []
     context_object_name = 'communique_user'
     template_name = 'user/communique_user_confirm_edit_active_status.html'
@@ -205,6 +208,7 @@ class ProfileUpdateView(CommuniqueUpdateView):
     A view to update a user's profile.
     """
     form_class = ProfileUpdateForm
+    success_message = 'The details of your profile were successfully updated'
     model = Profile
     template_name = 'user/profile_update_form.html'
     context_object_name = 'user_profile'
@@ -290,6 +294,7 @@ class NotificationRegistrationDeleteView(CommuniqueDeleteView):
     A view to delete a notification registration for a user
     """
     model = NotificationRegistration
+    success_message = 'You successfully deregistered from receiving notifications'
     context_object_name = 'notification_registration'
     template_name = 'user/notification_registration_confirm_delete.html'
 
