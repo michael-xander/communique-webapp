@@ -166,7 +166,9 @@
     <!-- page script -->
     <script>
         $(function () {
-            $("#table1").DataTable();
+            $("#table1").DataTable({
+                'searching': false
+            });
         });
         $(".date-picker").datepicker({
             autoclose: true,
