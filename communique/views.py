@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse
@@ -28,7 +30,7 @@ class CommuniqueTemplateView(LoginRequiredMixin, UserPassesTestMixin, TemplateVi
         return self.request.user.is_active
 
 
-class CommuniqueCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class CommuniqueCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     A view that handles creation of a model.
 
@@ -116,7 +118,7 @@ class CommuniqueDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return self.request.user.is_active
 
 
-class CommuniqueUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CommuniqueUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     A view that handles updating a model.
 
@@ -235,6 +237,8 @@ class CommuniqueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     This view is only available to users that are logged in and are marked as active in the system.
     """
+    success_message = 'Object was deleted successfully'
+
     def test_func(self):
         """
         Checks whether the user is marked active and is a superuser.
@@ -242,3 +246,7 @@ class CommuniqueDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """
         current_user = self.request.user
         return current_user.is_superuser and current_user.is_active
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(CommuniqueDeleteView, self).delete(request, *args, **kwargs)

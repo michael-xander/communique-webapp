@@ -25,6 +25,7 @@ class DrugCreateView(CommuniqueCreateView):
     A view to handle the form for creation of a drug
     """
     model = Drug
+    success_message = 'The drug was successfully added'
     fields = ['name', 'description']
     template_name = 'regimens/drug_form.html'
 
@@ -53,6 +54,7 @@ class DrugUpdateView(CommuniqueUpdateView):
     A view to handle the update form for a drug.
     """
     model = Drug
+    success_message = 'The details of the drug were successfully updated'
     fields = ['name', 'description']
     template_name = 'regimens/drug_update_form.html'
     context_object_name = 'drug'
@@ -63,6 +65,7 @@ class DrugDeleteView(CommuniqueDeleteView):
     A view to handle the deletion of a drug
     """
     model = Drug
+    success_message = 'The drug was successfully deleted'
     success_url = reverse_lazy('regimens_drug_list')
     context_object_name = 'drug'
     template_name = 'regimens/drug_confirm_delete.html'
@@ -73,6 +76,7 @@ class RegimenCreateView(CommuniqueCreateView):
     A view to handle the form for creation of a regimen
     """
     model = Regimen
+    success_message = 'The regimen was successfully added'
     form_class = RegimenForm
     template_name = 'regimens/regimen_form.html'
 
@@ -145,6 +149,7 @@ class RegimenDeleteView(CommuniqueDeleteView):
     A view to handle the deletion of a regimen
     """
     model = Regimen
+    success_message = 'The regimen was successfully deleted'
     success_url = reverse_lazy('regimens_regimen_list')
     context_object_name = 'regimen'
     template_name = 'regimens/regimen_confirm_delete.html'
@@ -155,6 +160,7 @@ class RegimenUpdateView(CommuniqueUpdateView):
     A view to handle updating a regimen
     """
     model = Regimen
+    success_message = 'The details of the regimen were successfully updated'
     form_class = RegimenUpdateForm
     template_name = 'regimens/regimen_update_form.html'
     context_object_name = 'regimen'

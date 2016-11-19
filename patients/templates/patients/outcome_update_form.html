@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block page_heading %}
-    Update {{ outcome }}
+    Update Patient Outcome Details
 {% endblock %}
 
 {% block page_subheading %}
@@ -28,6 +28,7 @@
 {% endblock %}
 
 {% block page_content %}
+    {{ block.super }}
     {% include 'form_errors.html' with class='col-md-12' %}
 
     <div class="row">

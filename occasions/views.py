@@ -11,6 +11,7 @@ class EventCreateView(CommuniqueCreateView):
     A view that handles creation of an event.
     """
     model = Event
+    success_message = 'The event was successfully added'
     form_class = EventForm
     template_name = 'occasions/event_form.html'
 
@@ -29,6 +30,7 @@ class EventUpdateView(CommuniqueUpdateView):
     A view that handles updating an event.
     """
     model = Event
+    success_message = 'The details of the event were successfully updated'
     form_class = EventForm
     template_name = 'occasions/event_update_form.html'
     context_object_name = 'event'
@@ -48,6 +50,7 @@ class EventDeleteView(CommuniqueDeleteView):
     A view that handles event deletion.
     """
     model = Event
+    success_message = 'The event was successfully deleted'
     success_url = reverse_lazy('occasions_event_list')
     context_object_name = 'event'
     template_name = 'occasions/event_confirm_delete.html'

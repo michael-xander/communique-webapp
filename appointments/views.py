@@ -17,6 +17,7 @@ class AppointmentCreateView(CommuniqueCreateView):
     """
     model = Appointment
     form_class = AppointmentForm
+    success_message = 'The appointment was successfully added'
     template_name = 'appointments/appointment_form.html'
 
     def form_valid(self, form):
@@ -41,6 +42,7 @@ class AppointmentUpdateView(CommuniqueUpdateView):
     A view that handles updating an appointment.
     """
     model = Appointment
+    success_message = 'The details of the appointment were successfully updated'
     form_class = AppointmentForm
     template_name = 'appointments/appointment_update_form.html'
     context_object_name = 'appointment'
@@ -77,6 +79,7 @@ class AppointmentDeleteView(CommuniqueDeleteView):
     A view that handles deletion of an appointment.
     """
     model = Appointment
+    success_message = 'The appointment was successfully deleted'
     success_url = reverse_lazy('appointments_appointment_list')
     context_object_name = 'appointment'
     template_name = 'appointments/appointment_confirm_delete.html'
