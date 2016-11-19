@@ -15,6 +15,7 @@ from .models import CommuniqueUser, Profile, NotificationRegistration
 from counselling_sessions.models import CounsellingSession
 from patients.models import Enrollment, Outcome
 from occasions.models import Event
+from adverse.models import AdverseEvent
 from appointments.models import Appointment
 
 
@@ -29,6 +30,7 @@ class DashboardView(CommuniqueTemplateView):
         context['counselling_session_list'] = CounsellingSession.objects.order_by('date_created')[:5]
         context['enrollment_list'] = Enrollment.objects.order_by('date_created')[:5]
         context['patient_outcome_list'] = Outcome.objects.order_by('date_created')[:5]
+        context['adverse_event_list'] = AdverseEvent.objects.order_by('date_created')[:5]
 
         # the first and last date of the week
         today = datetime.date.today()

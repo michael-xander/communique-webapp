@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">5 Most Recent Counselling Sessions</h3>
@@ -128,7 +128,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">5 Most Recent Enrollments</h3>
@@ -179,7 +179,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">5 Most Recent Patient Outcomes</h3>
@@ -223,6 +225,61 @@
                 </div>
                 <div class="box-footer text-center">
                     <a href="{% url 'patients_outcome_list' %}" class="uppercase">View All Patient Outcomes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">5 Most Recent Adverse Events</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <table class="list-table table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Event Type</th>
+                                <th>Patient ID</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for adverse_event in adverse_event_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ adverse_event.get_absolute_url }}">
+                                            {{ adverse_event.adverse_event_type }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ adverse_event.get_absolute_url }}">
+                                            {{ adverse_event.patient.identifier }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ adverse_event.get_absolute_url }}">
+                                            {{ adverse_event.event_date }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Event Type</th>
+                                <th>Patient ID</th>
+                                <th>Date</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="box-footer text-center">
+                    <a href="{% url 'adverse_event_list' %}" class="uppercase">View All Adverse Events</a>
                 </div>
             </div>
         </div>
