@@ -1,42 +1,37 @@
-# Communiqué Web application
-## A Django Web App for the Communiqué project
+# Communiqué project Web application
 
+A web application, for the Communiqué project, used to collect and manage information on [DR-TB](https://en.wikipedia.org/wiki/Multi-drug-resistant_tuberculosis) patients.
+
+The information collected included:
+- Patient contact details
+- Patient admissions and adverse events
+- Patient treatment phases and outcomes
+- Patient regimens
+- Counselling sessions and medical reports
+- Enrollments and pilot programs
+
+For more information on the Communiqué project and detailed descriptions of the type of information collected, click [here](http://shenzi.cs.uct.ac.za/~honsproj/) and select the DR-TB project in 2016.
+ 
 ### Collaborators
 - Thandile Xiphu
 - Michael Kyeyune
 
-### Important Notices
-- These instructions are bound to change as the project development progresses with
-clarifications made on models and links to utilise for the project.
-- Development procedure:
-  - create remote branch off of development branch
-  - when ready to submit changes, create a pull request to development branch and notify affected developers to merge changes to development branch
-  - changes are eventually merged into master branch on agreement from developers
-- Currently, a Heroku deployment account is not being shared so each developer
-creates their on deployment with their Heroku credentials.
-
 ### Requirements
 - Python 3.5.2
-- Postgresql 9.5.3
 - [virtualenv](https://virtualenv.pypa.io/en/stable/) 15.0.2
 
 ### Setup
 - Clone this repo
 - Install [virtualenv](https://virtualenv.pypa.io/en/stable/)
-- Install postgresql (if you haven't already)
 
 ### Running the project
-Running the project is dependent on 3 types of settings:
-  - `easy_db_settings.py` for quick testing with `db.sqlite3`
-  - `dev_settings.py` for development settings. Utilises Postgresql.
-  - `settings.py` for production settings. Utilises Postgresql.
+Running the project is dependent on 3 types of settings, all of which utilise `db.sqlite3` as the RDBMS:
+  - `easy_db_settings.py` for quick testing.
+  - `dev_settings.py` for development settings.
+  - `settings.py` for production settings.
 
-Given that attributes of models are yet to confirmed, `easy_db_settings.py` will be used for settings on developer machines as follows:
-  - write your UNIX password on a piece of paper
-  - tear up paper in previous step
-  - wave your arms like you just don't care!
-  - Seriously though, continue
-  - create a python virtual environment titled `test_env` in the root of the project:
+To set up a Python environment using one of the settings files (`easy_db_settings.py` used as an example in the instructions), do as follows:
+  - create a python virtual environment titled `test_env` (or another name of your choosing) in the root of the project:
     - ```virtualenv test_env```
   - specify settings to use on your machine by appending the following to `test_env/bin/activate`:
     ```
@@ -65,6 +60,8 @@ Given that attributes of models are yet to confirmed, `easy_db_settings.py` will
   - `git push heroku master`
 - run the necessary migrations:
   - `heroku run python manage.py migrate`
+- create a superuser to access the system:
+  - `heroku run python manage.py createsuperuser`
 - open web browser tab to deployed application (take into consideration the active URLs):
   - `heroku open`
 - After successful initial deployment, further changes need only be pushed and necessary migrations ran

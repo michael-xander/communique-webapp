@@ -30,6 +30,7 @@
 {% endblock %}
 
 {% block page_content %}
+    {{ block.super }}
     <!-- banner informing user that this patient is archived -->
     {% if patient.archived %}
         <div class="row">

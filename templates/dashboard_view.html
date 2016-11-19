@@ -31,6 +31,7 @@
 {% endblock %}
 
 {% block page_content %}
+    {{ block.super }}
     <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="info-box">
@@ -67,10 +68,28 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Recently Added Counselling Sessions</h3>
+                    <i class="fa fa-bar-chart-o"></i>
+                    <h3>Counselling sessions for this year</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div id="sessions-chart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">5 Most Recent Counselling Sessions</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -127,10 +146,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Recently Added Enrollments</h3>
+                    <h3 class="box-title">5 Most Recent Enrollments</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -178,10 +197,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Recently Added Patient Outcomes</h3>
+                    <h3 class="box-title">5 Most Recent Patient Outcomes</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -225,6 +246,61 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">5 Most Recent Adverse Events</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <table class="list-table table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Event Type</th>
+                                <th>Patient ID</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for adverse_event in adverse_event_list %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ adverse_event.get_absolute_url }}">
+                                            {{ adverse_event.adverse_event_type }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ adverse_event.get_absolute_url }}">
+                                            {{ adverse_event.patient.identifier }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ adverse_event.get_absolute_url }}">
+                                            {{ adverse_event.event_date }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Event Type</th>
+                                <th>Patient ID</th>
+                                <th>Date</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="box-footer text-center">
+                    <a href="{% url 'adverse_event_list' %}" class="uppercase">View All Adverse Events</a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -233,6 +309,13 @@
     <!-- DataTables -->
     <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
     <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+
+    <!-- flot charts -->
+    <script src="{% static "plugins/flot/jquery.flot.min.js" %}"></script>
+    <!-- flot resize plugin -->
+    <script src="{% static "plugins/flot/jquery.flot.resize.min.js" %}"></script>
+    <!-- flot categories plugin -->
+    <script src="{% static "plugins/flot/jquery.flot.categories.min.js" %}"></script>
     <!-- page script -->
     <script>
         $(function () {
@@ -243,6 +326,36 @@
                 "ordering": false,
                 "info": true,
                 "autoWidth": false
+            });
+
+            /* setting up data for the bar charts */
+            var session_bar_data = {
+                data: [
+                        ["Jan", parseInt('{{ session_counts.jan }}')], ["Feb", parseInt('{{ session_counts.feb }}')],
+                        ["Mar", parseInt('{{ session_counts.mar }}')], ["Apr", parseInt('{{ session_counts.apr }}')],
+                        ["May", parseInt('{{ session_counts.may }}')], ["Jun", parseInt('{{ session_counts.jun }}')],
+                        ["Jul", parseInt('{{ session_counts.jul }}')], ["Aug", parseInt('{{ session_counts.aug }}')],
+                        ["Sep", parseInt('{{ session_counts.sep }}')], ["Oct", parseInt('{{ session_counts.oct }}')],
+                        ["Nov", parseInt('{{ session_counts.nov }}')], ["Dec", parseInt('{{ session_counts.dec }}')]
+                ],
+                color: "#eadc19"
+            };
+            $.plot("#sessions-chart", [session_bar_data], {
+                grid: {
+                    borderWidth: 1,
+                    borderColor: "#f3f3f3",
+                    tickColor: "#f3f3f3"
+                },
+                series: {
+                    bars: {
+                        show: true,
+                        barWidth: 0.5,
+                        align: "center"
+                    }
+                },
+                xaxis: {
+                    mode: "categories",
+                    tickLength: 0}
             });
         });
     </script>

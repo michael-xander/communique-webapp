@@ -17,6 +17,7 @@
 {% endblock %}
 
 {% block page_content %}
+    {{ block.super }}
     {% if not notification_list %}
         <div class="row">
             <div class="col-md-12">

@@ -15,6 +15,7 @@ from .models import CommuniqueUser, Profile, NotificationRegistration
 from counselling_sessions.models import CounsellingSession
 from patients.models import Enrollment, Outcome
 from occasions.models import Event
+from adverse.models import AdverseEvent
 from appointments.models import Appointment
 
 
@@ -29,6 +30,7 @@ class DashboardView(CommuniqueTemplateView):
         context['counselling_session_list'] = CounsellingSession.objects.order_by('date_created')[:5]
         context['enrollment_list'] = Enrollment.objects.order_by('date_created')[:5]
         context['patient_outcome_list'] = Outcome.objects.order_by('date_created')[:5]
+        context['adverse_event_list'] = AdverseEvent.objects.order_by('date_created')[:5]
 
         # the first and last date of the week
         today = datetime.date.today()
@@ -37,6 +39,16 @@ class DashboardView(CommuniqueTemplateView):
 
         context['appointment_list'] = Appointment.objects.filter(appointment_date__range=[start_date, end_date])
         context['event_list'] = Event.objects.filter(event_date__range=[start_date, end_date])
+
+        # get the counts for sessions carried out all throughout the year
+        current_year_sessions = CounsellingSession.objects.filter(date_created__year=today.year)
+        months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+
+        session_counts = {}
+        for pos, month in enumerate(months, start=1):
+            session_counts[month] = current_year_sessions.filter(date_created__month=pos).count()
+
+        context['session_counts'] = session_counts
         return context
 
 
@@ -61,6 +73,7 @@ class CommuniqueUserCreateView(CommuniqueCreateView):
     A view to create a Communique user.
     """
     form_class = CommuniqueUserCreationForm
+    success_message = 'The user was successfully added'
     model = CommuniqueUser
     template_name = 'user/communique_user_form.html'
 
@@ -133,6 +146,7 @@ class CommuniqueUserEditSuperUserStatusView(CommuniqueUpdateView):
     A view to edit the superuser status of a user
     """
     model = CommuniqueUser
+    success_message = 'The superuser status of the user was successfully updated'
     fields = []
     context_object_name = 'communique_user'
     template_name = 'user/communique_user_confirm_edit_superuser_status.html'
@@ -162,6 +176,7 @@ class CommuniqueUserEditActiveUserStatusView(CommuniqueUpdateView):
     A view to edit the active status of a user
     """
     model = CommuniqueUser
+    success_message = 'The active status of the user was successfully updated'
     fields = []
     context_object_name = 'communique_user'
     template_name = 'user/communique_user_confirm_edit_active_status.html'
@@ -205,6 +220,7 @@ class ProfileUpdateView(CommuniqueUpdateView):
     A view to update a user's profile.
     """
     form_class = ProfileUpdateForm
+    success_message = 'The details of your profile were successfully updated'
     model = Profile
     template_name = 'user/profile_update_form.html'
     context_object_name = 'user_profile'
@@ -290,6 +306,7 @@ class NotificationRegistrationDeleteView(CommuniqueDeleteView):
     A view to delete a notification registration for a user
     """
     model = NotificationRegistration
+    success_message = 'You successfully deregistered from receiving notifications'
     context_object_name = 'notification_registration'
     template_name = 'user/notification_registration_confirm_delete.html'
 

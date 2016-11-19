@@ -16,6 +16,7 @@ class AdmissionCreateView(CommuniqueCreateView):
     A view that handles creation of an admission.
     """
     model = Admission
+    success_message = 'The admission was successfully added'
     form_class = AdmissionCreateForm
     template_name = 'admissions/admission_form.html'
 
@@ -34,6 +35,7 @@ class AdmissionUpdateView(CommuniqueUpdateView):
     A view that handles updating of an admission.
     """
     model = Admission
+    success_message = 'The details of the admission were successfully updated'
     form_class = AdmissionUpdateForm
     template_name = 'admissions/admission_update_form.html'
     context_object_name = 'admission'
@@ -64,6 +66,7 @@ class AdmissionDeleteView(CommuniqueDeleteView):
     """
     model = Admission
     success_url = reverse_lazy('admissions_admission_list')
+    success_message = 'The admission was successfully deleted'
     context_object_name = 'admission'
     template_name = 'admissions/admission_confirm_delete.html'
 

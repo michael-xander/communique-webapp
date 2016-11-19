@@ -25,6 +25,7 @@ class EmergencyContactCreateView(CommuniqueCreateView):
     A view to handle the form for creation of an emergency contact
     """
     model = EmergencyContact
+    success_message = 'The emergency contact was successfully added'
     fields = ['name', 'email']
     template_name = 'adverse/emergency_contact_form.html'
 
@@ -43,6 +44,7 @@ class EmergencyContactUpdateView(CommuniqueUpdateView):
     A view to handle the update form for a drug
     """
     model = EmergencyContact
+    success_message = 'The details of the emergency contact were successfully updated'
     fields = ['name', 'email']
     template_name = 'adverse/emergency_contact_update_form.html'
     context_object_name = 'emergency_contact'
@@ -53,6 +55,7 @@ class EmergencyContactDeleteView(CommuniqueDeleteView):
     A view to handle the deletion of an emergency contact
     """
     model = EmergencyContact
+    success_message = 'The emergency contact was successfully deleted'
     success_url = reverse_lazy('adverse_emergency_contact_list')
     context_object_name = 'emergency_contact'
     template_name = 'adverse/emergency_contact_confirm_delete.html'
@@ -72,6 +75,7 @@ class AdverseEventTypeCreateView(CommuniqueCreateView):
     A view to handle the form for creation of an adverse event type
     """
     model = AdverseEventType
+    success_message = 'The adverse event type was successfully added'
     fields = ['name', 'description', 'emergency_contacts']
     template_name = 'adverse/adverse_event_type_form.html'
 
@@ -101,6 +105,7 @@ class AdverseEventTypeUpdateView(CommuniqueUpdateView):
     A view to handle the update form of an adverse event type
     """
     model = AdverseEventType
+    success_message = 'The details of the adverse event type were successfully updated'
     fields = ['name', 'description', 'emergency_contacts']
     template_name = 'adverse/adverse_event_type_update_form.html'
     context_object_name = 'adverse_event_type'
@@ -111,6 +116,7 @@ class AdverseEventTypeDeleteView(CommuniqueDeleteView):
     A view to handle deletion of an adverse event type
     """
     model = AdverseEventType
+    success_message = 'The adverse event type was successfully deleted'
     success_url = reverse_lazy('adverse_event_type_list')
     context_object_name = 'adverse_event_type'
     template_name = 'adverse/adverse_event_type_confirm_delete.html'
@@ -141,6 +147,7 @@ class AdverseEventCreateView(CommuniqueCreateView):
     A view to handle the form for creation of an adverse event
     """
     model = AdverseEvent
+    success_message = 'The adverse event was successfully added'
     form_class = AdverseEventForm
     template_name = 'adverse/adverse_event_form.html'
 
@@ -159,6 +166,7 @@ class AdverseEventUpdateView(CommuniqueUpdateView):
     A view to handle the update form of an adverse event
     """
     model = AdverseEvent
+    success_message = 'The details of the adverse event were successfully updated'
     fields = ['event_date', 'notes']
     template_name = 'adverse/adverse_event_update_form.html'
     context_object_name = 'adverse_event'
@@ -169,6 +177,7 @@ class AdverseEventDeleteView(CommuniqueDeleteView):
     A view to handle deletion of an adverse event type
     """
     model = AdverseEvent
+    success_message = 'The adverse event was successfully deleted'
     success_url = reverse_lazy('adverse_event_list')
     context_object_name = 'adverse_event'
     template_name = 'adverse/adverse_event_confirm_delete.html'
