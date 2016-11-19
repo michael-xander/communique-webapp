@@ -39,6 +39,16 @@ class DashboardView(CommuniqueTemplateView):
 
         context['appointment_list'] = Appointment.objects.filter(appointment_date__range=[start_date, end_date])
         context['event_list'] = Event.objects.filter(event_date__range=[start_date, end_date])
+
+        # get the counts for sessions carried out all throughout the year
+        current_year_sessions = CounsellingSession.objects.filter(date_created__year=today.year)
+        months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+
+        session_counts = {}
+        for pos, month in enumerate(months, start=1):
+            session_counts[month] = current_year_sessions.filter(date_created__month=pos).count()
+
+        context['session_counts'] = session_counts
         return context
 
 
