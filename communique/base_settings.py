@@ -98,17 +98,6 @@ LOGIN_REDIRECT_URL = reverse_lazy('dashboard_home')
 LOGIN_URL = reverse_lazy('user_login')
 LOGOUT_URL = reverse_lazy('user_logout')
 
-# Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'testing@example.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-
 # REST framework settings
 # http://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
