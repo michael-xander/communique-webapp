@@ -32,6 +32,11 @@ Running the project is dependent on 2 types of settings, all of which utilise `d
 To run the project in a development environment on a local machine:
   - create a python virtual environment titled `dev_env` in the root of the project:
     - ```virtualenv dev_env```
+  - specify that development settings should be used by appending the following to `dev_env/bin/activate`:
+  ```
+  DJANGO_SETTINGS_MODULE="communique.dev_settings"
+  export DJANGO_SETTINGS_MODULE
+  ```
   - activate the virtual environment in the root folder by running the following command:
     - ```source dev_env/bin/activate``` (You'll notice that the name of the virtual environment will be appended to the beginning of your file path in terminal.)
     
