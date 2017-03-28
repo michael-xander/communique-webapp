@@ -1,16 +1,12 @@
 {% extends parent_template|default:"base.html" %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | User Calendar
 {% endblock %}
 
 {% block head %}
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
-    <!-- fullCalendar 2.2.5 -->
-    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
-    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+    {% include 'datatables-cs.html' %}
+    {% include 'fullcalendar-cs.html' %}
 {% endblock %}
 
 {% block page_heading %}
@@ -145,13 +141,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- DataTables -->
-    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
-
-    <!-- fullCalendar 2.2.5 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
+    {% include 'datatables-js.html' %}
+    {% include 'fullcalendar-js.html' %}
 
     <!-- page script -->
     <script>

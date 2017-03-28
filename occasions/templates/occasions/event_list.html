@@ -1,16 +1,12 @@
 {% extends parent_template|default:'occasions/base_occasions.html' %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Events
 {% endblock %}
 
 {% block head %}
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%}">
-    <!-- fullCalendar 2.2.5 -->
-    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.min.css" %}">
-    <link rel="stylesheet" href="{% static "plugins/fullcalendar/fullcalendar.print.css" %}" media="print">
+    {% include "datatables-cs.html" %}
+    {% include "fullcalendar-cs.html" %}
 {% endblock %}
 
 
@@ -95,13 +91,9 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- DataTables -->
-    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    {% include "datatables-js.html" %}
+    {% include "fullcalendar-js.html" %}
 
-    <!-- fullCalendar 2.2.5 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <script src="{% static "plugins/fullcalendar/fullcalendar.min.js" %}"></script>
     <!-- page script -->
     <script>
         $(function () {

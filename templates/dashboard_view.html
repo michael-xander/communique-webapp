@@ -1,5 +1,4 @@
 {% extends parent_template|default:"base.html" %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Dashboard
@@ -14,8 +13,7 @@
 {% endblock %}
 
 {% block head %}
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+    {% include 'datatables-cs.html' %}
 {% endblock %}
 
 {% block page_heading %}
@@ -306,16 +304,14 @@
 
 
 {% block scripts %}
-    <!-- DataTables -->
-    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    {% include 'datatables-js.html' %}
 
     <!-- flot charts -->
-    <script src="{% static "plugins/flot/jquery.flot.min.js" %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
     <!-- flot resize plugin -->
-    <script src="{% static "plugins/flot/jquery.flot.resize.min.js" %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.resize.min.js"></script>
     <!-- flot categories plugin -->
-    <script src="{% static "plugins/flot/jquery.flot.categories.min.js" %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.categories.min.js"></script>
     <!-- page script -->
     <script>
         $(function () {

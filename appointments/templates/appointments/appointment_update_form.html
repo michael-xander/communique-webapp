@@ -1,17 +1,13 @@
 {% extends parent_template|default:'appointments/base_appointments.html' %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Edit Appointment
 {% endblock %}
 
 {% block head %}
-    <!-- select2 css -->
-    <link rel="stylesheet" href="{% static "plugins/select2/select2.min.css" %}">
-    <!-- bootstrap datepicker css -->
-    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
-    <!-- bootstrap timepicker css -->
-    <link rel="stylesheet" href="{% static "plugins/timepicker/bootstrap-timepicker.min.css" %}">
+    {% include "select2-cs.html" %}
+    {% include "datepicker-cs.html" %}
+    {% include "timepicker-cs.html" %}
 {% endblock %}
 
 {% block page_heading %}
@@ -51,12 +47,9 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- select2 js -->
-    <script src="{% static "plugins/select2/select2.full.min.js" %}"></script>
-    <!-- datepicker js -->
-    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
-    <!-- bootstrap timepicker js -->
-    <script src="{% static "plugins/timepicker/bootstrap-timepicker.min.js" %}"></script>
+    {% include "select2-js.html" %}
+    {% include "datepicker-js.html" %}
+    {% include "timepicker-js.html" %}
     <script>
         $(function () {
             $(".select2").select2();

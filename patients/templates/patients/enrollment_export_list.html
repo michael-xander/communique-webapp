@@ -1,5 +1,4 @@
 {% extends parent_template|default:"patients/base_enrollments.html" %}
-{% load staticfiles %}
 {% load widget_tweaks %}
 
 {% block title %}
@@ -7,10 +6,8 @@
 {% endblock %}
 
 {% block head %}
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
-    <!-- bootstrap datepicker css -->
-    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
+    {% include "datatables-cs.html" %}
+    {% include "datepicker-cs.html" %}
 {% endblock %}
 
 {% block page_heading %}
@@ -129,12 +126,8 @@
 
 
 {% block scripts %}
-    <!-- DataTables -->
-    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
-    <!-- datepicker js -->
-    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
-    <!-- page script -->
+    {% include "datatables-js.html" %}
+    {% include "datepicker-js.html" %}
     <script>
         $(function () {
             $("#table1").DataTable({

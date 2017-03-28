@@ -1,5 +1,4 @@
 {% extends parent_template|default:"base.html" %}
-{% load staticfiles %}
 
 {% block title %}
   {{ block.super }} | Login
@@ -24,8 +23,8 @@
     </div>
 
     <!-- jQuery 2.2.3 -->
-    <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
-    <!-- bootstrap 3.3.6 -->
-    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <!-- bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </body>
 {% endblock %}

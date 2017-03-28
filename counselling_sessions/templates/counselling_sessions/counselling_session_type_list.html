@@ -1,13 +1,11 @@
 {% extends  parent_template|default:'counselling_sessions/base_counselling_sessions.html' %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Session Types
 {% endblock %}
 
 {% block head %}
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css"%} ">
+    {% include "datatables-cs.html" %}
 {% endblock %}
 
 {% block page_heading %}
@@ -89,9 +87,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- DataTables -->
-    <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-    <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+    {% include "datatables-js.html" %}
     <!-- page script -->
     <script>
         $(function () {

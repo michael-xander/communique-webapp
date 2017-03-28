@@ -1,15 +1,12 @@
 {% extends parent_template|default:'occasions/base_occasions.html' %}
-{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Edit Event
 {% endblock %}
 
 {% block head %}
-    <!-- bootstrap datepicker css -->
-    <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
-    <!-- bootstrap timepicker css -->
-    <link rel="stylesheet" href="{% static "plugins/timepicker/bootstrap-timepicker.min.css" %}">
+    {% include "datepicker-cs.html" %}
+    {% include "timepicker-cs.html" %}
 {% endblock %}
 
 
@@ -50,10 +47,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- datepicker js -->
-    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
-    <!-- bootstrap timepicker js -->
-    <script src="{% static "plugins/timepicker/bootstrap-timepicker.min.js" %}"></script>
+    {% include "datepicker-js.html" %}
+    {% include "timepicker-js.html" %}
     <script>
         $(function () {
             $("#id_appointment_date").datepicker({
