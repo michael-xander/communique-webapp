@@ -6,12 +6,6 @@ import os
 
 DEBUG = False
 
-# reading the FCM server key
-ENV_FCM_SERVER_KEY = os.environ['FCM_SERVER_KEY']
-FCM_DJANGO_SETTINGS = {
-    "FCM_SERVER_KEY": ENV_FCM_SERVER_KEY
-}
-
 # read the security key from the environment
 SECRET_KEY = os.environ['SECRET_KEY']
 
